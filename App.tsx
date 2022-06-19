@@ -1,25 +1,11 @@
 
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import SignIn from './src/pages/SignIn';
 
 const App = () => {
   return (
-    <View style={styles.container}>
-      <Text>Clube do empreendedor</Text>
-    </View>
+    <SignIn />
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-});
 
 export default App;

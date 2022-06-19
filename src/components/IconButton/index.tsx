@@ -14,7 +14,7 @@ interface Props {
 const IconButton: React.FC<Props> = ({
   icon,
   size = 30,
-  color = colors.primary,
+  color = colors.indigoA200,
   onPress,
 }) => {
   return (

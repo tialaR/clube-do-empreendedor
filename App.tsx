@@ -1,10 +1,10 @@
 
 import React from 'react';
-import SignIn from './src/pages/SignIn';
+import ClientDashboard from './src/pages/ClientDashboard';
 
 const App = () => {
   return (
-    <SignIn />
+    <ClientDashboard />
   );
 };
 

@@ -3,7 +3,7 @@ import BigHeader from '../../components/BigHeader';
 
 import { Container, WellcomeContainer, WellcomeText, WellcomeDescription, ButtonsContainer, BodyContainerContents, BodyContainer, TermsButtonText, TermsButtonContainer } from './styles';
 import Button from '../../components/Button';
-import { Spacing } from '../../styles/globalStyles';
+import { SpacingY } from '../../styles/globalStyles';
 
 const TermsButton: React.FC = () => {
     return (
@@ -40,15 +40,15 @@ const Welcome: React.FC = () => {
                     </WellcomeDescription>
                 </WellcomeContainer>
 
-                <Spacing large />
+                <SpacingY large />
 
                 <ButtonsContainer>
                     <Button filled>Cliente</Button>
-                    <Spacing small />
+                    <SpacingY small />
                     <Button>Empresa</Button>
                 </ButtonsContainer>
 
-                <Spacing large />
+                <SpacingY large />
 
                 <TermsButton />
             </BodyContainerContents>

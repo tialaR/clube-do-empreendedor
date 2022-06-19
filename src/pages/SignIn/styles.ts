@@ -9,6 +9,7 @@ export const Container = styled.ScrollView.attrs({
   },
 })`
   flex: 1;
+  background-color: ${colors.gray50};
 `;
 
 export const BodyContainer = styled.View`
@@ -27,7 +28,7 @@ export const BodyHeader = styled.View`
 `;
 
 export const BodyTitle = styled.Text`
-  color: ${colors.primary};
+  color: ${colors.indigoA200};
   font-size: 26px;
   font-weight: 800;
 `;
@@ -53,7 +54,7 @@ export const LineButtonContainer = styled.TouchableOpacity.attrs(props => ({
 }))``;
 
 export const LineButtonText = styled.Text`
-  color: ${colors.primary};
+  color: ${colors.indigoA200};
   font-size: 12px;
   text-align: center;
 `;

@@ -5,17 +5,14 @@ import { colors } from '../../styles/colors';
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
-const bigHeaderHeight = screenHeight - (screenHeight/100 * 72);
+const bigHeaderHeight = screenHeight - (screenHeight/100 * 83);
 
-export const Container = styled.View`
-  position: relative;
-  
+export const Container = styled.View`  
   background-color: ${colors.indigoA200};
 
   width: ${screenWidth}px;
   height: ${bigHeaderHeight}px;
 
-  justify-content: center;
   align-items: center;
 
   border-bottom-left-radius: 25px;
@@ -25,8 +22,8 @@ export const Container = styled.View`
   elevation: 4;
 `;
 
-export const BackButtonContainer = styled.View`
-  position: absolute;
-  top: 20px;
-  left: 20px;
+export const SearchBarContainer = styled.View`  
+  width: 80%;
+  align-items: center;
+  justify-content: center;
 `;

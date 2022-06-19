@@ -13,7 +13,7 @@ export const Container = styled.View<ContainerProps>`
   padding: 0 16px;
   
   border-width: 2px;
-  border-color: ${colors.primary};
+  border-color: ${colors.indigoA200};
 
   flex-direction: row;
   align-items: center;

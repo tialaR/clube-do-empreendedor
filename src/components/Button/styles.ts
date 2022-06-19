@@ -17,14 +17,14 @@ export const ContainerView = styled.View<ButtonProps>`
           border: none;
         `
       : css`
-          border: 2px solid ${colors.primary};
+          border: 2px solid ${colors.indigoA200};
         `}
 `;
 
 export const Container = styled.TouchableOpacity.attrs(() => ({
     activeOpacity: 0.7
 }))<ButtonProps>`
-  background-color: ${colors.primary};
+  background-color: ${colors.indigoA200};
 
   height: 100%;
   width: 100%;
@@ -37,7 +37,7 @@ export const Container = styled.TouchableOpacity.attrs(() => ({
   ${(props) =>
     props.filled
       ? css`
-          background-color: ${colors.primary};
+          background-color: ${colors.indigoA200};
         `
       : css`
           background-color: 'transparent';
@@ -54,6 +54,6 @@ export const ButtonText = styled.Text<ButtonProps>`
           color: ${colors.white};
         `
       : css`
-          color: ${colors.primary};
+          color: ${colors.indigoA200};
         `}
 `;

@@ -8,7 +8,7 @@ import BigHeader from '../../components/BigHeader';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
 
-import { Spacing } from '../../styles/globalStyles';
+import { SpacingY } from '../../styles/globalStyles';
 import { Container, BodyHeader, BodyTitle, ButtonsContainer, BodyContents, BodyContainer, InputsContainer, LineButtonText, LineButtonsContainer, LineButtonContainer } from './styles';
 
 type LineButtonProps = {
@@ -86,7 +86,7 @@ const SignIn: React.FC = () => {
                         </BodyTitle>
                     </BodyHeader>
 
-                    <Spacing large />
+                    <SpacingY large />
 
                     <InputsContainer>
                         {isClient ? (
@@ -127,7 +127,7 @@ const SignIn: React.FC = () => {
                             />
                         )}
 
-                        <Spacing small />
+                        <SpacingY small />
                         
                         <Controller
                             name="password"
@@ -149,14 +149,14 @@ const SignIn: React.FC = () => {
                         />
                     </InputsContainer>
 
-                    <Spacing medium />
+                    <SpacingY medium />
 
                     <LineButtonsContainer>
                         <LineButton>Esqueci minha senha</LineButton>
                         <LineButton>Primeiro acesso</LineButton>
                     </LineButtonsContainer>
 
-                    <Spacing large />
+                    <SpacingY large />
 
                     <ButtonsContainer>
                         <Button filled onPress={handleSubmit(onSubmit)}>Entrar</Button>

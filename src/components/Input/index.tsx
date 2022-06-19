@@ -18,7 +18,7 @@ const Input: React.FC<Props> = ({ error, errorText, ...rest }) => {
         <TextInput
           {...rest}
           keyboardAppearance="dark"
-          placeholderTextColor={colors.primary}
+          placeholderTextColor={colors.indigoA200}
         />
       </Container>
       {error && (

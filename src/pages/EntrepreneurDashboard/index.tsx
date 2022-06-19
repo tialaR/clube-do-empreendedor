@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Text, View } from 'react-native';
 
 import ProductCard from '../../components/ProductCard';
@@ -6,8 +6,8 @@ import SearchHeader from '../../components/SearchHeader';
 import SectionTitle from '../../components/SectionTitle';
 
 import { colors } from '../../styles/colors';
-import { SpacingX } from '../../styles/globalStyles';
-import { Container, ProducstList, SectionListContainer, SectionTitleContainer } from './styles';
+import { SpacingX, SpacingY } from '../../styles/globalStyles';
+import { Container, ProducstList, SectionListContainer, SectionTitleContainer, SectionButtonsContainer, SquareButtonContainer, SquareButtonText } from './styles';
 
 export type Product = {
     id: string;
@@ -72,14 +72,27 @@ const products: Product[] = [
     },
 ]
 
-const ClientDashboard: React.FC = () => {
+type SquareButtonProps = {
+    children: ReactNode;
+    onPress: () => void;
+}
+
+const SquareButton: React.FC<SquareButtonProps> = ({ children, onPress }) => {
+    return(
+        <SquareButtonContainer onPress={onPress}>
+            <SquareButtonText>{children}</SquareButtonText>
+        </SquareButtonContainer>
+    )
+}
+
+const EntrepreneurDashboard: React.FC = () => {
   return (
       <Container>
-          <SearchHeader placeholder='Encontre empresas ou produtos' onPress={() => false} />
+          <SearchHeader placeholder="Encontre Produtos" onPress={() => false} />
 
           <SectionListContainer>
             <SectionTitleContainer>
-                <SectionTitle>Meus Descontos</SectionTitle>
+                <SectionTitle>Produtos Cadastrados</SectionTitle>
             </SectionTitleContainer>
             <ProducstList
                     data={products}
@@ -109,34 +122,16 @@ const ClientDashboard: React.FC = () => {
             }}>
                 <Text style={{ fontSize: 13, fontWeight: '600', color: colors.indigoA200 }}>Anúncio</Text>
             </View>
+            
+            <SpacingY small />
 
-            <SectionListContainer>
-            <SectionTitleContainer>
-                <SectionTitle>Produtos em Destaque</SectionTitle>
-            </SectionTitleContainer>
-            <ProducstList
-                    data={products}
-                    keyExtractor={(product: Product) => product.id}
-                    horizontal
-                    renderItem={({ item: product }: { item: Product }) => (
-                        <ProductCard
-                            emphasis
-                            name={product?.name}
-                            img={product?.img}
-                            price={product?.price}
-                            promotion={product?.promotion}
-                            soldBy={product?.soldBy}
-                            installment={product?.installment}
-                            onPress={() => false}
-                        />
-                    )}
-                    ItemSeparatorComponent={() => (
-                        <SpacingX medium />
-                    )}
-                />
-            </SectionListContainer>
+            <SectionButtonsContainer>
+                <SquareButton onPress={() => false}>{`Clientes que \nconseguiram \ndesconto`}</SquareButton>
+                <SpacingX medium />
+                <SquareButton onPress={() => false}>{`Cadastrar \nproduto`}</SquareButton>
+            </SectionButtonsContainer>
       </Container>
   );
 }
 
-export default ClientDashboard;
+export default EntrepreneurDashboard;

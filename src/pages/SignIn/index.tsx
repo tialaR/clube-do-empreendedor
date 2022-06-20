@@ -1,4 +1,5 @@
 import React, { ReactNode, useMemo } from 'react';
+import { RouteProp, useNavigation } from '@react-navigation/native';
 import { Alert, Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import * as yup from 'yup';
@@ -35,8 +36,13 @@ const entrepreneurValidationSchema = yup.object().shape({
     password: yup.string().required('Campo obrigatório')
 }).required();
 
-const SignIn: React.FC = () => {
-      const isClient = false;
+type SiginProps = {
+    route: RouteProp<{ params: { isClient: boolean } }, 'params'>
+}
+
+const SignIn: React.FC<SiginProps> = ({ route }) => {
+      const navigation = useNavigation();
+      const isClient = route.params?.isClient;
 
       const validationSchema = useMemo(() => isClient ? clientValidationSchema : entrepreneurValidationSchema, [isClient])
 
@@ -75,7 +81,7 @@ const SignIn: React.FC = () => {
             enabled
         >
         <Container>
-            <BigHeader showBackButton onBackButtonPress={() => false} />
+            <BigHeader showBackButton onBackButtonPress={navigation.goBack} />
 
             <BodyContainer>
 

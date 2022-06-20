@@ -1,8 +1,10 @@
 import React from 'react';
+import { useNavigation } from '@react-navigation/native';
+
 import BigHeader from '../../components/BigHeader';
+import Button from '../../components/Button';
 
 import { Container, WellcomeContainer, WellcomeText, WellcomeDescription, ButtonsContainer, BodyContainerContents, BodyContainer, TermsButtonText, TermsButtonContainer } from './styles';
-import Button from '../../components/Button';
 import { SpacingY } from '../../styles/globalStyles';
 
 const TermsButton: React.FC = () => {
@@ -24,7 +26,9 @@ const TermsButton: React.FC = () => {
     )
 }
 
-const Welcome: React.FC = () => {
+const Wellcome: React.FC = () => {
+  const navigation = useNavigation<any>();
+
   return (
       <Container>
         <BigHeader />
@@ -43,9 +47,9 @@ const Welcome: React.FC = () => {
                 <SpacingY large />
 
                 <ButtonsContainer>
-                    <Button filled>Cliente</Button>
+                    <Button filled onPress={() => navigation.navigate('SignIn', { isClient: true })}>Cliente</Button>
                     <SpacingY small />
-                    <Button>Empresa</Button>
+                    <Button onPress={() => navigation.navigate('SignIn')}>Empresa</Button>
                 </ButtonsContainer>
 
                 <SpacingY large />
@@ -58,4 +62,4 @@ const Welcome: React.FC = () => {
   );
 }
 
-export default Welcome;
+export default Wellcome;

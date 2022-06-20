@@ -1,13 +1,14 @@
 
 import React from 'react';
-import ClientDashboard from './src/pages/ClientDashboard';
-import EntrepreneurDashboard from './src/pages/EntrepreneurDashboard';
-import SignIn from './src/pages/SignIn';
-import Welcome from './src/pages/Welcome';
+import { NavigationContainer } from '@react-navigation/native';
+
+import Routes from './src/routes';
 
 const App = () => {
   return (
-    <EntrepreneurDashboard />
+    <NavigationContainer>
+      <Routes />
+    </NavigationContainer>
   );
 };
 

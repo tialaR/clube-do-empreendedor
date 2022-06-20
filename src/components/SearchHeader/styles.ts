@@ -8,7 +8,7 @@ export const Container = styled.View`
   background-color: ${colors.indigoA200};
 
   width: ${screenWidth}px;
-  padding: 8px 0 16px;
+  padding: 20px 0 16px;
   
   align-items: center;
 

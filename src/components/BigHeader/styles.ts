@@ -27,6 +27,6 @@ export const Container = styled.View`
 
 export const BackButtonContainer = styled.View`
   position: absolute;
-  top: 20px;
+  top: 30px;
   left: 20px;
 `;

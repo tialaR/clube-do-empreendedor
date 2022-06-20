@@ -5,14 +5,12 @@ import { AuthRoutes } from './auth.routes';
 import { AppClientRoutes } from './app.client.routes';
 import { AppEntrepreneurRoutes } from './app.entrepreneur.routes';
 
-// import { useAuth } from '../hooks/auth';
+import { useAuth } from '../hooks/auth';
 
 import { colors } from '../styles/colors';
 
 const Routes: React.FC = () => {
-    //const { user, loading } = useAuth();
-    const user = { name: 'Fernanda', type: 'client' };
-    const loading = false;
+  const { user, loading } = useAuth();
 
   if (loading) {
     return (
@@ -29,7 +27,7 @@ const Routes: React.FC = () => {
     );
   }
 
-  if (user) {
+  if (user?.name) {
     return user?.type ===  'client' ? <AppClientRoutes /> : <AppEntrepreneurRoutes />;
   } else {
     return <AuthRoutes />;

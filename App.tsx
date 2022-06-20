@@ -7,7 +7,6 @@ import Routes from './src/routes';
 import { colors } from './src/styles/colors';
 
 import AppProvider from './src/hooks';
-import Register from './src/pages/Register';
 
 const App = () => {
   return (
@@ -18,8 +17,7 @@ const App = () => {
         translucent
       />
       <AppProvider>
-        {/* <Routes /> */}
-        <Register />
+        <Routes />
       </AppProvider>
     </NavigationContainer>
   );

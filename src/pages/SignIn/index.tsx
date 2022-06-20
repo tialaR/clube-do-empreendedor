@@ -14,11 +14,12 @@ import { Container, BodyHeader, BodyTitle, ButtonsContainer, BodyContents, BodyC
 
 type LineButtonProps = {
     children: ReactNode;
+    onPress: () => void;
 }
 
-const LineButton: React.FC<LineButtonProps> = ({ children }) => {
+const LineButton: React.FC<LineButtonProps> = ({ children, onPress }) => {
     return (
-        <LineButtonContainer>
+        <LineButtonContainer onPress={onPress}>
             <LineButtonText>
                 {children}
             </LineButtonText>
@@ -41,7 +42,7 @@ type SiginProps = {
 }
 
 const SignIn: React.FC<SiginProps> = ({ route }) => {
-      const navigation = useNavigation();
+      const navigation = useNavigation<any>();
       const isClient = route.params?.isClient;
 
       const validationSchema = useMemo(() => isClient ? clientValidationSchema : entrepreneurValidationSchema, [isClient])
@@ -158,8 +159,12 @@ const SignIn: React.FC<SiginProps> = ({ route }) => {
                     <SpacingY medium />
 
                     <LineButtonsContainer>
-                        <LineButton>Esqueci minha senha</LineButton>
-                        <LineButton>Primeiro acesso</LineButton>
+                        <LineButton onPress={() => false}>Esqueci minha senha</LineButton>
+                        <LineButton
+                            onPress={() => navigation.navigate('RegisterClient')}
+                        >
+                            Primeiro acesso
+                        </LineButton>
                     </LineButtonsContainer>
 
                     <SpacingY large />

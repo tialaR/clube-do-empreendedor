@@ -29,13 +29,15 @@ export const TextInputContainer = styled.View`
   height: 40px;
   width: 100%;
 
-  margin-top: 24px;;
+  margin-top: 24px;
 `;
 
 export const TextInput = styled.TextInput`
   flex: 1;
   font-size: 16px;
-  color: ${colors.white}
+  color: ${colors.white};
+
+  text-align: center;
 `;
 
 export const ErrorMessage = styled.Text`

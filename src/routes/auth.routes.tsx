@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SignIn from '../pages/SignIn';
 import Wellcome from '../pages/Wellcome';
 import RegisterClient from '../pages/RegisterClient';
+import RegisterEntrepreneur from '../pages/RegisterEntrepreneur';
 
 enableScreens();
 const Stack = createNativeStackNavigator();
@@ -19,6 +20,7 @@ export function AuthRoutes() {
       <Stack.Screen name="Wellcome" component={Wellcome} />
       <Stack.Screen name="SignIn" component={SignIn} />
       <Stack.Screen name="RegisterClient" component={RegisterClient} />
+      <Stack.Screen name="RegisterEntrepreneur" component={RegisterEntrepreneur} />
     </Stack.Navigator>
   );
 }

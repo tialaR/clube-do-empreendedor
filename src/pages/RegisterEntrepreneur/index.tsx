@@ -3,39 +3,43 @@ import { useNavigation } from '@react-navigation/native';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Controller, useForm } from 'react-hook-form';
-import { Alert, Keyboard, KeyboardAvoidingView, Platform, Text, TouchableWithoutFeedback, View } from 'react-native';
+import { Alert, Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, View } from 'react-native';
 
 import Button from '../../components/Button';
 import IconButton from '../../components/IconButton';
 import InputLine from '../../components/InputLine';
 
-import { maskCPF, isValidCPF, maskDate, isValidDate, maskPhone } from '../../utils/helpers';
+import { maskCNPJ, isValidCNPJ } from '../../utils/helpers';
 
 import { colors } from '../../styles/colors';
 import { HeaderContainer, Container, BodyContainer, ButtonsContainer, Pregress } from './styles';
 
 const formElements = [
   { title: 'Nome Completo', value: '' },
-  { title: 'CPF', value: '' },
-  { title: 'Data de Nascimento', value: '' },
-  { title: 'Endereço', value: '' },
-  { title: 'Gênero', value: '' },
+  { title: 'Nome Fantasia', value: '' },
+  { title: 'CNPJ', value: '' },
+  { title: 'Endereço/CEP', value: '' },
+  { title: 'Horário de funcionamento', value: '' },
+  { title: 'Descrição da empresa', value: '' },
   { title: 'E-mail', value: '' },
-  { title: 'Telefone', value: '' },
+  { title: 'Área de atuação', value: '' },
+  { title: 'Redes Sociais', value: '' },
 ]
 
 const validationSchema = yup.object().shape({
   name: yup.string().required('Campo obrigatório'),
-  cpf: yup.string().matches(isValidCPF , 'Formato incorreto').required('Campo obrigatório'),
-  birthDate: yup.string().matches(isValidDate , 'Formato incorreto').required('Campo obrigatório'),
+  fantasyName: yup.string().required('Campo obrigatório'),
+  cnpj: yup.string().matches(isValidCNPJ , 'Formato incorreto').required('Campo obrigatório'),
   address: yup.string().required('Campo obrigatório'),
-  genre: yup.string().required('Campo obrigatório'),
+  openingHours: yup.string().required('Campo obrigatório'),
+  companyDescription: yup.string().required('Campo obrigatório'),
   email:yup.string().email("E-mail inválido").required("Campo obrigatório"),
-  telephone: yup.string().required('Campo obrigatório')
+  occupationArea: yup.string().required('Campo obrigatório'),
+  socialNetworks: yup.string().required('Campo obrigatório'),
 });
 
 
-const RegisterClient: React.FC = () => {
+const RegisterEntrepreneur: React.FC = () => {
   const navigation = useNavigation<any>();
 
   const {
@@ -46,9 +50,7 @@ const RegisterClient: React.FC = () => {
   } = useForm({ resolver: yupResolver(validationSchema) });
   
   const [progress, setProgress] = useState(0);
-  const [cpf, setCpf] = useState('');
-  const [birthDate, setBirthDate] = useState('');
-  const [telephone, setTelephone] = useState('');
+  const [cnpj, setCnpj] = useState('');
 
   const isProgressEnd = useMemo(() => progress === formElements.length - 1, [progress, formElements]);
   const isProgressStart = useMemo(() => progress === 0, [progress]);
@@ -75,7 +77,7 @@ const RegisterClient: React.FC = () => {
 
   const onSubmit = (data: any) => {
     Alert.alert(
-      "Usuário cadastrado com sucesso",
+      "Empresa cadastrada com sucesso",
       `${JSON.stringify(data)}`,
       [{
           text: "Ok",
@@ -128,50 +130,48 @@ const RegisterClient: React.FC = () => {
                     />
                     )}
                 />}
-
+              
               {progress === 1 &&
                 <Controller
-                  name="cpf"
+                  name="fantasyName"
+                  control={control}
+                  rules={{
+                    required: true,
+                  }}
+                  render={({ field: {  onChange, onBlur, value } }) => (
+                    <InputLine 
+                      title="Nome fantasia" 
+                      maxLength={100}
+                      autoCorrect={false}
+                      value={value}
+                      onBlur={onBlur}
+                      onChangeText={onChange}
+                      error={errors.fantasyName}
+                      errorText={errors.fantasyName?.message}
+                    />
+                    )}
+                />}
+
+              {progress === 2 &&
+                <Controller
+                  name="cnpj"
                   control={control}
                   rules={{
                     required: true,
                   }}
                   render={({ field: { onBlur, onChange} }) => (
                     <InputLine 
-                      title="CPF" 
+                      title="CNPJ" 
                       maxLength={14}
                       keyboardType='number-pad'
-                      value={cpf}
+                      value={cnpj}
                       onBlur={onBlur}
                       onChangeText={e => { 
-                        setCpf(maskCPF(e));
+                        setCnpj(maskCNPJ(e));
                         onChange(e); 
                       }}
-                      error={errors.cpf}
-                      errorText={errors.cpf?.message} />
-                    )}
-                />}
-
-              {progress === 2 &&
-                <Controller
-                  name="birthDate"
-                  control={control}
-                  rules={{
-                    required: true,
-                  }}
-                  render={({ field: { onChange, onBlur } }) => (
-                    <InputLine 
-                      title="Data de Nascimento"
-                      maxLength={10} 
-                      keyboardType='number-pad'
-                      value={birthDate}
-                      onBlur={onBlur}
-                      onChangeText={e => { 
-                        setBirthDate(maskDate(e));
-                        onChange(e); 
-                      }}
-                      error={errors.birthDate}
-                      errorText={errors.birthDate?.message} />
+                      error={errors.cnpj}
+                      errorText={errors.cnpj?.message} />
                     )}
                 />}
 
@@ -182,11 +182,10 @@ const RegisterClient: React.FC = () => {
                   rules={{
                     required: true,
                   }}
-                  render={({ field: { onChange, onBlur, value } }) => (
+                  render={({ field: { value, onChange, onBlur } }) => (
                     <InputLine 
-                      title="Endereço" 
-                      maxLength={150}
-                      autoCorrect={false}
+                      title="Endereço/CEP"
+                      maxLength={10} 
                       value={value}
                       onBlur={onBlur}
                       onChangeText={onChange}
@@ -195,26 +194,46 @@ const RegisterClient: React.FC = () => {
                     )}
                 />}
 
-            {progress === 4 &&
+              {progress === 4 &&
                 <Controller
-                  name="genre"
+                  name="openingHours"
                   control={control}
                   rules={{
                     required: true,
                   }}
                   render={({ field: { onChange, onBlur, value } }) => (
                     <InputLine 
-                      title="Gênero" 
-                      maxLength={20}
+                      title="Horário de funcionamento" 
+                      maxLength={150}
+                      autoCorrect={false}
                       value={value}
                       onBlur={onBlur}
                       onChangeText={onChange}
-                      error={errors.genre}
-                      errorText={errors.genre?.message} />
+                      error={errors.openingHours}
+                      errorText={errors.openingHours?.message} />
                     )}
                 />}
 
             {progress === 5 &&
+                <Controller
+                  name="companyDescription"
+                  control={control}
+                  rules={{
+                    required: true,
+                  }}
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <InputLine 
+                      title="Descrição da empresa" 
+                      maxLength={200}
+                      value={value}
+                      onBlur={onBlur}
+                      onChangeText={onChange}
+                      error={errors.companyDescription}
+                      errorText={errors.companyDescription?.message} />
+                    )}
+                />}
+
+            {progress === 6 &&
                 <Controller
                   name="email"
                   control={control}
@@ -235,26 +254,41 @@ const RegisterClient: React.FC = () => {
                     )}
                 />}
 
-            {progress === 6 &&
+            {progress === 7 &&
                 <Controller
-                  name="telephone"
+                  name="occupationArea"
                   control={control}
                   rules={{
                     required: true,
                   }}
-                  render={({ field: { onChange, onBlur } }) => (
+                  render={({ field: { onChange, onBlur, value } }) => (
                     <InputLine 
-                      title="Telefone" 
-                      maxLength={15}
-                      keyboardType='phone-pad'
-                      value={telephone}
+                      title="Área de atuação" 
+                      maxLength={200}
+                      value={value}
                       onBlur={onBlur}
-                      onChangeText={e => { 
-                        setTelephone(maskPhone(e));
-                        onChange(e); 
-                      }}
-                      error={errors.telephone}
-                      errorText={errors.telephone?.message} />
+                      onChangeText={onChange}
+                      error={errors.occupationArea}
+                      errorText={errors.occupationArea?.message} />
+                    )}
+                />}
+
+            {progress === 8 &&
+                <Controller
+                  name="socialNetworks"
+                  control={control}
+                  rules={{
+                    required: true,
+                  }}
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <InputLine 
+                      title="Redes Sociais" 
+                      maxLength={300}
+                      value={value}
+                      onBlur={onBlur}
+                      onChangeText={onChange}
+                      error={errors.socialNetworks}
+                      errorText={errors.socialNetworks?.message} />
                     )}
                 />}
             </BodyContainer>
@@ -272,4 +306,4 @@ const RegisterClient: React.FC = () => {
   );
 }
 
-export default RegisterClient;
+export default RegisterEntrepreneur;

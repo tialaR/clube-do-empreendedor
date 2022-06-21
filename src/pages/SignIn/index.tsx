@@ -1,4 +1,4 @@
-import React, { ReactNode, useMemo } from 'react';
+import React, { ReactNode, useCallback, useMemo } from 'react';
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import { Alert, Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
@@ -43,9 +43,17 @@ type SiginProps = {
 
 const SignIn: React.FC<SiginProps> = ({ route }) => {
       const navigation = useNavigation<any>();
-      const isClient = route.params?.isClient;
 
+      const isClient = useMemo(() => route.params?.isClient, [route]);
       const validationSchema = useMemo(() => isClient ? clientValidationSchema : entrepreneurValidationSchema, [isClient])
+      
+      const handleFirstAccessNavigation = useCallback(() => {
+          if (isClient) {
+            navigation.navigate('RegisterClient')
+          } else {
+              navigation.navigate('RegisterEntrepreneur')
+          } 
+      },[navigation, isClient])
 
       const {
         control,
@@ -160,9 +168,7 @@ const SignIn: React.FC<SiginProps> = ({ route }) => {
 
                     <LineButtonsContainer>
                         <LineButton onPress={() => false}>Esqueci minha senha</LineButton>
-                        <LineButton
-                            onPress={() => navigation.navigate('RegisterClient')}
-                        >
+                        <LineButton onPress={handleFirstAccessNavigation}>
                             Primeiro acesso
                         </LineButton>
                     </LineButtonsContainer>

@@ -49,7 +49,7 @@ const Wellcome: React.FC = () => {
                 <ButtonsContainer>
                     <Button filled onPress={() => navigation.navigate('SignIn', { isClient: true })}>Cliente</Button>
                     <SpacingY small />
-                    <Button outlined onPress={() => navigation.navigate('SignIn')}>Empresa</Button>
+                    <Button outlined onPress={() => navigation.navigate('SignIn', { isClient: false })}>Empresa</Button>
                 </ButtonsContainer>
 
                 <SpacingY large />

@@ -5,6 +5,8 @@ import ProductCard from '../../components/ProductCard';
 import SearchHeader from '../../components/SearchHeader';
 import SectionTitle from '../../components/SectionTitle';
 
+import { useProductDetailModal } from '../../hooks/useProductDetailModal';
+
 import { colors } from '../../styles/colors';
 import { SpacingX } from '../../styles/globalStyles';
 import { Container, ProducstList, SectionListContainer, SectionTitleContainer } from './styles';
@@ -17,18 +19,19 @@ export type Product = {
     installment: string;
     promotion: string;
     soldBy: string;
+    qrCodeImg: string;
 }
 
 const products: Product[] = [
     { 
         id: '0', 
-        name: "Product one - Monitor Macbook teste", 
+        name: "Product one - Monitor Macbook teste Product one - Monitor Macbook teste Product one", 
         img: 'https://www.imagensempng.com.br/wp-content/uploads/2021/09/01-43.png',
         price: 'R$ 1234.89',
     	promotion: '16% OFF',
         soldBy: 'Vendido por Eletro Magazine',
-        installment: 'em 12x de R$ 28.90'
-
+        installment: 'em 12x de R$ 28.90',
+        qrCodeImg: 'https://www.gov.br/inss/pt-br/centrais-de-conteudo/imagens/qr-code-novo-fw-300x300-png'
     },
     { 
         id: '1', 
@@ -37,8 +40,8 @@ const products: Product[] = [
         price: 'R$ 1234.89',
     	promotion: '16% OFF',
         soldBy: 'Vendido por Eletro Magazine',
-        installment: 'em 12x de R$ 28.90'
-
+        installment: 'em 12x de R$ 28.90',
+        qrCodeImg: 'https://www.gov.br/inss/pt-br/centrais-de-conteudo/imagens/qr-code-novo-fw-300x300-png'
     },
     { 
         id: '2', 
@@ -47,8 +50,8 @@ const products: Product[] = [
         price: 'R$ 1234.89',
     	promotion: '16% OFF',
         soldBy: 'Vendido por Eletro Magazine',
-        installment: 'em 12x de R$ 28.90'
-
+        installment: 'em 12x de R$ 28.90',
+        qrCodeImg: 'https://www.gov.br/inss/pt-br/centrais-de-conteudo/imagens/qr-code-novo-fw-300x300-png'
     },
     { 
         id: '3', 
@@ -57,8 +60,8 @@ const products: Product[] = [
         price: 'R$ 1234.89',
     	promotion: '16% OFF',
         soldBy: 'Vendido por Eletro Magazine',
-        installment: 'em 12x de R$ 28.90'
-
+        installment: 'em 12x de R$ 28.90',
+        qrCodeImg: 'https://www.gov.br/inss/pt-br/centrais-de-conteudo/imagens/qr-code-novo-fw-300x300-png'
     },
     { 
         id: '4', 
@@ -67,12 +70,14 @@ const products: Product[] = [
         price: 'R$ 1234.89',
     	promotion: '16% OFF',
         soldBy: 'Vendido por Eletro Magazine',
-        installment: 'em 12x de R$ 28.90'
-
+        installment: 'em 12x de R$ 28.90',
+        qrCodeImg: 'https://www.gov.br/inss/pt-br/centrais-de-conteudo/imagens/qr-code-novo-fw-300x300-png'
     },
 ]
 
 const ClientDashboard: React.FC = () => {
+  const { showProductDetailModal } = useProductDetailModal();
+
   return (
       <Container>
           <SearchHeader placeholder='Encontre empresas ou produtos' onPress={() => false} />
@@ -93,7 +98,7 @@ const ClientDashboard: React.FC = () => {
                             promotion={product?.promotion}
                             soldBy={product?.soldBy}
                             installment={product?.installment}
-                            onPress={() => false}
+                            onPress={() => showProductDetailModal(product)}
                         />
                     )}
                     ItemSeparatorComponent={() => (
@@ -127,7 +132,7 @@ const ClientDashboard: React.FC = () => {
                             promotion={product?.promotion}
                             soldBy={product?.soldBy}
                             installment={product?.installment}
-                            onPress={() => false}
+                            onPress={() => showProductDetailModal(product)}
                         />
                     )}
                     ItemSeparatorComponent={() => (

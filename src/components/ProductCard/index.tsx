@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { ColorfulContainer, Container, Image, NameContainer, Name, DescriptionContainer, Price, Installment, PromotionContainer, PromotionText, SoldBy } from './styles';
 
 type Props = {
@@ -20,7 +20,7 @@ const ProductCard: React.FC<Props> = ({ name, img, price, installment, promotion
 
           <DescriptionContainer>
             <NameContainer>
-              <Name>{name}</Name>
+              <Name numberOfLines={2} ellipsizeMode='tail'>{name}</Name>
             </NameContainer>
             <Price>{price}</Price>
             <Installment>{installment}</Installment>
@@ -34,4 +34,4 @@ const ProductCard: React.FC<Props> = ({ name, img, price, installment, promotion
   );
 }
 
-export default ProductCard;
+export default memo(ProductCard);

@@ -90,6 +90,7 @@ const ClientDashboard: React.FC = () => {
                     data={products}
                     keyExtractor={(product: Product) => product.id}
                     horizontal
+                    showsHorizontalScrollIndicator={false}
                     renderItem={({ item: product }: { item: Product }) => (
                         <ProductCard
                             name={product?.name}
@@ -123,6 +124,7 @@ const ClientDashboard: React.FC = () => {
                     data={products}
                     keyExtractor={(product: Product) => product.id}
                     horizontal
+                    showsHorizontalScrollIndicator={false}
                     renderItem={({ item: product }: { item: Product }) => (
                         <ProductCard
                             emphasis

@@ -28,7 +28,6 @@ const products: Product[] = [
     	promotion: '16% OFF',
         soldBy: 'Vendido por Eletro Magazine',
         installment: 'em 12x de R$ 28.90'
-
     },
     { 
         id: '1', 
@@ -38,7 +37,6 @@ const products: Product[] = [
     	promotion: '16% OFF',
         soldBy: 'Vendido por Eletro Magazine',
         installment: 'em 12x de R$ 28.90'
-
     },
     { 
         id: '2', 
@@ -48,7 +46,6 @@ const products: Product[] = [
     	promotion: '16% OFF',
         soldBy: 'Vendido por Eletro Magazine',
         installment: 'em 12x de R$ 28.90'
-
     },
     { 
         id: '3', 
@@ -98,6 +95,7 @@ const EntrepreneurDashboard: React.FC = () => {
                     data={products}
                     keyExtractor={(product: Product) => product.id}
                     horizontal
+                    showsHorizontalScrollIndicator={false}
                     renderItem={({ item: product }: { item: Product }) => (
                         <ProductCard
                             name={product?.name}

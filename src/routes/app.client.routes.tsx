@@ -1,11 +1,12 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Feather';
-import { Text, View } from 'react-native';
 
 import { ProductDetailModalProvider } from '../hooks/useProductDetailModal';
 
 import ClientDashboard from '../pages/ClientDashboard';
+import ClientNotifications from '../pages/ClientNotifications';
+import ClientProfile from '../pages/ClientProfile';
 
 import { colors } from '../styles/colors';
 
@@ -16,7 +17,6 @@ const ClientDashboardWithProductDetailModalProvider = () => (
     <ClientDashboard/>
   </ProductDetailModalProvider>
 );
-const DefaultView = () => <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}><Text>Clube do empreendedor</Text></View>;
 
 type TabBarIconProps = {
     color: string;
@@ -45,8 +45,8 @@ export function AppClientRoutes() {
           tabBarIcon: ({ color }: TabBarIconProps) => (
             <Icon name="user" color={color} size={22} />
           )}} 
-          name="Notifications" 
-          component={DefaultView} 
+          name="Profile" 
+          component={ClientProfile} 
         />
       <Tab.Screen
           options={{
@@ -61,8 +61,8 @@ export function AppClientRoutes() {
             tabBarIcon: ({ color }: TabBarIconProps) => (
               <Icon name="bell" color={color} size={22} />
         )}}
-        name="Settings" 
-        component={DefaultView} 
+        name="Notifications" 
+        component={ClientNotifications} 
       />
     </Tab.Navigator>
   );

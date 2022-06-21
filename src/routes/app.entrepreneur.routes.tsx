@@ -1,15 +1,14 @@
 import React from 'react';
+import Icon from 'react-native-vector-icons/Feather';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Text, View } from 'react-native';
 
 import EntrepreneurDashboard from '../pages/EntrepreneurDashboard';
+import EntrepreneurNotifications from '../pages/EntrepreneurNotifications';
+import EntrepreneurProfile from '../pages/EntrepreneurProfile';
 
 import { colors } from '../styles/colors';
-import Icon from 'react-native-vector-icons/Feather';
 
 const Tab = createBottomTabNavigator();
-
-const DefaultView = () => <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}><Text>Clube do empreendedor</Text></View>;
 
 type TabBarIconProps = {
     color: string;
@@ -38,7 +37,7 @@ export function AppEntrepreneurRoutes() {
           tabBarIcon: ({ color }: TabBarIconProps) => (
             <Icon name="user" color={color} size={22} />
           )}} 
-          name="Notifications" component={DefaultView} 
+          name="Profile" component={EntrepreneurProfile} 
         />
       <Tab.Screen
         options={{
@@ -52,7 +51,7 @@ export function AppEntrepreneurRoutes() {
             tabBarIcon: ({ color }: TabBarIconProps) => (
               <Icon name="bell" color={color} size={22} />
         )}}
-        name="Settings" component={DefaultView} 
+        name="Notifications" component={EntrepreneurNotifications} 
       />
     </Tab.Navigator>
   );

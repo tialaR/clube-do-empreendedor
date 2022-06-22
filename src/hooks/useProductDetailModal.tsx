@@ -15,7 +15,8 @@ type Product = {
 }
 
 type ProductDetailContextData = {
-    showProductDetailModal(product: Product): void;
+    showProductDetailModal(
+      { product, isEmphasisProduct }: { product: Product; isEmphasisProduct?: boolean }): void;
     closeProductDetailModal(): void;
 };
 
@@ -29,11 +30,14 @@ const ProductDetailModalProvider: React.FC<ProductDetailModalProviderProps> = ({
   const productDetailModalRef = useRef<ProductDetailModalHandlersToFather>(null);
 
   const [product, setProduct] = useState<Product | undefined>();
+  const [isEmphasisProduct, setIsEmphasisProduct] = useState(false);
 
-  const showProductDetailModal = useCallback((product: Product) => {
+  const showProductDetailModal = useCallback((
+    { product, isEmphasisProduct }: { product: Product, isEmphasisProduct: boolean }) => {
     productDetailModalRef.current?.openModal();
 
     setProduct(product);
+    setIsEmphasisProduct(isEmphasisProduct)
     }, [productDetailModalRef]);
 
   const closeProductDetailModal = useCallback(() => {
@@ -45,10 +49,11 @@ const ProductDetailModalProvider: React.FC<ProductDetailModalProviderProps> = ({
       <ProductDetailModal
         ref={productDetailModalRef}
         product={product}
+        emphasisProduct={isEmphasisProduct}
         onClose={closeProductDetailModal}
       />
     );
-  }, [productDetailModalRef, product, closeProductDetailModal]);
+  }, [productDetailModalRef, product, isEmphasisProduct, closeProductDetailModal]);
 
   return (
     <ProductDetailModalContext.Provider

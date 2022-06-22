@@ -194,7 +194,9 @@ export const WhatsAppContainer = styled.View`
   padding-top: 20px;
 `;
 
-export const WhatsAppButton = styled.TouchableOpacity`
+export const WhatsAppButton = styled.TouchableOpacity.attrs(() => ({
+  activeOpacity: 0.7
+}))`
     align-items: center;
     justify-content: center;
     flex-direction: row;
@@ -213,4 +215,54 @@ export const WhatsAppButtonText = styled.Text`
     font-weight: 600;
 `;
 
-    
+export const DiscountButton = styled.TouchableOpacity.attrs(() => ({
+  activeOpacity: 0.7
+}))`
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+
+    border-radius: 50px;
+    padding: 4px 10px;
+    margin-top: 12px;
+
+    background-color: ${colors.indigoA200};
+`;
+
+export const DiscountButtonText = styled.Text`
+    padding-left: 2px;
+
+    font-size: 9px;
+    color: ${colors.white};
+    font-weight: 600;
+`;
+
+export const GuarantedProductContainer = styled.View`
+  margin-top: 20px;
+`;
+
+export const GuarantedProductDescriptionContainer = styled.View`
+    width: 100%;
+
+    background-color: ${colors.indigoA200};
+    border-radius: 10px;
+
+    padding: 16px 16px 30px 16px;
+`;
+
+export const GuarantedProductTitle = styled.Text`
+    font-size: 12px;
+
+    text-align: center;
+    color: ${colors.white};
+    font-weight: 600;
+`;
+
+export const GuarantedProductDescription = styled.Text`
+    padding-top: 12px;
+
+    font-size: 11px;
+
+    text-align: center;
+    color: ${colors.white};
+`;

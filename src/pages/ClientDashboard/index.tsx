@@ -99,7 +99,7 @@ const ClientDashboard: React.FC = () => {
                             promotion={product?.promotion}
                             soldBy={product?.soldBy}
                             installment={product?.installment}
-                            onPress={() => showProductDetailModal(product)}
+                            onPress={() => showProductDetailModal({ product: product })}
                         />
                     )}
                     ItemSeparatorComponent={() => (
@@ -134,7 +134,10 @@ const ClientDashboard: React.FC = () => {
                             promotion={product?.promotion}
                             soldBy={product?.soldBy}
                             installment={product?.installment}
-                            onPress={() => showProductDetailModal(product)}
+                            onPress={() => showProductDetailModal({ 
+                                product: product, 
+                                isEmphasisProduct: true 
+                            })}
                         />
                     )}
                     ItemSeparatorComponent={() => (

@@ -29,8 +29,15 @@ import {
     WhatsAppButton,
     WhatsAppContainer,
     FooterContainer,
+    DiscountButton,
+    DiscountButtonText,
+    GuarantedProductContainer,
+    GuarantedProductDescriptionContainer,
+    GuarantedProductTitle,
+    GuarantedProductDescription,
   } from './styles';
   import { colors } from '../../styles/colors';
+import { SpacingY } from '../../styles/globalStyles';
   
   export type ProductDetailModalHandlersToFather = {
     openModal: () => void;
@@ -51,6 +58,7 @@ import {
   type Props = {
     onClose: () => void;
     product: Product | undefined;
+    emphasisProduct?: boolean;
   };
 
   const features = ['Marca: LG', 'Modelo - modelo', 'Marca2: LG', 'Modelo2 - modelo', 'Marca3: LG', 'Modelo3 - modelo']
@@ -58,18 +66,22 @@ import {
   const ProductDetailModal: React.ForwardRefRenderFunction<ProductDetailModalHandlersToFather, Props> = (
     {
       onClose,
-      product
+      product,
+      emphasisProduct,
     }: Props,
     ref,
   ) => {  
     const [isVisibleModal, setIsVisibleModal] = useState(false);
+    const [isGuaranteedProduct, setIsGuaranteedProduct] = useState(false);
   
     const openModal = useCallback(() => {
       setIsVisibleModal(true);
+      setIsGuaranteedProduct(false);
     }, []);
   
     const closeModal = useCallback(() => {
       setIsVisibleModal(false);
+      setIsGuaranteedProduct(false);
     }, []);
   
     useImperativeHandle(ref, () => {
@@ -78,6 +90,10 @@ import {
         closeModal,
       };
     });
+
+    const handleGuarantedProduct = () => {
+      setIsGuaranteedProduct(true);
+    }
   
     return (
         <Modal
@@ -106,35 +122,70 @@ import {
                     <SoldBy>Vendido por <SoldBy colorful>{product?.soldBy}</SoldBy></SoldBy>
                   </DescriptionContainer>
 
-                  <View style={{ width: '100%', height: 120 }}>
-                    <FeaturesScrollContainer>
-                      <FeaturesContentContainer>
-                        <FeaturesTitle>Características:</FeaturesTitle>
-                        {features.map((item) => (
-                          <FeatureItem key={item}>{item}</FeatureItem>
-                        ))}
-                        <FeaturesTitle>Especificações:</FeaturesTitle>
-                        {features.map((item) => (
-                          <FeatureItem key={item}>{item}</FeatureItem>
-                          ))}
-                      </FeaturesContentContainer>
-                    </FeaturesScrollContainer>
-                  </View>
+                  {!isGuaranteedProduct &&
+                    <>
+                      <View style={{ width: '100%', height: 120 }}>
+                        <FeaturesScrollContainer>
+                          <FeaturesContentContainer>
+                            <FeaturesTitle>Características:</FeaturesTitle>
+                            {features.map((item) => (
+                              <FeatureItem key={item}>{item}</FeatureItem>
+                            ))}
+                            <FeaturesTitle>Especificações:</FeaturesTitle>
+                            {features.map((item) => (
+                              <FeatureItem key={item}>{item}</FeatureItem>
+                              ))}
+                          </FeaturesContentContainer>
+                        </FeaturesScrollContainer>
+                      </View>
 
-                  <FooterContainer>
-                    <QRCodeContainer>
-                      <QRCodeTitle>QR Code para desconto</QRCodeTitle>
-                      <QRCodeImage source={{uri: product?.qrCodeImg}} />
-                    </QRCodeContainer>
-                    <WhatsAppContainer>
-                        <WhatsAppButton>
-                          <Icon name="whatsapp" size={14} color={colors.white} />
-                          <WhatsAppButtonText>
-                            ACESSE O WHATSAPP
-                          </WhatsAppButtonText>
-                        </WhatsAppButton>
-                    </WhatsAppContainer>
-                  </FooterContainer>
+                      <FooterContainer>
+                        <QRCodeContainer>
+                          <QRCodeTitle>QR Code para desconto</QRCodeTitle>
+                          <QRCodeImage source={{uri: product?.qrCodeImg}} />
+                        </QRCodeContainer>
+                        <WhatsAppContainer>
+                            <WhatsAppButton onPress={() => false}>
+                              <Icon name="whatsapp" size={14} color={colors.white} />
+                              <WhatsAppButtonText>
+                                ACESSE O WHATSAPP
+                              </WhatsAppButtonText>
+                            </WhatsAppButton>
+
+                            {emphasisProduct && 
+                              <DiscountButton onPress={handleGuarantedProduct}>
+                                <Icon name="check" size={14} color={colors.white} />
+                                <DiscountButtonText>
+                                  GARANTIR DESCONTO
+                                </DiscountButtonText>
+                              </DiscountButton>}
+                        </WhatsAppContainer>
+                      </FooterContainer>
+                    </>}
+
+                    {isGuaranteedProduct && (
+                      <GuarantedProductContainer>
+                        <GuarantedProductDescriptionContainer>
+                          <GuarantedProductTitle>
+                            PRODUTO GARANTIDO COM SUCESSO!
+                          </GuarantedProductTitle>
+                          <GuarantedProductDescription>
+                            Você terá 48 horas para efetuar a retirada do produto na loja escolhida. Caso contrário a promoção será removida.
+                          </GuarantedProductDescription>
+                        </GuarantedProductDescriptionContainer>
+
+                        <SpacingY medium />
+
+                        <View style={{ paddingHorizontal: 30 }}>
+                          <WhatsAppButton onPress={() => false}>
+                              <Icon name="whatsapp" size={14} color={colors.white} />
+                                <WhatsAppButtonText>
+                                  ACESSE O WHATSAPP DA LOJA
+                                </WhatsAppButtonText>
+                            </WhatsAppButton>
+                        </View>
+                      </GuarantedProductContainer>
+                    )}
                 </ProductContainerContents>
             </ProductScrollContainer>
             </ProductContainer>

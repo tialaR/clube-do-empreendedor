@@ -1,8 +1,6 @@
-import styled from 'styled-components/native';
-import { Dimensions, FlatList } from 'react-native';
+import styled, { css } from 'styled-components/native';
+import { FlatList } from 'react-native';
 import { colors } from '../../styles/colors';
-
-const screenWidth = Dimensions.get('window').width;
 
 import { Product } from './index';
 
@@ -30,24 +28,18 @@ export const SectionTitleContainer = styled.View`
 
 export const SectionButtonsContainer = styled.View`
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-evenly;
 
   padding: 16px;
 `
-export const SquareButtonText = styled.Text`
-  font-size: 14px;
-  font-weight: 600;
-
-  text-align: center;
-
-  color: ${colors.white};
-`;
 
 export const SquareButtonContainer = styled.TouchableOpacity.attrs(() => ({
   activeOpacity: 0.7
-}))`
-  flex: 1;
-  padding: 20px 16px;
+}))``;
+
+export const SquareIconContainer = styled.View`
+  width: 84px;
+  height: 84px;
   
   elevation: 4;
 
@@ -57,4 +49,18 @@ export const SquareButtonContainer = styled.TouchableOpacity.attrs(() => ({
   align-items: center;
 
   background-color: ${colors.indigoA200};
+`;
+
+type SquareButtonTextProps = {
+  bold?: boolean;
+}
+export const SquareButtonText = styled.Text<SquareButtonTextProps>`
+  font-size: 11px;
+  font-weight: 600;
+
+  text-align: center;
+
+  color: ${colors.indigoA200};
+
+  ${(props) => props.bold && css`font-weight: bold;`}
 `;

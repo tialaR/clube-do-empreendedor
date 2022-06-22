@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 import { Text, View } from 'react-native';
+import Icon from 'react-native-vector-icons/Feather';
 
 import ProductCard from '../../components/ProductCard';
 import SearchHeader from '../../components/SearchHeader';
@@ -7,7 +8,7 @@ import SectionTitle from '../../components/SectionTitle';
 
 import { colors } from '../../styles/colors';
 import { SpacingX, SpacingY } from '../../styles/globalStyles';
-import { Container, ProducstList, SectionListContainer, SectionTitleContainer, SectionButtonsContainer, SquareButtonContainer, SquareButtonText } from './styles';
+import { SquareIconContainer, Container, ProducstList, SectionListContainer, SectionTitleContainer, SectionButtonsContainer, SquareButtonContainer, SquareButtonText } from './styles';
 
 export type Product = {
     id: string;
@@ -70,15 +71,20 @@ const products: Product[] = [
 ]
 
 type SquareButtonProps = {
-    children: ReactNode;
     onPress: () => void;
+    children: ReactNode;
 }
 
 const SquareButton: React.FC<SquareButtonProps> = ({ children, onPress }) => {
     return(
+        <>
         <SquareButtonContainer onPress={onPress}>
-            <SquareButtonText>{children}</SquareButtonText>
+            <SquareIconContainer>
+                <Icon name="user" size={40} color={colors.white} />
+            </SquareIconContainer>
+            {children}
         </SquareButtonContainer>
+        </>
     )
 }
 
@@ -124,9 +130,24 @@ const EntrepreneurDashboard: React.FC = () => {
             <SpacingY small />
 
             <SectionButtonsContainer>
-                <SquareButton onPress={() => false}>{`Clientes que \nconseguiram \ndesconto`}</SquareButton>
+                <SquareButton onPress={() => false}>
+                    <SquareButtonText>{`Clientes com\ndesconto`}
+                    </SquareButtonText>
+                </SquareButton>
                 <SpacingX medium />
-                <SquareButton onPress={() => false}>{`Cadastrar \nproduto`}</SquareButton>
+                <SquareButton onPress={() => false}>
+                    <SquareButtonText>
+                        {`Cadastrar`}
+                        <SquareButtonText bold>{`\nCUPOM`}</SquareButtonText>
+                    </SquareButtonText>
+                </SquareButton>
+                <SpacingX medium />
+                <SquareButton onPress={() => false}>
+                    <SquareButtonText>
+                        {`Cadastrar`}
+                        <SquareButtonText bold>{`\nPRODUTO`}</SquareButtonText>
+                    </SquareButtonText>
+                </SquareButton>
             </SectionButtonsContainer>
       </Container>
   );

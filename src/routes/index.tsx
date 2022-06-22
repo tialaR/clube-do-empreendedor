@@ -28,7 +28,7 @@ const Routes: React.FC = () => {
   }
 
   if (user?.name) {
-    return user?.type ===  'client' ? <AppClientRoutes /> : <AppEntrepreneurRoutes />;
+    return !user?.type ===  'client' ? <AppClientRoutes /> : <AppEntrepreneurRoutes />;
   } else {
     return <AuthRoutes />;
   }

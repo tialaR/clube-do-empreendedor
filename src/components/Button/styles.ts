@@ -23,7 +23,7 @@ export const ContainerView = styled.View<ButtonProps>`
 `;
 
 export const Container = styled.TouchableOpacity.attrs(() => ({
-    activeOpacity: 0.7
+    activeOpacity: 1
 }))<ButtonProps>`
     background-color: ${colors.indigoA200};
 

@@ -39,7 +39,7 @@ export const ButtonsContainer = styled.View`
 `;
 
 export const TermsButtonContainer = styled.TouchableOpacity.attrs(props => ({
-  activeOpacity: 0.7
+  activeOpacity: 1
 }))``;
 
 type TermsButtonTextProps = {

@@ -195,7 +195,7 @@ export const WhatsAppContainer = styled.View`
 `;
 
 export const WhatsAppButton = styled.TouchableOpacity.attrs(() => ({
-  activeOpacity: 0.7
+  activeOpacity: 1
 }))`
     align-items: center;
     justify-content: center;
@@ -216,7 +216,7 @@ export const WhatsAppButtonText = styled.Text`
 `;
 
 export const DiscountButton = styled.TouchableOpacity.attrs(() => ({
-  activeOpacity: 0.7
+  activeOpacity: 1
 }))`
     align-items: center;
     justify-content: center;

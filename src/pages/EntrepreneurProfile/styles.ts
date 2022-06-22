@@ -22,7 +22,7 @@ export const RoundButtonContainer = styled.View<RoundButtonContainerProps>`
 `; 
 
 export const RoundButtonContainerButton = styled.TouchableOpacity.attrs(() => ({
-  activeOpacity: 0.7
+  activeOpacity: 1
 }))`
     height: 50px;
     width: 100%;

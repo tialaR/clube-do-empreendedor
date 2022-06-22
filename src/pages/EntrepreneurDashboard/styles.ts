@@ -34,7 +34,7 @@ export const SectionButtonsContainer = styled.View`
 `
 
 export const SquareButtonContainer = styled.TouchableOpacity.attrs(() => ({
-  activeOpacity: 0.7
+  activeOpacity: 1
 }))``;
 
 export const SquareIconContainer = styled.View`

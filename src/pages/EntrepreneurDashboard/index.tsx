@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import ProductCard from '../../components/ProductCard';
 import SearchHeader from '../../components/SearchHeader';
 import SectionTitle from '../../components/SectionTitle';
+import { useDiscountClientsModal } from '../../hooks/useDiscountClientsModal';
 
 import { colors } from '../../styles/colors';
 import { SpacingX, SpacingY } from '../../styles/globalStyles';
@@ -89,6 +90,8 @@ const SquareButton: React.FC<SquareButtonProps> = ({ children, onPress }) => {
 }
 
 const EntrepreneurDashboard: React.FC = () => {
+  const { showDiscountClientModal } = useDiscountClientsModal();
+
   return (
       <Container>
           <SearchHeader placeholder="Encontre Produtos" onPress={() => false} />
@@ -130,9 +133,8 @@ const EntrepreneurDashboard: React.FC = () => {
             <SpacingY small />
 
             <SectionButtonsContainer>
-                <SquareButton onPress={() => false}>
-                    <SquareButtonText>{`Clientes com\ndesconto`}
-                    </SquareButtonText>
+                <SquareButton onPress={showDiscountClientModal}>
+                    <SquareButtonText>{`Clientes com\ndesconto`}</SquareButtonText>
                 </SquareButton>
                 <SpacingX medium />
                 <SquareButton onPress={() => false}>

@@ -6,7 +6,15 @@ import EntrepreneurDashboard from '../pages/EntrepreneurDashboard';
 import EntrepreneurNotifications from '../pages/EntrepreneurNotifications';
 import EntrepreneurProfile from '../pages/EntrepreneurProfile';
 
+import { DiscountClientsModalProvider } from '../hooks/useDiscountClientsModal';
+
 import { colors } from '../styles/colors';
+
+const EntrepreneurDashboardWithDiscountClientsModalProvider = () => (
+  <DiscountClientsModalProvider>
+    <EntrepreneurDashboard/>
+  </DiscountClientsModalProvider>
+);
 
 const Tab = createBottomTabNavigator();
 
@@ -44,7 +52,7 @@ export function AppEntrepreneurRoutes() {
             tabBarIcon: ({ color }: TabBarIconProps) => (
               <Icon name="home" color={color} size={22} />
             )}}
-        name="EntrepreneurDashboard" component={EntrepreneurDashboard} 
+        name="EntrepreneurDashboard" component={EntrepreneurDashboardWithDiscountClientsModalProvider} 
         />
       <Tab.Screen 
         options={{

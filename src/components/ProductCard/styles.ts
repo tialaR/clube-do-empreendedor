@@ -5,7 +5,7 @@ type ColorfulContainerProps = {
     emphasis?: boolean;
 }
 export const ColorfulContainer = styled.TouchableOpacity.attrs(() => ({
-    activeOpacity: 0.7
+    activeOpacity: 1
 }))<ColorfulContainerProps>`
     flex-direction: row;
     padding-top: 6px;

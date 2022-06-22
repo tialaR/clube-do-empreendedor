@@ -1,5 +1,8 @@
 import React, { forwardRef, memo, useCallback, useImperativeHandle, useState } from 'react';
 import { Modal, View } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
+import IconButton from '../IconButton';
 
 import {
     Overlay,
@@ -22,9 +25,12 @@ import {
     QRCodeImage,
     ProductScrollContainer,
     ProductContainerContents,
+    WhatsAppButtonText,
+    WhatsAppButton,
+    WhatsAppContainer,
+    FooterContainer,
   } from './styles';
-  
-  import IconButton from '../IconButton';
+  import { colors } from '../../styles/colors';
   
   export type ProductDetailModalHandlersToFather = {
     openModal: () => void;
@@ -88,37 +94,47 @@ import {
                 </ContainerIconButton>
             <ProductScrollContainer>
                 <ProductContainerContents>
-                <Name>{product?.name}</Name>
-                <Image source={{uri: product?.img}} />
+                  <Name>{product?.name}</Name>
+                  <Image source={{uri: product?.img}} />
 
-                <DescriptionContainer>
-                  <Price>{product?.price}</Price>
-                  <Installment>{product?.installment}</Installment>
-                  <PromotionContainer>
-                    <PromotionText>{product?.promotion}</PromotionText>
-                  </PromotionContainer>
-                  <SoldBy>{product?.soldBy}</SoldBy>
-                </DescriptionContainer>
+                  <DescriptionContainer>
+                    <Price>{product?.price}</Price>
+                    <Installment>{product?.installment}</Installment>
+                    <PromotionContainer>
+                      <PromotionText>{product?.promotion}</PromotionText>
+                    </PromotionContainer>
+                    <SoldBy>Vendido por <SoldBy colorful>{product?.soldBy}</SoldBy></SoldBy>
+                  </DescriptionContainer>
 
-                <View style={{ width: '100%', height: 120 }}>
-                  <FeaturesScrollContainer>
-                    <FeaturesContentContainer>
-                      <FeaturesTitle>Características:</FeaturesTitle>
-                      {features.map((item) => (
-                        <FeatureItem key={item}>{item}</FeatureItem>
-                      ))}
-                      <FeaturesTitle>Especificações:</FeaturesTitle>
-                      {features.map((item) => (
-                        <FeatureItem key={item}>{item}</FeatureItem>
+                  <View style={{ width: '100%', height: 120 }}>
+                    <FeaturesScrollContainer>
+                      <FeaturesContentContainer>
+                        <FeaturesTitle>Características:</FeaturesTitle>
+                        {features.map((item) => (
+                          <FeatureItem key={item}>{item}</FeatureItem>
                         ))}
-                    </FeaturesContentContainer>
-                  </FeaturesScrollContainer>
-                </View>
+                        <FeaturesTitle>Especificações:</FeaturesTitle>
+                        {features.map((item) => (
+                          <FeatureItem key={item}>{item}</FeatureItem>
+                          ))}
+                      </FeaturesContentContainer>
+                    </FeaturesScrollContainer>
+                  </View>
 
-                <QRCodeContainer>
-                  <QRCodeTitle>QR Code para desconto</QRCodeTitle>
-                  <QRCodeImage source={{uri: product?.qrCodeImg}} />
-                </QRCodeContainer>
+                  <FooterContainer>
+                    <QRCodeContainer>
+                      <QRCodeTitle>QR Code para desconto</QRCodeTitle>
+                      <QRCodeImage source={{uri: product?.qrCodeImg}} />
+                    </QRCodeContainer>
+                    <WhatsAppContainer>
+                        <WhatsAppButton>
+                          <Icon name="whatsapp" size={14} color={colors.white} />
+                          <WhatsAppButtonText>
+                            ACESSE O WHATSAPP
+                          </WhatsAppButtonText>
+                        </WhatsAppButton>
+                    </WhatsAppContainer>
+                  </FooterContainer>
                 </ProductContainerContents>
             </ProductScrollContainer>
             </ProductContainer>

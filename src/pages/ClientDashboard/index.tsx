@@ -29,7 +29,7 @@ const products: Product[] = [
         img: 'https://www.imagensempng.com.br/wp-content/uploads/2021/09/01-43.png',
         price: 'R$ 1234.89',
     	promotion: '16% OFF',
-        soldBy: 'Vendido por Eletro Magazine',
+        soldBy: 'Eletro Magazine',
         installment: 'em 12x de R$ 28.90',
         qrCodeImg: 'https://www.gov.br/inss/pt-br/centrais-de-conteudo/imagens/qr-code-novo-fw-300x300-png'
     },
@@ -39,7 +39,7 @@ const products: Product[] = [
         img: 'https://www.imagensempng.com.br/wp-content/uploads/2021/09/01-43.png',
         price: 'R$ 1234.89',
     	promotion: '16% OFF',
-        soldBy: 'Vendido por Eletro Magazine',
+        soldBy: 'Eletro Magazine',
         installment: 'em 12x de R$ 28.90',
         qrCodeImg: 'https://www.gov.br/inss/pt-br/centrais-de-conteudo/imagens/qr-code-novo-fw-300x300-png'
     },
@@ -49,7 +49,7 @@ const products: Product[] = [
         img: 'https://www.imagensempng.com.br/wp-content/uploads/2021/09/01-43.png',
         price: 'R$ 1234.89',
     	promotion: '16% OFF',
-        soldBy: 'Vendido por Eletro Magazine',
+        soldBy: 'Eletro Magazine',
         installment: 'em 12x de R$ 28.90',
         qrCodeImg: 'https://www.gov.br/inss/pt-br/centrais-de-conteudo/imagens/qr-code-novo-fw-300x300-png'
     },
@@ -59,7 +59,7 @@ const products: Product[] = [
         img: 'https://www.imagensempng.com.br/wp-content/uploads/2021/09/01-43.png',
         price: 'R$ 1234.89',
     	promotion: '16% OFF',
-        soldBy: 'Vendido por Eletro Magazine',
+        soldBy: 'Eletro Magazine',
         installment: 'em 12x de R$ 28.90',
         qrCodeImg: 'https://www.gov.br/inss/pt-br/centrais-de-conteudo/imagens/qr-code-novo-fw-300x300-png'
     },
@@ -69,7 +69,7 @@ const products: Product[] = [
         img: 'https://www.imagensempng.com.br/wp-content/uploads/2021/09/01-43.png',
         price: 'R$ 1234.89',
     	promotion: '16% OFF',
-        soldBy: 'Vendido por Eletro Magazine',
+        soldBy: 'Eletro Magazine',
         installment: 'em 12x de R$ 28.90',
         qrCodeImg: 'https://www.gov.br/inss/pt-br/centrais-de-conteudo/imagens/qr-code-novo-fw-300x300-png'
     },
@@ -109,7 +109,7 @@ const ClientDashboard: React.FC = () => {
             </SectionListContainer>
 
             <View style={{
-                backgroundColor: '#dedede',
+                backgroundColor: '#E4E3F9',
                 paddingVertical: 20,
                 alignItems: 'center'
             }}>

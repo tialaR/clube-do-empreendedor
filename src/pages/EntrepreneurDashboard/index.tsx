@@ -114,7 +114,7 @@ const EntrepreneurDashboard: React.FC = () => {
             </SectionListContainer>
 
             <View style={{
-                backgroundColor: '#dedede',
+                backgroundColor: '#E4E3F9',
                 paddingVertical: 20,
                 alignItems: 'center'
             }}>

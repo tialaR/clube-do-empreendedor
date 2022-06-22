@@ -5,8 +5,9 @@ export const colors = {
     red: '#EF5350',
     indigo50: '#E8EAF6',
     indigoA100: '#8C9EFF',
-    indigoA200: '#536DFE',
-    purple700: '#7B1FA2',
-    gray50: '#fefefe',
-    gray100: '#F5F5F5'
+    indigoA200: '#4B3FEB',
+    purple700: '#9219AC',
+    gray50: '#F7F7F7',
+    gray100: '#EBE9E9',
+    whatsApp: '#24C21A',
   };

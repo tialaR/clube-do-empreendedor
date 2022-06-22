@@ -1,4 +1,4 @@
-import styled from 'styled-components/native';
+import styled, { css } from 'styled-components/native';
 import { Dimensions } from 'react-native';
 import { colors } from '../../styles/colors';
 
@@ -109,10 +109,17 @@ export const PromotionText = styled.Text`
     font-weight: 600;
 `;
 
-export const SoldBy = styled.Text`
-    font-size: 10px;
+type SoldByProps = {
+  colorful?: boolean;
+}
+export const SoldBy = styled.Text<SoldByProps>`
+    padding: 4px 0;
+    font-size: 12px;
+    font-weight: 600;
+
     color: ${colors.black};
-    font-weight: 700;
+
+    ${(props) => props.colorful && css`color: ${colors.indigoA200}`}
 `;
 
 export const FeaturesScrollContainer = styled.ScrollView.attrs({
@@ -151,14 +158,24 @@ export const FeatureItem = styled.Text`
     font-weight: 500;
 `;
 
-export const QRCodeContainer = styled.View`
+export const FooterContainer = styled.View`
     align-items: center;
     justify-content: center;
+    flex-direction: row;
+
     margin: 4px 0;
 `;
 
+export const QRCodeContainer = styled.View`
+    flex: 1;
+    margin: 4px 0;
+
+    align-items: center;
+    justify-content: center;
+`;
+
 export const QRCodeTitle = styled.Text`
-    font-size: 9px;
+    font-size: 10px;
     color: ${colors.indigoA200};
     font-weight: 800;
 `;
@@ -168,4 +185,32 @@ export const QRCodeImage = styled.Image`
     width: 70px;
     height: 70px;
 `;
+
+export const WhatsAppContainer = styled.View`
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+
+  padding-top: 20px;
+`;
+
+export const WhatsAppButton = styled.TouchableOpacity`
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+
+    border-radius: 50px;
+    padding: 4px 10px;
+
+    background-color: ${colors.whatsApp};
+`;
+
+export const WhatsAppButtonText = styled.Text`
+    padding-left: 2px;
+
+    font-size: 9px;
+    color: ${colors.white};
+    font-weight: 600;
+`;
+
     

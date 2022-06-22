@@ -167,7 +167,7 @@ const SignIn: React.FC<SiginProps> = ({ route }) => {
                     <SpacingY medium />
 
                     <LineButtonsContainer>
-                        <LineButton onPress={() => false}>Esqueci minha senha</LineButton>
+                        <LineButton onPress={() => navigation.navigate('RecoverPassword')}>Esqueci minha senha</LineButton>
                         <LineButton onPress={handleFirstAccessNavigation}>
                             Primeiro acesso
                         </LineButton>

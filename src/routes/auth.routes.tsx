@@ -6,6 +6,8 @@ import SignIn from '../pages/SignIn';
 import Wellcome from '../pages/Wellcome';
 import RegisterClient from '../pages/RegisterClient';
 import RegisterEntrepreneur from '../pages/RegisterEntrepreneur';
+import RecoverPassword from '../pages/RecoverPassword';
+import RecoverPasswordConfirmation from '../pages/RecoverPasswordConfirmation';
 
 enableScreens();
 const Stack = createNativeStackNavigator();
@@ -19,8 +21,12 @@ export function AuthRoutes() {
     >
       <Stack.Screen name="Wellcome" component={Wellcome} />
       <Stack.Screen name="SignIn" component={SignIn} />
+
       <Stack.Screen name="RegisterClient" component={RegisterClient} />
       <Stack.Screen name="RegisterEntrepreneur" component={RegisterEntrepreneur} />
+
+      <Stack.Screen name="RecoverPassword" component={RecoverPassword} />
+      <Stack.Screen name="RecoverPasswordConfirmation" component={RecoverPasswordConfirmation} />
     </Stack.Navigator>
   );
 }

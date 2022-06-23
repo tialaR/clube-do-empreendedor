@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { ReactNode } from 'react';
 import { Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
@@ -90,6 +91,7 @@ const SquareButton: React.FC<SquareButtonProps> = ({ children, onPress }) => {
 }
 
 const EntrepreneurDashboard: React.FC = () => {
+  const navigation = useNavigation<any>();
   const { showDiscountClientModal } = useDiscountClientsModal();
 
   return (
@@ -137,7 +139,7 @@ const EntrepreneurDashboard: React.FC = () => {
                     <SquareButtonText>{`Clientes com\ndesconto`}</SquareButtonText>
                 </SquareButton>
                 <SpacingX medium />
-                <SquareButton onPress={() => false}>
+                <SquareButton onPress={() => navigation.navigate('EntrepreneurRegisterCupom')}>
                     <SquareButtonText>
                         {`Cadastrar`}
                         <SquareButtonText bold>{`\nCUPOM`}</SquareButtonText>

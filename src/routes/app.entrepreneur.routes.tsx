@@ -1,14 +1,21 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/Feather';
+import { enableScreens } from 'react-native-screens';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import EntrepreneurDashboard from '../pages/EntrepreneurDashboard';
 import EntrepreneurNotifications from '../pages/EntrepreneurNotifications';
 import EntrepreneurProfile from '../pages/EntrepreneurProfile';
+import EntrepreneurRegisterCupom from '../pages/EntrepreneurRegisterCupom';
 
 import { DiscountClientsModalProvider } from '../hooks/useDiscountClientsModal';
 
 import { colors } from '../styles/colors';
+import EntrepreneurRegisterCupomConfirmation from '../pages/EntrepreneurRegisterCupomConfirmation';
+
+enableScreens();
+const Stack = createNativeStackNavigator();
 
 const EntrepreneurDashboardWithDiscountClientsModalProvider = () => (
   <DiscountClientsModalProvider>
@@ -22,10 +29,10 @@ type TabBarIconProps = {
     color: string;
 }
 
-export function AppEntrepreneurRoutes() {
+export function TabEntrepreneurRoutes() {
   return (
     <Tab.Navigator
-        initialRouteName="EntrepreneurDashboard"
+        initialRouteName="TabEntrepreneurDashboard"
         screenOptions={{
             headerShown: false,
             tabBarActiveTintColor: colors.white,
@@ -45,22 +52,37 @@ export function AppEntrepreneurRoutes() {
           tabBarIcon: ({ color }: TabBarIconProps) => (
             <Icon name="user" color={color} size={22} />
           )}} 
-          name="Profile" component={EntrepreneurProfile} 
+          name="TabProfile" component={EntrepreneurProfile} 
         />
       <Tab.Screen
         options={{
             tabBarIcon: ({ color }: TabBarIconProps) => (
               <Icon name="home" color={color} size={22} />
             )}}
-        name="EntrepreneurDashboard" component={EntrepreneurDashboardWithDiscountClientsModalProvider} 
+        name="TabEntrepreneurDashboard" component={EntrepreneurDashboardWithDiscountClientsModalProvider} 
         />
       <Tab.Screen 
         options={{
             tabBarIcon: ({ color }: TabBarIconProps) => (
               <Icon name="bell" color={color} size={22} />
         )}}
-        name="Notifications" component={EntrepreneurNotifications} 
+        name="TabNotifications" component={EntrepreneurNotifications} 
       />
     </Tab.Navigator>
+  );
+}
+
+export const AppEntrepreneurRoutes = () => {
+  return (
+    <Stack.Navigator 
+        screenOptions={{
+            headerShown: false
+        }}
+    >
+      <Stack.Screen name="EntrepreneurDashboard" component={TabEntrepreneurRoutes} />
+
+      <Stack.Screen name="EntrepreneurRegisterCupom" component={EntrepreneurRegisterCupom} />
+      <Stack.Screen name="EntrepreneurRegisterCupomConfirmation" component={EntrepreneurRegisterCupomConfirmation} />
+    </Stack.Navigator>
   );
 }

@@ -8,9 +8,7 @@ export const Container = styled.View`
   width: 100%;
   padding: 0 16px;
   
-  border-width: 2px;
-  border-color: ${colors.indigoA100};
-  background-color: ${colors.indigoA100};
+  background-color: ${colors.shadowLight};
 
   flex-direction: row;
   align-items: center;

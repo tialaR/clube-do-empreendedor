@@ -2,6 +2,7 @@ export const colors = {
     white: '#fff',
     black: '#212121',
     shadow: 'rgba(0,0,0,0.2)',
+    shadowLight: 'rgba(255,255,255,0.2)',
     red: '#EF5350',
     indigo50: '#E8EAF6',
     indigoA100: '#8C9EFF',

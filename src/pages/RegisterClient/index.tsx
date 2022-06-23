@@ -9,7 +9,7 @@ import Button from '../../components/Button';
 import IconButton from '../../components/IconButton';
 import InputLine from '../../components/InputLine';
 
-import { maskCPF, isValidCPF, maskDate, isValidDate, maskPhone } from '../../utils/helpers';
+import { maskCPF, isValidCPF, maskDate, isValidDate, maskPhone, isValidPhone } from '../../utils/helpers';
 
 import { colors } from '../../styles/colors';
 import { HeaderContainer, Container, BodyContainer, ButtonsContainer, Pregress } from './styles';
@@ -31,7 +31,7 @@ const validationSchema = yup.object().shape({
   address: yup.string().required('Campo obrigatório'),
   genre: yup.string().required('Campo obrigatório'),
   email:yup.string().email("E-mail inválido").required("Campo obrigatório"),
-  telephone: yup.string().required('Campo obrigatório')
+  telephone: yup.string().matches(isValidPhone , 'Formato incorreto').required('Campo obrigatório')
 });
 
 

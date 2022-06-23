@@ -162,7 +162,7 @@ const RegisterEntrepreneur: React.FC = () => {
                   render={({ field: { onBlur, onChange} }) => (
                     <InputLine 
                       title="CNPJ" 
-                      maxLength={14}
+                      maxLength={19}
                       keyboardType='number-pad'
                       value={cnpj}
                       onBlur={onBlur}

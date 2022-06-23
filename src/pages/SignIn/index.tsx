@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useMemo } from 'react';
+import React, { ReactNode, useCallback, useMemo, useState } from 'react';
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import { Alert, Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
@@ -8,6 +8,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import BigHeader from '../../components/BigHeader';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
+
+import { maskCNPJ, maskCPF } from '../../utils/helpers';
 
 import { SpacingY } from '../../styles/globalStyles';
 import { Container, BodyHeader, BodyTitle, ButtonsContainer, BodyContents, BodyContainer, InputsContainer, LineButtonText, LineButtonsContainer, LineButtonContainer } from './styles';
@@ -44,6 +46,9 @@ type SiginProps = {
 const SignIn: React.FC<SiginProps> = ({ route }) => {
       const navigation = useNavigation<any>();
 
+      const [cpf, setCpf] = useState('');
+      const [cnpj, setCnpj] = useState('');
+
       const isClient = useMemo(() => route.params?.isClient, [route]);
       const validationSchema = useMemo(() => isClient ? clientValidationSchema : entrepreneurValidationSchema, [isClient])
       
@@ -66,18 +71,26 @@ const SignIn: React.FC<SiginProps> = ({ route }) => {
 
       const onSubmit = (data?: any) => {
         Alert.alert(
-          "Alert Title",
+          "Login efetuado com sucesso",
           `${JSON.stringify(data)}`,
           [
             {
-              text: "Cancel",
-              onPress: () => resetInputs(),
-              style: "cancel",
+              text: "OK",
+              onPress: () => {
+                  setCnpj('');
+                  setCpf('');
+                  resetInputs();
+              },
+              style: "default",
             },
           ],
           {
             cancelable: true,
-            onDismiss: () => resetInputs(),
+            onDismiss: () => {
+                setCnpj('');
+                setCpf('');
+                resetInputs();
+            },
           }
         );
       };
@@ -111,12 +124,17 @@ const SignIn: React.FC<SiginProps> = ({ route }) => {
                                 rules={{
                                 required: true,
                                 }}
-                                render={({ field: { onChange, onBlur, value } }) => (
+                                render={({ field: { onChange, onBlur } }) => (
                                 <Input
                                     placeholder='Digite seu CPF' 
-                                    value={value}
+                                    maxLength={14}
+                                    keyboardType='number-pad'
+                                    value={cpf}
                                     onBlur={onBlur}
-                                    onChangeText={onChange}
+                                    onChangeText={e => { 
+                                        setCpf(maskCPF(e));
+                                        onChange(e); 
+                                    }}
                                     error={errors.cpf}
                                     errorText={errors.cpf?.message}
                                 />
@@ -129,12 +147,17 @@ const SignIn: React.FC<SiginProps> = ({ route }) => {
                                 rules={{
                                 required: true,
                                 }}
-                                render={({ field: { onChange, onBlur, value } }) => (
+                                render={({ field: { onChange, onBlur } }) => (
                                 <Input
                                     placeholder='Digite seu CNPJ' 
-                                    value={value}
+                                    maxLength={19}
+                                    keyboardType='number-pad'
+                                    value={cnpj}
                                     onBlur={onBlur}
-                                    onChangeText={onChange}
+                                    onChangeText={e => { 
+                                        setCnpj(maskCNPJ(e));
+                                        onChange(e); 
+                                    }}
                                     error={errors.cnpj}
                                     errorText={errors.cnpj?.message}
                                 />

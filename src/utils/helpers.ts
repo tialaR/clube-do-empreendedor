@@ -1,6 +1,7 @@
 export const isValidCPF = /^(([0-9]{3}.[0-9]{3}.[0-9]{3}-[0-9]{2}))$/;
-export const isValidCNPJ = /^(\d{2})(\d{3})?(\d{3})?(\d{4})?(\d{2})?/; //TODO - FIX-ME
-export const isValidDate = /(\d{4})[-.\/](\d{2})[-.\/](\d{2})/; //TODO - FIX-ME
+export const isValidCNPJ = /^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/;
+export const isValidDate = /^(0?[1-9]|[12][0-9]|3[01])[\/](0?[1-9]|1[012])[\/\-]\d{4}$/;
+export const isValidPhone = /(\(?\d{2}\)?\s)?(\d{4,5}\-\d{4})/g; // FIX-ME - To validate (00) 0000-0000  
 
 // 000.000.000-00
 export function maskCPF(cpf: string) {
@@ -11,10 +12,14 @@ export function maskCPF(cpf: string) {
     return cpf;
 }
 
+// 00.000.000/0000-000
 export function maskCNPJ(cnpj: string) {
-    return cnpj
-        .replace(/\D/g, '')
-        .replace(/^(\d{2})(\d{3})?(\d{3})?(\d{4})?(\d{2})?/, "$1 $2 $3/$4-$5");
+    cnpj = cnpj.replace(/\D/g,"");                           
+    cnpj = cnpj.replace(/^(\d{2})(\d)/,"$1.$2");             
+    cnpj = cnpj.replace(/^(\d{2})\.(\d{3})(\d)/,"$1.$2.$3"); 
+    cnpj = cnpj.replace(/\.(\d{3})(\d)/,".$1/$2");         
+    cnpj = cnpj.replace(/(\d{4})(\d)/,"$1-$2");              
+    return cnpj;
 }
 
 // 00/00/0000
@@ -23,18 +28,17 @@ export function maskDate(date: string) {
     date = date.replace(/(\d{2})(\d)/, "$1/$2");
     date = date.replace(/(\d{2})(\d)/, "$1/$2");
     date = date.replace(/(\d{2})(\d{2})$/, "$1$2");
-    date = date.slice(0, 10)
+    date = date.slice(0, 10);
     return date;
 }
 
 // (00) 00000-0000
 // (00) 0000-0000
-//TODO - FIX-ME
 export function maskPhone(phone: string) {
     return phone
-    .replace(/\D/g, "")
-    .replace(/(\d{2})(\d)/, "($1) $2")
-    .replace(/(\d{5})(\d{4})(\d)/, "$1-$2");
+    .replace(/\D/g,'')
+    .replace(/(^\d{2})(\d)/,'($1) $2')
+    .replace(/(\d{4,5})(\d{4}$)/,'$1-$2');
 }
 
 // 00000-000

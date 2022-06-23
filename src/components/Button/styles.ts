@@ -5,6 +5,7 @@ type ButtonTypesProps = {
   filled?: boolean;
   filledLight?: boolean;
   outlined?: boolean;
+  outlinedLight?: boolean;
 }
 
 type ButtonProps = {
@@ -18,8 +19,9 @@ export const ContainerView = styled.View<ButtonProps>`
     width: 100%;
 
     ${(props) => props.buttontypes.outlined && css`border: 2px solid ${colors.indigoA200};`};
+    ${(props) => props.buttontypes.outlinedLight && css`border: 2px solid ${colors.white}`}
     ${(props) => props.buttontypes.filled && css` border: none;`};
-    ${(props) => props.buttontypes.filledLight && css`border: 2px solid ${colors.white}`}
+    ${(props) => props.buttontypes.filledLight && css` border: none;`};
 `;
 
 export const Container = styled.TouchableOpacity.attrs(() => ({
@@ -36,8 +38,9 @@ export const Container = styled.TouchableOpacity.attrs(() => ({
     align-items: center;
     
     ${(props) => props.buttontypes.outlined && css`background-color: 'transparent';`};
+    ${(props) => props.buttontypes.outlinedLight && css`background-color: 'transparent';`}
     ${(props) => props.buttontypes.filled && css`background-color: ${colors.indigoA200};`};
-    ${(props) => props.buttontypes.filledLight && css`background-color: 'transparent';`}
+    ${(props) => props.buttontypes.filledLight && css`background-color: ${colors.white};`};
 `;
 
 export const ButtonText = styled.Text<ButtonProps>`
@@ -45,6 +48,7 @@ export const ButtonText = styled.Text<ButtonProps>`
   font-weight: 600;
 
   ${(props) => props.buttontypes.outlined && css`color: ${colors.indigoA200};`};
+  ${(props) => props.buttontypes.outlinedLight && css`color: ${colors.white};`}
   ${(props) => props.buttontypes.filled && css`color: ${colors.white};`};
-  ${(props) => props.buttontypes.filledLight && css`color: ${colors.white};`}
+  ${(props) => props.buttontypes.filledLight && css`color: ${colors.indigoA200};`};
 `;

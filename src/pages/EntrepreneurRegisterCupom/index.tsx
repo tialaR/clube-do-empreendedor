@@ -70,7 +70,7 @@ const EntrepreneurRegisterCupom: React.FC = () => {
             </BodyContainer>
 
             <ButtonsContainer>
-                <Button filledLight onPress={handleSubmit(onSubmit)}>Cadastrar</Button>
+                <Button outlinedLight onPress={handleSubmit(onSubmit)}>Cadastrar</Button>
             </ButtonsContainer>
         </Container>
         </KeyboardAvoidingView>

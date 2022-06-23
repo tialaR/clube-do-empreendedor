@@ -295,9 +295,9 @@ const RegisterEntrepreneur: React.FC = () => {
 
             <ButtonsContainer>
               {isProgressEnd ? 
-                <Button filledLight onPress={handleSubmit(onSubmit)}>Continuar</Button>
+                <Button outlinedLight onPress={handleSubmit(onSubmit)}>Continuar</Button>
                 :
-                <Button filledLight onPress={handleContinue}>Continuar</Button>
+                <Button outlinedLight onPress={handleContinue}>Continuar</Button>
               }
             </ButtonsContainer>
         </Container>

@@ -13,6 +13,7 @@ import { DiscountClientsModalProvider } from '../hooks/useDiscountClientsModal';
 
 import { colors } from '../styles/colors';
 import EntrepreneurRegisterCupomConfirmation from '../pages/EntrepreneurRegisterCupomConfirmation';
+import EntrepreneurEditProductDetail from '../pages/EntrepreneurEditProductDetail';
 
 enableScreens();
 const Stack = createNativeStackNavigator();
@@ -83,6 +84,8 @@ export const AppEntrepreneurRoutes = () => {
 
       <Stack.Screen name="EntrepreneurRegisterCupom" component={EntrepreneurRegisterCupom} />
       <Stack.Screen name="EntrepreneurRegisterCupomConfirmation" component={EntrepreneurRegisterCupomConfirmation} />
+
+      <Stack.Screen name="EntrepreneurEditProductDetail" component={EntrepreneurEditProductDetail} />
     </Stack.Navigator>
   );
 }

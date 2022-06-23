@@ -29,6 +29,26 @@ export const BodyContainer = styled.View`
     width: 100%;
 `;
 
+export const EntrepreneurProductDetailBodyContainer = styled.View`
+    padding: 0 38px;
+
+    flex: 1;
+    width: 100%;
+`;
+
+type TitleProps = {
+  withPadding?: boolean;
+}
+export const Title = styled.Text<TitleProps>`
+  color: ${colors.white};
+  font-size: 20px;
+  font-weight: 700;
+
+  align-self: center;
+
+  ${(props) => props.withPadding && css`padding: 16px;`}
+`;
+
 export const ButtonsContainer = styled.View`
   width: 190px;
   padding: 10px;
@@ -49,8 +69,7 @@ export const Pregress = styled.View<ProgressProps>`
   ${(props) => props.currentValue === 2 && css`color: ${colors.white}; width: ${(screenWidth/props.maxValue) * props.currentValue}px`}
   ${(props) => props.currentValue === 3 && css`color: ${colors.white}; width: ${(screenWidth/props.maxValue) * props.currentValue}px`}
   ${(props) => props.currentValue === 4 && css`color: ${colors.white}; width: ${(screenWidth/props.maxValue) * props.currentValue}px`}
-  ${(props) => props.currentValue === 5 && css`color: ${colors.white}; width: ${(screenWidth/props.maxValue) * props.currentValue}px`}
-  ${(props) => props.currentValue === 6 && css`color: ${colors.white}; width: ${screenWidth}px`}
+  ${(props) => props.currentValue === (5 | 6) && css`color: ${colors.white}; width: ${screenWidth}px`}
 `;
 
 

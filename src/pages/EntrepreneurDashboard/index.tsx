@@ -150,7 +150,7 @@ const EntrepreneurDashboard: React.FC = () => {
                     </SquareButtonText>
                 </SquareButton>
                 <SpacingX medium />
-                <SquareButton onPress={() => false}>
+                <SquareButton onPress={() => navigation.navigate('EntrepreneurRegisterProduct')}>
                     <SquareButtonText>
                         {`Cadastrar`}
                         <SquareButtonText bold>{`\nPRODUTO`}</SquareButtonText>

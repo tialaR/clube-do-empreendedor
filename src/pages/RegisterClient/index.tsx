@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Controller, useForm } from 'react-hook-form';
-import { Alert, Keyboard, KeyboardAvoidingView, Platform, Text, TouchableWithoutFeedback, View } from 'react-native';
+import { Alert, Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, View } from 'react-native';
 
 import Button from '../../components/Button';
 import IconButton from '../../components/IconButton';
@@ -14,15 +14,17 @@ import { maskCPF, isValidCPF, maskDate, isValidDate, maskPhone, isValidPhone } f
 import { colors } from '../../styles/colors';
 import { HeaderContainer, Container, BodyContainer, ButtonsContainer, Pregress } from './styles';
 
-const formElements = [
-  { title: 'Nome Completo', value: '' },
-  { title: 'CPF', value: '' },
-  { title: 'Data de Nascimento', value: '' },
-  { title: 'Endereço', value: '' },
-  { title: 'Gênero', value: '' },
-  { title: 'E-mail', value: '' },
-  { title: 'Telefone', value: '' },
-]
+enum PageTitles {
+  name = 'Nome Completo',
+  cpf = 'CPF',
+  birthDate = 'Data de Nascimento',
+  address = 'Endereço',
+  genre = 'Gênero',
+  email = 'E-mail',
+  telephone = 'Telefone',
+}
+
+const FORM_ELEMENTS_SIZE = 6; 
 
 const validationSchema = yup.object().shape({
   name: yup.string().required('Campo obrigatório'),
@@ -50,7 +52,7 @@ const RegisterClient: React.FC = () => {
   const [birthDate, setBirthDate] = useState('');
   const [telephone, setTelephone] = useState('');
 
-  const isProgressEnd = useMemo(() => progress === formElements.length - 1, [progress, formElements]);
+  const isProgressEnd = useMemo(() => progress === FORM_ELEMENTS_SIZE, [progress, FORM_ELEMENTS_SIZE]);
   const isProgressStart = useMemo(() => progress === 0, [progress]);
 
   const handleContinue = () => {
@@ -101,8 +103,8 @@ const RegisterClient: React.FC = () => {
                 <View style={{ marginLeft: 20 }}>
                   <IconButton icon="arrow-left-circle" color={colors.white} onPress={handleBack} />
                 </View>
-                <View style={{ paddingTop: 20 }}>
-                  <Pregress currentValue={progress} maxValue={formElements.length} />
+                <View style={{ paddingTop: 14 }}>
+                  <Pregress currentValue={progress} maxValue={FORM_ELEMENTS_SIZE} />
                 </View>
             </HeaderContainer>
 
@@ -117,7 +119,7 @@ const RegisterClient: React.FC = () => {
                   }}
                   render={({ field: {  onChange, onBlur, value } }) => (
                     <InputLine 
-                      title="Nome Completo" 
+                      title={PageTitles.name}
                       maxLength={100}
                       autoCorrect={false}
                       value={value}
@@ -138,7 +140,7 @@ const RegisterClient: React.FC = () => {
                   }}
                   render={({ field: { onBlur, onChange} }) => (
                     <InputLine 
-                      title="CPF" 
+                      title={PageTitles.cpf}
                       maxLength={14}
                       keyboardType='number-pad'
                       value={cpf}
@@ -161,7 +163,7 @@ const RegisterClient: React.FC = () => {
                   }}
                   render={({ field: { onChange, onBlur } }) => (
                     <InputLine 
-                      title="Data de Nascimento"
+                      title={PageTitles.birthDate}
                       maxLength={10} 
                       keyboardType='number-pad'
                       value={birthDate}
@@ -184,7 +186,7 @@ const RegisterClient: React.FC = () => {
                   }}
                   render={({ field: { onChange, onBlur, value } }) => (
                     <InputLine 
-                      title="Endereço" 
+                      title={PageTitles.address}
                       maxLength={150}
                       autoCorrect={false}
                       value={value}
@@ -204,7 +206,7 @@ const RegisterClient: React.FC = () => {
                   }}
                   render={({ field: { onChange, onBlur, value } }) => (
                     <InputLine 
-                      title="Gênero" 
+                      title={PageTitles.genre}
                       maxLength={20}
                       value={value}
                       onBlur={onBlur}
@@ -223,7 +225,7 @@ const RegisterClient: React.FC = () => {
                   }}
                   render={({ field: { onChange, onBlur, value } }) => (
                     <InputLine 
-                      title="E-mail" 
+                      title={PageTitles.email} 
                       maxLength={50}
                       keyboardType='email-address'
                       autoCorrect={false}
@@ -244,7 +246,7 @@ const RegisterClient: React.FC = () => {
                   }}
                   render={({ field: { onChange, onBlur } }) => (
                     <InputLine 
-                      title="Telefone" 
+                      title={PageTitles.telephone} 
                       maxLength={15}
                       keyboardType='phone-pad'
                       value={telephone}

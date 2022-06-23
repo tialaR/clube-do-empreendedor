@@ -18,7 +18,7 @@ export const Container = styled.ScrollView.attrs({
 
 export const HeaderContainer = styled.View`
     width: ${screenWidth}px;
-    margin-top: 40px;
+    margin-top: 20px;
 `;
 
 export const BodyContainer = styled.View`

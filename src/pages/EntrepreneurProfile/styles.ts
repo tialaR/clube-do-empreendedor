@@ -3,7 +3,7 @@ import { colors } from '../../styles/colors';
 
 export const Container = styled.View`
   background-color: ${colors.indigo50};
-  padding: 40px 24px 0;
+  padding: 24px 24px 0;
 
   flex: 1;
 `;

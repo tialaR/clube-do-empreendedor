@@ -21,8 +21,11 @@ export const Container = styled.View<ContainerProps>`
 
 export const Title = styled.Text`
   color: ${colors.white};
+  
   font-size: 20px;
   font-weight: 700;
+
+  text-align: center;
 `;
 
 export const TextInputContainer = styled.View`

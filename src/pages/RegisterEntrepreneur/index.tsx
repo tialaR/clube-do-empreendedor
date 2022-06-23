@@ -14,17 +14,19 @@ import { maskCNPJ, isValidCNPJ } from '../../utils/helpers';
 import { colors } from '../../styles/colors';
 import { HeaderContainer, Container, BodyContainer, ButtonsContainer, Pregress } from './styles';
 
-const formElements = [
-  { title: 'Nome Completo', value: '' },
-  { title: 'Nome Fantasia', value: '' },
-  { title: 'CNPJ', value: '' },
-  { title: 'Endereço/CEP', value: '' },
-  { title: 'Horário de funcionamento', value: '' },
-  { title: 'Descrição da empresa', value: '' },
-  { title: 'E-mail', value: '' },
-  { title: 'Área de atuação', value: '' },
-  { title: 'Redes Sociais', value: '' },
-]
+enum PageTitles {
+  name = 'Nome Completo',
+  fantasyName = 'Nome Fantasia',
+  cnpj = 'CNPJ',
+  address = 'Endereço/CEP',
+  openingHours = 'Horário de funcionamento',
+  companyDescription = 'Descrição da empresa',
+  email = 'E-mail',
+  occupationArea = 'Área de atuação',
+  socialNetworks = 'Redes Sociais',
+}
+
+const FORM_ELEMENTS_SIZE = 8; 
 
 const validationSchema = yup.object().shape({
   name: yup.string().required('Campo obrigatório'),
@@ -52,7 +54,7 @@ const RegisterEntrepreneur: React.FC = () => {
   const [progress, setProgress] = useState(0);
   const [cnpj, setCnpj] = useState('');
 
-  const isProgressEnd = useMemo(() => progress === formElements.length - 1, [progress, formElements]);
+  const isProgressEnd = useMemo(() => progress === FORM_ELEMENTS_SIZE, [progress, FORM_ELEMENTS_SIZE]);
   const isProgressStart = useMemo(() => progress === 0, [progress]);
 
   const handleContinue = () => {
@@ -103,8 +105,8 @@ const RegisterEntrepreneur: React.FC = () => {
                 <View style={{ marginLeft: 20 }}>
                   <IconButton icon="arrow-left-circle" color={colors.white} onPress={handleBack} />
                 </View>
-                <View style={{ paddingTop: 20 }}>
-                  <Pregress currentValue={progress} maxValue={formElements.length} />
+                <View style={{ paddingTop: 14 }}>
+                  <Pregress currentValue={progress} maxValue={FORM_ELEMENTS_SIZE} />
                 </View>
             </HeaderContainer>
 
@@ -119,7 +121,7 @@ const RegisterEntrepreneur: React.FC = () => {
                   }}
                   render={({ field: {  onChange, onBlur, value } }) => (
                     <InputLine 
-                      title="Nome Completo" 
+                      title={PageTitles.name} 
                       maxLength={100}
                       autoCorrect={false}
                       value={value}
@@ -140,7 +142,7 @@ const RegisterEntrepreneur: React.FC = () => {
                   }}
                   render={({ field: {  onChange, onBlur, value } }) => (
                     <InputLine 
-                      title="Nome fantasia" 
+                      title={PageTitles.fantasyName} 
                       maxLength={100}
                       autoCorrect={false}
                       value={value}
@@ -161,7 +163,7 @@ const RegisterEntrepreneur: React.FC = () => {
                   }}
                   render={({ field: { onBlur, onChange} }) => (
                     <InputLine 
-                      title="CNPJ" 
+                      title={PageTitles.cnpj} 
                       maxLength={19}
                       keyboardType='number-pad'
                       value={cnpj}
@@ -184,7 +186,7 @@ const RegisterEntrepreneur: React.FC = () => {
                   }}
                   render={({ field: { value, onChange, onBlur } }) => (
                     <InputLine 
-                      title="Endereço/CEP"
+                      title={PageTitles.address}
                       maxLength={10} 
                       value={value}
                       onBlur={onBlur}
@@ -203,7 +205,7 @@ const RegisterEntrepreneur: React.FC = () => {
                   }}
                   render={({ field: { onChange, onBlur, value } }) => (
                     <InputLine 
-                      title="Horário de funcionamento" 
+                      title={PageTitles.openingHours} 
                       maxLength={150}
                       autoCorrect={false}
                       value={value}
@@ -223,7 +225,7 @@ const RegisterEntrepreneur: React.FC = () => {
                   }}
                   render={({ field: { onChange, onBlur, value } }) => (
                     <InputLine 
-                      title="Descrição da empresa" 
+                      title={PageTitles.companyDescription}
                       maxLength={200}
                       value={value}
                       onBlur={onBlur}
@@ -242,7 +244,7 @@ const RegisterEntrepreneur: React.FC = () => {
                   }}
                   render={({ field: { onChange, onBlur, value } }) => (
                     <InputLine 
-                      title="E-mail" 
+                      title={PageTitles.email}
                       maxLength={50}
                       keyboardType='email-address'
                       autoCorrect={false}
@@ -263,7 +265,7 @@ const RegisterEntrepreneur: React.FC = () => {
                   }}
                   render={({ field: { onChange, onBlur, value } }) => (
                     <InputLine 
-                      title="Área de atuação" 
+                      title={PageTitles.occupationArea} 
                       maxLength={200}
                       value={value}
                       onBlur={onBlur}
@@ -282,7 +284,7 @@ const RegisterEntrepreneur: React.FC = () => {
                   }}
                   render={({ field: { onChange, onBlur, value } }) => (
                     <InputLine 
-                      title="Redes Sociais" 
+                      title={PageTitles.socialNetworks}
                       maxLength={300}
                       value={value}
                       onBlur={onBlur}

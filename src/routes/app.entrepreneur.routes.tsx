@@ -11,9 +11,11 @@ import EntrepreneurRegisterCupom from '../pages/EntrepreneurRegisterCupom';
 
 import { DiscountClientsModalProvider } from '../hooks/useDiscountClientsModal';
 
-import { colors } from '../styles/colors';
 import EntrepreneurRegisterCupomConfirmation from '../pages/EntrepreneurRegisterCupomConfirmation';
 import EntrepreneurEditProductDetail from '../pages/EntrepreneurEditProductDetail';
+import EntrepreneurRegisterProduct from '../pages/EntrepreneurRegisterProduct';
+
+import { colors } from '../styles/colors';
 
 enableScreens();
 const Stack = createNativeStackNavigator();
@@ -86,6 +88,8 @@ export const AppEntrepreneurRoutes = () => {
       <Stack.Screen name="EntrepreneurRegisterCupomConfirmation" component={EntrepreneurRegisterCupomConfirmation} />
 
       <Stack.Screen name="EntrepreneurEditProductDetail" component={EntrepreneurEditProductDetail} />
+    
+      <Stack.Screen name="EntrepreneurRegisterProduct" component={EntrepreneurRegisterProduct} />
     </Stack.Navigator>
   );
 }

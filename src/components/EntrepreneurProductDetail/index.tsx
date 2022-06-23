@@ -13,7 +13,6 @@ import {
     QRCodeContainer,
     QRCodeTitle,
     QRCodeImage,
-    ProductScrollContainer,
     ProductContainerContents,
     FooterContainer
   } from './styles';
@@ -49,7 +48,7 @@ import {
                       <PromotionContainer>
                         <PromotionText>{product?.promotion}</PromotionText>
                       </PromotionContainer>
-                      <SoldBy>Vendido por <SoldBy colorful>{product?.soldBy}</SoldBy></SoldBy>
+                      <SoldBy>{'Vendido por\n'}<SoldBy>{product?.soldBy}</SoldBy></SoldBy>
                     </DescriptionContainer>
 
                       <FooterContainer>

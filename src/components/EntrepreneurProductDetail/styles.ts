@@ -85,6 +85,8 @@ export const SoldBy = styled.Text<SoldByProps>`
     font-size: 12px;
     font-weight: 600;
 
+    text-align: center;
+
     color: ${colors.black};
 
     ${(props) => props.colorful && css`color: ${colors.indigoA200}`}
@@ -100,21 +102,21 @@ export const FooterContainer = styled.View`
 
 export const QRCodeContainer = styled.View`
     flex: 1;
-    margin: 4px 0;
+    margin: 8px 0;
 
     align-items: center;
     justify-content: center;
 `;
 
 export const QRCodeTitle = styled.Text`
-    font-size: 10px;
+    font-size: 14px;
     color: ${colors.indigoA200};
     font-weight: 800;
 `;
 
 export const QRCodeImage = styled.Image`
-    margin-top: 8px;
-    width: 70px;
-    height: 70px;
+    margin-top: 10px;
+    width: 90px;
+    height: 90px;
 `;
 

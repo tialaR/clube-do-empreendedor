@@ -4,6 +4,10 @@ import styled, { css } from 'styled-components/native';
 import { colors } from '../../styles/colors';
 
 const screenWidth = Dimensions.get('window').width;
+const screenHeight = Dimensions.get('window').height;
+
+const productPhotoWidth = (screenWidth - 80)/ 3;
+const productPhotoHeight = (screenHeight/ 100) * 15;
 
 export const Container = styled.ScrollView.attrs({
     keyboardShouldPersistTaps: 'handled',
@@ -47,6 +51,27 @@ export const Title = styled.Text<TitleProps>`
   align-self: center;
 
   ${(props) => props.withPadding && css`padding: 16px;`}
+`;
+
+export const ProductPhotosContainer = styled.View`
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  `;
+
+export const ProductPhoto = styled.TouchableOpacity.attrs(() => ({
+  activeOpacity: 1
+}))`
+    background-color: ${colors.indigo50};
+    width: ${productPhotoWidth}px;
+    height: ${productPhotoHeight}px;
+
+    elevation: 4;
+
+    border-radius: 10px;
+
+    align-items: center;
+    justify-content: center;
 `;
 
 export const ButtonsContainer = styled.View`

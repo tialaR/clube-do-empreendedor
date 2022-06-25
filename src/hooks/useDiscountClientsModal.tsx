@@ -1,23 +1,10 @@
 import React, { ReactNode, useCallback, useRef, useState } from 'react';
 import { createContext, useContextSelector } from 'use-context-selector';
-import DiscountClientsModal from '../components/DiscountClientsModal';
+import DiscountClientsModal, { DiscountClientsModalHandlersToFather } from '../components/DiscountClientsModal';
 
-import ProductDetailModal, { ProductDetailModalHandlersToFather } from '../components/ProductDetailModal';
-
-type Product = {
-  id: string;
-  name: string;
-  img: string;
-  price: string;
-  installment: string;
-  promotion: string;
-  soldBy: string;
-  qrCodeImg: string;
-}
-
-type ProductDetailContextData = {
+type DiscountClientsModalContextData = {
     showDiscountClientModal(): void;
-    closeProductDetailModal(): void;
+    closeDiscountClientModal(): void;
 };
 
 const discountClientsList = [
@@ -127,54 +114,54 @@ const discountClientsList = [
   },
 ]
 
-const ProductDetailModalContext = createContext<ProductDetailContextData>({} as ProductDetailContextData);
+const DiscountClientsModalContext = createContext<DiscountClientsModalContextData>({} as DiscountClientsModalContextData);
 
-type ProductDetailModalProviderProps = {
+type DiscountClientsModalProviderProps = {
     children: ReactNode;
 }
 
-const DiscountClientsModalProvider: React.FC<ProductDetailModalProviderProps> = ({ children }) => {
-  const productDetailModalRef = useRef<ProductDetailModalHandlersToFather>(null);
+const DiscountClientsModalProvider: React.FC<DiscountClientsModalProviderProps> = ({ children }) => {
+  const discountClientsModalRef = useRef<DiscountClientsModalHandlersToFather>(null);
 
   const showDiscountClientModal = useCallback(() => {
-    productDetailModalRef.current?.openModal();
-    }, [productDetailModalRef]);
+    discountClientsModalRef.current?.openModal();
+    }, [discountClientsModalRef]);
 
-  const closeProductDetailModal = useCallback(() => {
-    productDetailModalRef.current?.closeModal();
-  }, [productDetailModalRef]);
+  const closeDiscountClientModal = useCallback(() => {
+    discountClientsModalRef.current?.closeModal();
+  }, [discountClientsModalRef]);
 
-  const renderProductDetailModal = useCallback(() => {
+  const renderDiscountClientModal = useCallback(() => {
     return (
       <DiscountClientsModal
-        ref={productDetailModalRef}
+        ref={discountClientsModalRef}
         discountClients={discountClientsList}
-        onClose={closeProductDetailModal}
+        onClose={closeDiscountClientModal}
       />
     );
-  }, [productDetailModalRef, discountClientsList, closeProductDetailModal]);
+  }, [discountClientsModalRef, discountClientsList, closeDiscountClientModal]);
 
   return (
-    <ProductDetailModalContext.Provider
+    <DiscountClientsModalContext.Provider
       value={{
         showDiscountClientModal,
-        closeProductDetailModal,
+        closeDiscountClientModal,
       }}
     >
       {children}
-      {renderProductDetailModal()}
-    </ProductDetailModalContext.Provider>
+      {renderDiscountClientModal()}
+    </DiscountClientsModalContext.Provider>
   );
 };
 
-function useDiscountClientsModal(): ProductDetailContextData {
-    const showDiscountClientModal = useContextSelector(ProductDetailModalContext, (productDetailContext: ProductDetailContextData) => productDetailContext.showDiscountClientModal);
-  const closeProductDetailModal = useContextSelector(ProductDetailModalContext, (productDetailContext: ProductDetailContextData) => productDetailContext.closeProductDetailModal);
+function useDiscountClientsModal(): DiscountClientsModalContextData {
+    const showDiscountClientModal = useContextSelector(DiscountClientsModalContext, (discountClientsModalContext: DiscountClientsModalContextData) => discountClientsModalContext.showDiscountClientModal);
+    const closeDiscountClientModal = useContextSelector(DiscountClientsModalContext, (discountClientsModalContext: DiscountClientsModalContextData) => discountClientsModalContext.closeDiscountClientModal);
 
-  return {
-    showDiscountClientModal,
-    closeProductDetailModal
-  };
+    return {
+      showDiscountClientModal,
+      closeDiscountClientModal
+    };
 }
 
 export { DiscountClientsModalProvider, useDiscountClientsModal };

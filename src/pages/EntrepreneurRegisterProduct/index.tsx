@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Controller, useForm } from 'react-hook-form';
-import { Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, View } from 'react-native';
+import {  Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, View } from 'react-native';
 
 import Button from '../../components/Button';
 import IconButton from '../../components/IconButton';
@@ -11,9 +11,10 @@ import InputLine from '../../components/InputLine';
 
 
 import { colors } from '../../styles/colors';
-import { HeaderContainer, Container, BodyContainer, ButtonsContainer, Pregress, Title, EntrepreneurProductDetailBodyContainer } from './styles';
+import { HeaderContainer, Container, ProductPhotosContainer, ProductPhoto, BodyContainer, ButtonsContainer, Pregress, Title, EntrepreneurProductDetailBodyContainer } from './styles';
 import EntrepreneurProductDetail from '../../components/EntrepreneurProductDetail';
-import { SpacingY } from '../../styles/globalStyles';
+import { SpacingX, SpacingY } from '../../styles/globalStyles';
+import Panel from '../../components/Panel';
 
 export type Product = {
   id: string;
@@ -35,6 +36,11 @@ enum PageTitles {
   productRegister = 'Produto Cadastrado!',
 }
 
+type Code = {
+  label: string;
+  value: string;
+};
+
 const FORM_ELEMENTS_SIZE = 4; 
 
 const validationSchema = yup.object().shape({
@@ -55,6 +61,25 @@ const EntrepreneurRegisterProduct: React.FC = () => {
     formState: { errors },
     reset: resetInputs,
   } = useForm({ resolver: yupResolver(validationSchema) });
+
+  const [selectedCode, setSelectedCode] = useState<Code>({ label: "Selecione um códido", value: '' });
+  const codes = [
+    {label: 'CÓDIGO 01', value: 'CÓDIGO 01'},
+    {label: 'CÓDIGO 02', value: 'CÓDIGO 02'},
+    {label: 'CÓDIGO 03', value: 'CÓDIGO 03'},
+    {label: 'CÓDIGO 04', value: 'CÓDIGO 04'},
+    {label: 'CÓDIGO 05', value: 'CÓDIGO 05'},
+    {label: 'CÓDIGO 06', value: 'CÓDIGO 06'},
+    {label: 'CÓDIGO 07', value: 'CÓDIGO 07'},
+    {label: 'CÓDIGO 08', value: 'CÓDIGO 08'},
+    {label: 'CÓDIGO 09', value: 'CÓDIGO 09'},
+    {label: 'CÓDIGO 10', value: 'CÓDIGO 10'},
+    {label: 'CÓDIGO 11', value: 'CÓDIGO 10'},
+    {label: 'CÓDIGO 12', value: 'CÓDIGO 10'},
+    {label: 'CÓDIGO 13', value: 'CÓDIGO 10'},
+    {label: 'CÓDIGO 14', value: 'CÓDIGO 10'},
+    {label: 'CÓDIGO 15', value: 'CÓDIGO 10'},
+  ];
   
   const [progress, setProgress] = useState(0);
   const [productResgistered, setProductResgistered] = useState<Product | undefined>();
@@ -172,7 +197,25 @@ const EntrepreneurRegisterProduct: React.FC = () => {
                     />}
 
                   {progress === 1 && (
-                    <Title withPadding>{PageTitles.productPhotos}</Title>
+                    <>
+                      <Title withPadding>{PageTitles.productPhotos}</Title>
+                      <SpacingY medium />
+                        <ProductPhotosContainer>
+                            <ProductPhoto />
+                            <SpacingX small />
+                            <ProductPhoto />
+                            <SpacingX small />
+                            <ProductPhoto />
+                        </ProductPhotosContainer>
+                        <SpacingY small />
+                        <ProductPhotosContainer>
+                            <ProductPhoto />
+                            <SpacingX small />
+                            <ProductPhoto />
+                            <SpacingX small />
+                            <ProductPhoto />
+                        </ProductPhotosContainer>
+                    </>
                   )}
 
                   {progress === 2 &&
@@ -195,7 +238,15 @@ const EntrepreneurRegisterProduct: React.FC = () => {
                     />}
 
                   {progress === 3 && (
-                    <Title withPadding>{PageTitles.discount}</Title>
+                    <>
+                      <Title withPadding>{PageTitles.discount}</Title>
+                      <SpacingY medium />
+                      <Panel 
+                        title={selectedCode?.label}
+                        list={codes} 
+                        onItemSelect={setSelectedCode}
+                      />
+                    </>  
                   )}
 
                 {progress === 4 &&

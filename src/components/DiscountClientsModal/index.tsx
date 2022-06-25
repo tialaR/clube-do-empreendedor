@@ -117,7 +117,7 @@ import {
                         <DiscountClientsListTitle>
                           CLIENTES COM DESCONTO
                         </DiscountClientsListTitle>
-                        <DiscountClientsList
+                        <DiscountClientsList<React.ElementType>
                             data={discountClients}
                             showsVerticalScrollIndicator={false}
                             keyExtractor={(client: any) => client.id}

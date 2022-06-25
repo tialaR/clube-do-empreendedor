@@ -86,7 +86,7 @@ const SquareButton: React.FC<SquareButtonProps> = ({ children, onPress }) => {
         <>
         <SquareButtonContainer onPress={onPress}>
             <SquareIconContainer>
-                <Icon name="user" size={40} color={colors.white} />
+                <Icon name="codesandbox" size={40} color={colors.white} />
             </SquareIconContainer>
             {children}
         </SquareButtonContainer>
@@ -106,7 +106,7 @@ const EntrepreneurDashboard: React.FC = () => {
             <SectionTitleContainer>
                 <SectionTitle>Produtos Cadastrados</SectionTitle>
             </SectionTitleContainer>
-            <ProducstList
+            <ProducstList<React.ElementType>
                     data={products}
                     keyExtractor={(product: Product) => product.id}
                     horizontal

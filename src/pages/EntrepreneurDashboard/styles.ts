@@ -9,12 +9,7 @@ export const Container = styled.ScrollView`
   flex: 1;
 `;
 
-export const ProducstList = styled(
-    FlatList as new () => FlatList<Product>,
-  ).attrs({
-    contentContainerStyle: { paddingRight: 32, paddingLeft: 32, paddingBottom: 22 },
-  })`
-  `;
+export const ProducstList = styled(FlatList as new () => FlatList<Product>)``;
 
 export const SectionListContainer = styled.View`
 `

@@ -86,7 +86,7 @@ const ClientDashboard: React.FC = () => {
             <SectionTitleContainer>
                 <SectionTitle>Meus Descontos</SectionTitle>
             </SectionTitleContainer>
-            <ProducstList
+            <ProducstList<React.ElementType>
                     data={products}
                     keyExtractor={(product: Product) => product.id}
                     horizontal
@@ -120,7 +120,7 @@ const ClientDashboard: React.FC = () => {
             <SectionTitleContainer>
                 <SectionTitle>Produtos em Destaque</SectionTitle>
             </SectionTitleContainer>
-            <ProducstList
+            <ProducstList<React.ElementType>
                     data={products}
                     keyExtractor={(product: Product) => product.id}
                     horizontal

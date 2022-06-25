@@ -6,6 +6,8 @@ import { colors } from '../../styles/colors';
 type Props = {
     title: string;
     list: Item[];
+    error?: boolean;
+    errorText?: string;
     onItemSelect: (item: Item) => void;
 }
 
@@ -14,7 +16,7 @@ type Item = {
     value: string;
 };
 
-const Panel: React.FC<Props> = ({ title, list, onItemSelect }) => {
+const Panel: React.FC<Props> = ({ title, list, error, errorText, onItemSelect }) => {
     const [animation, setAnimation] = useState(new Animated.Value(0));
     const [expanded, setExpanded] = useState(false);
     const [maxHeight, setMaxHeight] = useState(0);
@@ -73,6 +75,7 @@ const Panel: React.FC<Props> = ({ title, list, onItemSelect }) => {
     const handleSelectItem = (item: Item) => {
         onItemSelect(item);
         setSelectedItem(item);
+        // toggle();
     }
 
     let icon = icons['down'];
@@ -82,29 +85,33 @@ const Panel: React.FC<Props> = ({ title, list, onItemSelect }) => {
     }
 
         return (
-            <Animated.View  style={[styles.container, { height: cardHeight }]}>
-                <View style={styles.titleContainer} onLayout={_setMinHeight}>
-                    {!!selectedItem ? 
-                        (<Text style={styles.title}>{selectedItem.label}</Text>
-                        ) : (
-                        <Text style={styles.title}>{title}</Text>)}
+            <>
+                <Animated.View  style={[styles.container, { height: cardHeight }]}>
+                    <View style={styles.titleContainer} onLayout={_setMinHeight}>
+                        {!!selectedItem ? 
+                            (<Text style={styles.title}>{selectedItem.label}</Text>
+                            ) : (
+                            <Text style={styles.title}>{title}</Text>)}
 
-                    <TouchableOpacity style={styles.button} onPress={toggle}>
-                        <Icon name={icon} size={28} color={colors.indigoA200} />
-                    </TouchableOpacity>
-                </View>
-                
-                    <ScrollView style={styles.body} onLayout={() => _setMaxHeight()}>
-                        {list.map((item: Item) => (
-                            <TouchableOpacity 
-                                key={String(item.label)} 
-                                onPress={() => handleSelectItem(item)}
-                                activeOpacity={0.7}
-                            >
-                                <Text style={styles.title}>{item.label}</Text>
-                            </TouchableOpacity>))}
-                    </ScrollView>
-            </Animated.View>
+                        <TouchableOpacity style={styles.button} onPress={toggle}>
+                            <Icon name={icon} size={28} color={colors.indigoA200} />
+                        </TouchableOpacity>
+                    </View>
+                    
+                        <ScrollView style={styles.body} onLayout={_setMaxHeight}>
+                            {list.map((item: Item) => (
+                                <TouchableOpacity 
+                                    key={String(item.label)} 
+                                    onPress={() => handleSelectItem(item)}
+                                    activeOpacity={0.7}
+                                >
+                                    <Text style={styles.title}>{item.label}</Text>
+                                </TouchableOpacity>))}
+                        </ScrollView>
+                </Animated.View>
+                {error && (
+                    <Text style={styles.error}>{errorText}</Text>)}
+            </>
         );
 }
 
@@ -148,6 +155,14 @@ var styles = StyleSheet.create({
     },
     body: {
         height: 0,
+    },
+    error: {
+        color: colors.red,
+        fontSize: 12,
+  
+        paddingTop: 4,
+        paddingBottom: 18,
+        paddingLeft: 16,
     }
 });
 

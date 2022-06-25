@@ -1,9 +1,9 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Controller, useForm } from 'react-hook-form';
-import {  Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, View } from 'react-native';
+import {  Alert, Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, View } from 'react-native';
 
 import Button from '../../components/Button';
 import IconButton from '../../components/IconButton';
@@ -38,19 +38,25 @@ enum PageTitles {
 
 type Code = {
   label: string;
-  value: string;
+  value: string | undefined;
 };
 
 const FORM_ELEMENTS_SIZE = 4; 
 
 const validationSchema = yup.object().shape({
   productName: yup.string().required('Campo obrigatório'),
-  // productPhotos: yup.string().required('Campo obrigatório'),
   productDescription: yup.string().required('Campo obrigatório'),
-  // discount: yup.string().required('Campo obrigatório'),
   productValue: yup.string().required('Campo obrigatório'),
 });
 
+const productPhotosValidationSchema = yup.object().shape({
+  value: yup.string().required('Campo obrigatório'),
+});
+
+const discountCodeValidationSchema = yup.object().shape({
+  label: yup.string().required('Campo obrigatório'),
+  value: yup.string().required('Campo obrigatório'),
+});
 
 const EntrepreneurRegisterProduct: React.FC = () => {
   const navigation = useNavigation<any>();
@@ -62,8 +68,9 @@ const EntrepreneurRegisterProduct: React.FC = () => {
     reset: resetInputs,
   } = useForm({ resolver: yupResolver(validationSchema) });
 
-  const [selectedCode, setSelectedCode] = useState<Code>({ label: "Selecione um códido", value: '' });
-  const codes = [
+  const [photos, setPhotos] = useState(undefined);
+  const [selectedDiscountCode, setSelectedDiscountCode] = useState<Code>({ label: "Selecione um códido", value: undefined });
+  const discountCodes = [
     {label: 'CÓDIGO 01', value: 'CÓDIGO 01'},
     {label: 'CÓDIGO 02', value: 'CÓDIGO 02'},
     {label: 'CÓDIGO 03', value: 'CÓDIGO 03'},
@@ -84,16 +91,34 @@ const EntrepreneurRegisterProduct: React.FC = () => {
   const [progress, setProgress] = useState(0);
   const [productResgistered, setProductResgistered] = useState<Product | undefined>();
 
+  const [discountCodeError, setDiscountCodeError] = useState<string | undefined>(undefined);
+  const [photosError, setPhotosError] = useState<string | undefined>(undefined);
+
   const isProductRegistered = useMemo(() => !!productResgistered, [productResgistered]);
 
   const isProgressEnd = useMemo(() => progress === FORM_ELEMENTS_SIZE, [progress, FORM_ELEMENTS_SIZE]);
   const isProgressStart = useMemo(() => progress === 0, [progress]);
+  const isSelectedDiscountCode = useMemo(() => selectedDiscountCode.value !== undefined, [selectedDiscountCode]);
 
-  const handleContinue = () => {
-    if (isProgressEnd) {
-      () => handleSubmit(onSubmit);
+  useEffect(() => {
+    if (progress === 1) {
+      productPhotosValidationSchema.validate(photos).catch((err) => {
+        setPhotosError(err.errors[0]);
+      });
     }
 
+    if (progress === 4) {
+      discountCodeValidationSchema.validate(selectedDiscountCode).catch((err) => {
+        setDiscountCodeError(err.errors[0]);
+      });
+    }
+  }, [progress]);
+
+  useEffect(() => {
+    setDiscountCodeError(undefined);
+  }, [isSelectedDiscountCode]);
+
+  const handleContinue = () => {
     makeProgress();
   }
 
@@ -110,18 +135,22 @@ const EntrepreneurRegisterProduct: React.FC = () => {
   }
 
   const onSubmit = (data: any) => {
-    setProductResgistered( { 
-      id: '0', 
-      name: 'Mac Monitor', 
-      img: 'https://www.imagensempng.com.br/wp-content/uploads/2021/09/01-43.png',
-      price: 'R$ 1234.89',
-      promotion: '16% OFF',
-      soldBy: 'Eletro Magazine',
-      installment: 'em 12x de R$ 28.90',
-      qrCodeImg: 'https://www.gov.br/inss/pt-br/centrais-de-conteudo/imagens/qr-code-novo-fw-300x300-png'
-    });
-  
-    resetInputs();
+    const showRegisterProductPage = isProgressEnd && isSelectedDiscountCode;
+
+    if (showRegisterProductPage) {
+      setProductResgistered( { 
+        id: '0', 
+        name: 'Mac Monitor', 
+        img: 'https://www.imagensempng.com.br/wp-content/uploads/2021/09/01-43.png',
+        price: 'R$ 1234.89',
+        promotion: '16% OFF',
+        soldBy: 'Eletro Magazine',
+        installment: 'em 12x de R$ 28.90',
+        qrCodeImg: 'https://www.gov.br/inss/pt-br/centrais-de-conteudo/imagens/qr-code-novo-fw-300x300-png'
+      });
+    
+      resetInputs();
+    }
   };
 
   if (isProductRegistered) {
@@ -242,9 +271,11 @@ const EntrepreneurRegisterProduct: React.FC = () => {
                       <Title withPadding>{PageTitles.discount}</Title>
                       <SpacingY medium />
                       <Panel 
-                        title={selectedCode?.label}
-                        list={codes} 
-                        onItemSelect={setSelectedCode}
+                        title={selectedDiscountCode?.label}
+                        list={discountCodes} 
+                        onItemSelect={setSelectedDiscountCode}
+                        error={true}
+                        errorText={discountCodeError}
                       />
                     </>  
                   )}

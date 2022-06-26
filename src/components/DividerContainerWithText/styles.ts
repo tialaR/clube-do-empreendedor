@@ -11,7 +11,7 @@ export const Container = styled.View`
 
 export const Title = styled.Text`
     font-size: ${fonts.sizes.regular}px;
-    font-weight: ${fonts.families.latoRegular};
+    font-family: ${fonts.families.latoRegular};
 
     color: ${colors.indigoA200};
 `;

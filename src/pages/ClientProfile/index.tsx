@@ -1,5 +1,7 @@
 import React, { ReactNode } from 'react';
 
+import { useAuth } from '../../hooks/useAuth';
+
 import { Container, BodyContainer, RoundButtonContainer, RoundButtonContainerButton, RoundButtonText } from './styles';
 import { BigTitle, SpacingY } from '../../styles/globalStyles';
 
@@ -18,6 +20,8 @@ const RoundButton: React.FC<RoundButtonProps> = ({ children, onPress, fullWidth 
 )
 
 const ClientProfile: React.FC = () => {
+  const { signOut } = useAuth();
+
   return (
       <Container>
           <BigTitle>Perfil</BigTitle>
@@ -30,7 +34,7 @@ const ClientProfile: React.FC = () => {
               <SpacingY small />
               <RoundButton fullWidth onPress={() => false}>Configurações</RoundButton>
               <SpacingY small />
-              <RoundButton onPress={() => false}>Sair da Conta</RoundButton>
+              <RoundButton onPress={signOut}>Sair da Conta</RoundButton>
           </BodyContainer>
       </Container>
   );

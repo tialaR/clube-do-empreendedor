@@ -1,6 +1,6 @@
 import React, { ReactNode, useCallback, useMemo, useState } from 'react';
 import { RouteProp, useNavigation } from '@react-navigation/native';
-import { Alert, Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -9,7 +9,9 @@ import BigHeader from '../../components/BigHeader';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
 
-import { maskCNPJ, maskCPF } from '../../utils/helpers';
+import { useAuth } from '../../hooks/useAuth';
+
+import { isValidCNPJ, isValidCPF, maskCNPJ, maskCPF } from '../../utils/helpers';
 
 import { SpacingY } from '../../styles/globalStyles';
 import { Container, BodyHeader, BodyTitle, ButtonsContainer, BodyContents, BodyContainer, InputsContainer, LineButtonText, LineButtonsContainer, LineButtonContainer } from './styles';
@@ -30,13 +32,13 @@ const LineButton: React.FC<LineButtonProps> = ({ children, onPress }) => {
 }
 
 const clientValidationSchema = yup.object().shape({
-    cpf: yup.string().required('Campo obrigatório'),
-    password: yup.string().required('Campo obrigatório')
+    cpf: yup.string().matches(isValidCPF , 'Formato incorreto').required('Campo obrigatório'),
+    password: yup.string().required('Campo obrigatório').min(6, 'A senha deve conter no mínimo 6 caracteres')
 }).required();
 
 const entrepreneurValidationSchema = yup.object().shape({
-    cnpj: yup.string().required('Campo obrigatório'),
-    password: yup.string().required('Campo obrigatório')
+    cnpj: yup.string().matches(isValidCNPJ , 'Formato incorreto').required('Campo obrigatório'),
+    password: yup.string().required('Campo obrigatório').min(6, 'A senha deve conter no mínimo 6 caracteres')
 }).required();
 
 type SiginProps = {
@@ -45,6 +47,7 @@ type SiginProps = {
 
 const SignIn: React.FC<SiginProps> = ({ route }) => {
       const navigation = useNavigation<any>();
+      const { signIn } = useAuth();
 
       const [cpf, setCpf] = useState('');
       const [cnpj, setCnpj] = useState('');
@@ -70,29 +73,25 @@ const SignIn: React.FC<SiginProps> = ({ route }) => {
       });
 
       const onSubmit = (data?: any) => {
-        Alert.alert(
-          "Login efetuado com sucesso",
-          `${JSON.stringify(data)}`,
-          [
-            {
-              text: "OK",
-              onPress: () => {
-                  setCnpj('');
-                  setCpf('');
-                  resetInputs();
-              },
-              style: "default",
-            },
-          ],
-          {
-            cancelable: true,
-            onDismiss: () => {
-                setCnpj('');
-                setCpf('');
-                resetInputs();
-            },
-          }
-        );
+        if (isClient) {
+            signIn({
+                documentType: 'CPF',
+                documentNumber: data?.cpf,
+                password: data?.password,
+            });
+            setCnpj('');
+            setCpf('');
+            resetInputs();
+        } else {
+            signIn({
+                documentType: 'CNPJ',
+                documentNumber: data?.cnpj,
+                password: data?.password,
+            });
+            setCnpj('');
+            setCpf('');
+            resetInputs();
+        }
       };
 
   return (

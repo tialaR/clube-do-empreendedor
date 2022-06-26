@@ -9,6 +9,9 @@ import RegisterEntrepreneur from '../pages/RegisterEntrepreneur';
 import RecoverPassword from '../pages/RecoverPassword';
 import RecoverPasswordConfirmation from '../pages/RecoverPasswordConfirmation';
 
+import { AppClientRoutes } from './app.client.routes';
+import { AppEntrepreneurRoutes } from './app.entrepreneur.routes';
+
 enableScreens();
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +30,9 @@ export function AuthRoutes() {
 
       <Stack.Screen name="RecoverPassword" component={RecoverPassword} />
       <Stack.Screen name="RecoverPasswordConfirmation" component={RecoverPasswordConfirmation} />
+
+      <Stack.Screen name="AppClientRoutes" component={AppClientRoutes} />
+      <Stack.Screen name="AppEntrepreneurRoutes" component={AppEntrepreneurRoutes} />
     </Stack.Navigator>
   );
 }

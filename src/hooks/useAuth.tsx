@@ -6,22 +6,21 @@ import React, {
     useEffect,
     ReactNode,
   } from 'react';
+  import AsyncStorage from '@react-native-async-storage/async-storage';
   
   type User = {
-    id: string;
-    name: string;
-    type: string;
-    email: string;
-    avatarUrl: string;
+    document: string;
+    type: 'CPF' | 'CNPJ';
   }
   
   type AuthState = {
     token: string;
     user: User;
   }
-  
+
   type SignInCredentials = {
-    email: string;
+    documentNumber: string;
+    documentType: 'CPF' | 'CNPJ';
     password: string;
   }
   
@@ -45,52 +44,73 @@ import React, {
   
     // AsyncStorage
     useEffect(() => {
-      // Criar um AsyncStorage (descomentar esse código p/ ir direto para a home)
-      const token = 'c72b7c32037a4082062c1c6b566296c1';
-      const user = {
-        id: '1',
-        name: 'Nelson dos Santos Mandela',
-        type: 'client',
-        email: 'nelson@africa.com',
-        avatarUrl:
-          'https://www.estudarfora.org.br/app/uploads/2018/07/Nelson-Mandela-em-Harvard-1.jpg',
-      };
+      async function loadStorageData(): Promise<void> {
+        const [token, user] = await AsyncStorage.multiGet([
+          '@EntrepreneursClub:token',
+          '@EntrepreneursClub:user',
+        ]);
   
-      setData({ token, user });
-      setLoading(false);
+        if (token[1] && user[1]) {
+          // api.defaults.headers.authorization = `Bearer ${token[1]}`;
+  
+          setData({ token: token[1], user: JSON.parse(user[1]) });
+        }
+  
+        setLoading(false);
+      }
+  
+      loadStorageData();
     }, []);
-  
+
     // Login
-    const signIn = useCallback(async ({ email, password }: { email: string; password: string }) => {
+  const signIn = useCallback(async ({ documentType, documentNumber, password }: SignInCredentials) => {
+    // Criando sessão de usuário no back-end
+    // const response = await api.post('sessions', {
+    //   email,
+    //   password,
+    // });
+
+    // const { token, user } = response.data;
       const token = 'c72b7c32037a4082062c1c6b566296c1';
       const user = {
-        id: '1',
-        name: 'Nelson dos Santos Mandela',
-        type: 'client',
-        email: 'nelson@africa.com',
-        avatarUrl:
-          'https://www.estudarfora.org.br/app/uploads/2018/07/Nelson-Mandela-em-Harvard-1.jpg',
+        document: documentNumber,
+        type: documentType,
       };
+
+    // Salvando no localStorage:
+    await AsyncStorage.multiSet([
+      ['@EntrepreneursClub:token', token],
+      ['@EntrepreneursClub:user', JSON.stringify(user)],
+    ]);
+
+    /* Definindo como padrão para todas as requisições da aplicação um cabeçalho com o nome
+       Authorization contendo o valor do token */
+    // api.defaults.headers.authorization = `Bearer ${token}`;
+
+    setData({ token, user });
+  }, []);
   
-      setData({ token, user });
-      setLoading(false);
-    }, []);
-  
-    // Atualiza os dados do usuário
+    // Atualiza os dados do usuário (o token continua o mesmo)
     const updateUser = useCallback(
       async (user: User) => {
-        const token = 'c72b7c32037a4082062c1c6b566296c1';
-  
+        await AsyncStorage.setItem('@EntrepreneursClub:user', JSON.stringify(user));
+
         setData({
-          token,
+          token: data.token,
           user,
         });
       },
-      [setData],
+      [setData, data.token],
     );
   
     // Logout
     const signOut = useCallback(async () => {
+      // Removendo do localStorage:
+      await AsyncStorage.multiRemove([
+        '@EntrepreneursClub:token', 
+        '@EntrepreneursClub:user'
+      ]);
+
       // Removendo da variável:
       setData({} as AuthState);
     }, []);

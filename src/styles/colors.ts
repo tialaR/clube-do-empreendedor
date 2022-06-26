@@ -4,7 +4,7 @@ export const colors = {
     shadow: 'rgba(0,0,0,0.2)',
     shadowLight: 'rgba(255,255,255,0.2)',
     red: '#EF5350',
-    indigo50: '#E8EAF6',
+    indigo50: '#E4E3F9',
     indigoA100: '#8C9EFF',
     indigoA200: '#4B3FEB',
     purple700: '#9219AC',

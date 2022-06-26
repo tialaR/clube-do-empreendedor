@@ -1,5 +1,7 @@
 import styled, { css } from 'styled-components/native';
+
 import { colors } from '../../styles/colors';
+import { fonts } from '../../styles/fonts';
 
 interface ContainerProps {
   isErrored: boolean;
@@ -27,12 +29,16 @@ export const Container = styled.View<ContainerProps>`
 
 export const TextInput = styled.TextInput`
   flex: 1;
-  font-size: 13px;
+
+  font-size: ${fonts.sizes.regular}px;
+  font-family: ${fonts.families.latoRegular};
 `;
 
 export const ErrorMessage = styled.Text`
   color: ${colors.red};
-  font-size: 12px;
+  
+  font-size: ${fonts.sizes.small}px;
+  font-family: ${fonts.families.latoRegular};
   
   padding: 4px 0 8px 8px;
 `;

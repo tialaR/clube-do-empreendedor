@@ -1,6 +1,8 @@
 import styled from 'styled-components/native';
 import { Dimensions, FlatList } from 'react-native';
+
 import { colors } from '../../styles/colors';
+import { fonts } from '../../styles/fonts';
 
 const { width } = Dimensions.get('window');
 const { height } = Dimensions.get('window');
@@ -54,8 +56,8 @@ export const ContainerIconButton = styled.View`
 `;
 
 export const DiscountClientsListTitle = styled.Text`
-  font-size: 18px;
-  font-weight: 700;
+  font-size: ${fonts.sizes.large}px;
+  font-family: ${fonts.families.latoBlack};
 
   padding-bottom: 30px;
 
@@ -89,8 +91,8 @@ export const ClientItemNameContainer = styled.View`
 export const ClientItemName = styled.Text`
   flex-shrink: 1;
 
-  font-size: 15px;
-  font-weight: 700;
+  font-size: ${fonts.sizes.regular}px;
+  font-family: ${fonts.families.latoBlack};
 
   color: ${colors.indigoA200};
 `;
@@ -100,7 +102,8 @@ export const SeeMoreInformationsContainer = styled.View`
 `;
 
 export const SeeMoreInformations = styled.Text`
-  font-size: 11px;
+  font-size: ${fonts.sizes.xSmall}px;
+  font-family: ${fonts.families.latoRegular};
 
   text-decoration: underline;
 
@@ -112,8 +115,8 @@ export const ClientMoreInformationContainer = styled.ScrollView.attrs(() => ({
 }))``;
 
 export const ClientName = styled.Text`
-  font-size: 18px;
-  font-weight: 700;
+  font-size: ${fonts.sizes.large}px;
+  font-family: ${fonts.families.latoBlack};
 
   color: ${colors.indigoA200};
 `;
@@ -122,14 +125,17 @@ export const DescriptionsContainer = styled.View`
 `;
 
 export const Title = styled.Text`
-  font-size: 15px;
-  font-weight: 600;
+  font-size: ${fonts.sizes.regular}px;
+  font-family: ${fonts.families.latoBlack};
 
   color: ${colors.indigoA200};
 `;
 
 export const Description = styled.Text`
-  font-size: 13px;
+  font-size: ${fonts.sizes.small}px;
+  font-family: ${fonts.families.latoRegular};
+
+  margin-top: 4px;
 
   color: ${colors.indigoA200};
 `;

@@ -127,14 +127,16 @@ import { SpacingY } from '../../styles/globalStyles';
                       <View style={{ width: '100%', height: 120 }}>
                         <FeaturesScrollContainer>
                           <FeaturesContentContainer>
-                            <FeaturesTitle>Características:</FeaturesTitle>
-                            {features.map((item) => (
-                              <FeatureItem key={item}>{item}</FeatureItem>
-                            ))}
-                            <FeaturesTitle>Especificações:</FeaturesTitle>
-                            {features.map((item) => (
-                              <FeatureItem key={item}>{item}</FeatureItem>
+                              <FeaturesTitle>Características:</FeaturesTitle>
+                              {features.map((item) => (
+                                <FeatureItem key={item}>{item}</FeatureItem>
                               ))}
+                          </FeaturesContentContainer>
+                          <FeaturesContentContainer>
+                              <FeaturesTitle>Especificações:</FeaturesTitle>
+                              {features.map((item) => (
+                                <FeatureItem key={item}>{item}</FeatureItem>
+                                ))}
                           </FeaturesContentContainer>
                         </FeaturesScrollContainer>
                       </View>
@@ -146,7 +148,7 @@ import { SpacingY } from '../../styles/globalStyles';
                         </QRCodeContainer>
                         <WhatsAppContainer>
                             <WhatsAppButton onPress={() => false}>
-                              <Icon name="whatsapp" size={14} color={colors.white} />
+                              <Icon name="whatsapp" size={15} color={colors.white} />
                               <WhatsAppButtonText>
                                 ACESSE O WHATSAPP
                               </WhatsAppButtonText>
@@ -154,7 +156,7 @@ import { SpacingY } from '../../styles/globalStyles';
 
                             {emphasisProduct && 
                               <DiscountButton onPress={handleGuarantedProduct}>
-                                <Icon name="check" size={14} color={colors.white} />
+                                <Icon name="check-circle" size={15} color={colors.white} />
                                 <DiscountButtonText>
                                   GARANTIR DESCONTO
                                 </DiscountButtonText>
@@ -178,7 +180,7 @@ import { SpacingY } from '../../styles/globalStyles';
 
                         <View style={{ paddingHorizontal: 30 }}>
                           <WhatsAppButton onPress={() => false}>
-                              <Icon name="whatsapp" size={14} color={colors.white} />
+                              <Icon name="whatsapp" size={15} color={colors.white} />
                                 <WhatsAppButtonText>
                                   ACESSE O WHATSAPP DA LOJA
                                 </WhatsAppButtonText>

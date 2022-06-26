@@ -1,5 +1,7 @@
 import styled, { css } from 'styled-components/native';
+
 import { colors } from '../../styles/colors';
+import { fonts } from '../../styles/fonts';
 
 export const Container = styled.View`
   flex: 1;
@@ -14,10 +16,12 @@ type ConfirmationTextProps = {
     bold?: boolean;
 }
 export const ConfirmationText = styled.Text<ConfirmationTextProps>`
-  font-size: 24px;
+  font-size: ${fonts.sizes.xLarge}px;
+  font-family: ${fonts.families.latoRegular};
+  
   color: ${colors.indigoA200};
 
   text-align: center;
 
-  ${(props) => props.bold && css`font-weight: bold`}
+  ${(props) => props.bold && css`font-family: ${fonts.families.latoBold};`}
 `;

@@ -1,5 +1,7 @@
 import styled, { css } from 'styled-components/native';
-import {colors} from '../../styles/colors';
+
+import { colors } from '../../styles/colors';
+import { fonts } from '../../styles/fonts';
 
 export const Container = styled.ScrollView`
   flex: 1;
@@ -23,13 +25,16 @@ export const WellcomeContainer = styled.View`
 
 export const WellcomeText = styled.Text`
   color: ${colors.indigoA200};
-  font-size: 26px;
-  font-weight: 800;
+
+  font-size: ${fonts.sizes.xxxLarge}px;
+  font-family: ${fonts.families.latoBold};
 `;
 
 export const WellcomeDescription = styled.Text`
   color: ${colors.indigoA200};
-  font-size: 12px;
+
+  font-size: ${fonts.sizes.small}px;
+  font-family: ${fonts.families.latoRegular};
   text-align: center;
 `;
 
@@ -48,9 +53,18 @@ type TermsButtonTextProps = {
 }
 export const TermsButtonText = styled.Text<TermsButtonTextProps>`
   color: ${colors.black};
-  font-size: 10px;
+
+  font-size: ${fonts.sizes.xSmall}px;
+  font-family: ${fonts.families.latoRegular};
+
   text-align: center;
 
-  ${(props) => props.link && css`color: ${colors.indigoA200}; text-decoration: underline; font-weight: 600`}
-  ${(props) => props.bold && css`font-weight: 700;`}
+  ${(props) => props.link && css`
+    color: ${colors.indigoA200}; 
+
+    text-decoration: underline; 
+    font-family: ${fonts.families.latoBold};
+  `};
+
+  ${(props) => props.bold && css`font-family: ${fonts.families.latoBold};`};
 `;

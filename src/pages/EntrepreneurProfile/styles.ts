@@ -1,5 +1,7 @@
 import styled, { css } from 'styled-components/native';
+
 import { colors } from '../../styles/colors';
+import { fonts } from '../../styles/fonts';
 
 export const Container = styled.View`
   background-color: ${colors.indigo50};
@@ -35,8 +37,8 @@ export const RoundButtonContainerButton = styled.TouchableOpacity.attrs(() => ({
 `;
 
 export const RoundButtonText = styled.Text`
+  font-size: ${fonts.sizes.medium}px;
+  font-family: ${fonts.families.latoBold};
+  
   color: ${colors.white};
-
-  font-size: 16px;
-  font-weight: 600;
 `;

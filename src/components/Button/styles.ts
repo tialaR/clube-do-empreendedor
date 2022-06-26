@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components/native';
 import { colors } from '../../styles/colors';
+import { fonts } from '../../styles/fonts';
 
 type ButtonTypesProps = {
   filled?: boolean;
@@ -44,8 +45,8 @@ export const Container = styled.TouchableOpacity.attrs(() => ({
 `;
 
 export const ButtonText = styled.Text<ButtonProps>`
-  font-size: 16px;
-  font-weight: 600;
+  font-size: ${fonts.sizes.large}px;
+  font-family: ${fonts.families.latoBold};
 
   ${(props) => props.buttontypes.outlined && css`color: ${colors.indigoA200};`};
   ${(props) => props.buttontypes.outlinedLight && css`color: ${colors.white};`}

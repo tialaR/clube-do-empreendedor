@@ -1,12 +1,12 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { ReactNode } from 'react';
-import { Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 
 import ProductCard from '../../components/ProductCard';
 import SearchHeader from '../../components/SearchHeader';
 import SectionTitle from '../../components/SectionTitle';
 import { useDiscountClientsModal } from '../../hooks/useDiscountClientsModal';
+import DividerContainerWithText from '../../components/DividerContainerWithText';
 
 import { colors } from '../../styles/colors';
 import { SpacingX, SpacingY } from '../../styles/globalStyles';
@@ -128,13 +128,7 @@ const EntrepreneurDashboard: React.FC = () => {
                 />
             </SectionListContainer>
 
-            <View style={{
-                backgroundColor: '#E4E3F9',
-                paddingVertical: 20,
-                alignItems: 'center'
-            }}>
-                <Text style={{ fontSize: 13, fontWeight: '600', color: colors.indigoA200 }}>Anúncio</Text>
-            </View>
+            <DividerContainerWithText text="Anúncio" />
             
             <SpacingY small />
 

@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import { colors } from '../../styles/colors';
+import { fonts } from '../../styles/fonts';
 
 export const Container = styled.View`
   border-radius: 10px;
@@ -22,6 +23,9 @@ export const TextInputContainer = styled.View`
 export const TextInput = styled.TextInput`
   flex: 1;
   color: ${colors.white};
-  font-size: 12px;
+
+  font-size: ${fonts.sizes.small}px;
+  font-family: ${fonts.families.latoRegular};
+  
   text-align: center;
 `;

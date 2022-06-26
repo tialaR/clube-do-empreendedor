@@ -1,5 +1,7 @@
 import styled, { css } from 'styled-components/native';
+
 import { colors } from './colors';
+import { fonts } from './fonts';
 
 type SpacingProps = {
     tiny?: boolean;
@@ -23,7 +25,8 @@ export const SpacingX = styled.View<SpacingProps>`
 `;
 
 export const BigTitle = styled.Text`
-  font-size: 26px;
-  font-weight: 600;
+  font-size: ${fonts.sizes.xxxLarge}px;
+  font-family: ${fonts.families.latoBold};
+  
   color: ${colors.indigoA200};
 `;

@@ -1,6 +1,8 @@
 import styled, { css } from 'styled-components/native';
 import { FlatList } from 'react-native';
+
 import { colors } from '../../styles/colors';
+import { fonts } from '../../styles/fonts';
 
 import { Product } from './index';
 
@@ -56,12 +58,14 @@ type SquareButtonTextProps = {
   bold?: boolean;
 }
 export const SquareButtonText = styled.Text<SquareButtonTextProps>`
-  font-size: 11px;
-  font-weight: 600;
+  font-size: ${fonts.sizes.xSmall}px;
+  font-family: ${fonts.families.latoBold};
+
+  margin-top: 4px;
 
   text-align: center;
 
   color: ${colors.indigoA200};
 
-  ${(props) => props.bold && css`font-weight: bold;`}
+  ${(props) => props.bold && css`font-family: ${fonts.families.latoBlack};`}
 `;

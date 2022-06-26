@@ -1,6 +1,8 @@
 import { Platform } from 'react-native';
 import styled from 'styled-components/native';
-import {colors} from '../../styles/colors';
+
+import { colors } from '../../styles/colors';
+import { fonts } from '../../styles/fonts';
 
 export const Container = styled.ScrollView.attrs({
   keyboardShouldPersistTaps: 'handled',
@@ -29,8 +31,9 @@ export const BodyHeader = styled.View`
 
 export const BodyTitle = styled.Text`
   color: ${colors.indigoA200};
-  font-size: 26px;
-  font-weight: 800;
+
+  font-family: ${fonts.families.latoBold};
+  font-size: ${fonts.sizes.xxLarge}px;
 `;
 
 export const InputsContainer = styled.View`
@@ -55,6 +58,9 @@ export const LineButtonContainer = styled.TouchableOpacity.attrs(props => ({
 
 export const LineButtonText = styled.Text`
   color: ${colors.indigoA200};
-  font-size: 12px;
+
+  font-size: ${fonts.sizes.small}px;
+  font-family: ${fonts.families.latoRegular};
+
   text-align: center;
 `;

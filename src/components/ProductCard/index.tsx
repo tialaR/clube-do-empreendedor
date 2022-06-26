@@ -27,7 +27,7 @@ const ProductCard: React.FC<Props> = ({ name, img, price, installment, promotion
             <PromotionContainer>
               <PromotionText>{promotion}</PromotionText>
             </PromotionContainer>
-            <SoldBy>{soldBy}</SoldBy>
+            <SoldBy>Vendido por {soldBy}</SoldBy>
           </DescriptionContainer>
       </Container>
     </ColorfulContainer>

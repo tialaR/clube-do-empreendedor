@@ -1,6 +1,7 @@
 import { Platform } from 'react-native';
 import styled from 'styled-components/native';
 import { colors } from '../../styles/colors';
+import { fonts } from '../../styles/fonts';
 
 export const Container = styled.ScrollView.attrs({
     keyboardShouldPersistTaps: 'handled',
@@ -25,12 +26,16 @@ export const HeaderTexts = styled.View`
 `;
 
 export const Title = styled.Text`
-    font-size: 30px;
+    font-size: ${fonts.sizes.xxxLarge}px;
+    font-family: ${fonts.families.latoBold};
+
     color: ${colors.indigoA200};
 `;
 
 export const Description = styled.Text`
-    font-size: 15px;
+    font-size: ${fonts.sizes.regular}px;
+    font-family: ${fonts.families.latoRegular};
+
     color: ${colors.indigoA200};
 
     text-align: center;

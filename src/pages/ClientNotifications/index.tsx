@@ -1,5 +1,5 @@
 import React from 'react';
-import Icon from 'react-native-vector-icons/Feather';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { colors } from '../../styles/colors';
 
 import { Container, BodyContainer, CleanNotificationListContainer, CleanNotificationListText } from './styles';

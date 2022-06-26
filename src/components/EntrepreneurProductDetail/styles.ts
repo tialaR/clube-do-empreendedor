@@ -1,5 +1,7 @@
 import styled, { css } from 'styled-components/native';
+
 import { colors } from '../../styles/colors';
+import { fonts } from '../../styles/fonts';
 
 export const Container = styled.View`
   flex: 1;
@@ -29,16 +31,18 @@ export const ProductContainerContents = styled.View`
 `;
 
 export const Name = styled.Text`
-    font-size: 14px;
-    font-weight: 700;
+    font-size: ${fonts.sizes.regular}px;
+    font-family: ${fonts.families.latoBlack};
 
     color: ${colors.indigoA200};
     text-align: center;
+
+    margin-bottom: 8px;
 `;
 
 export const Image = styled.Image`
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
 `;
 
 export const DescriptionContainer = styled.View`
@@ -47,17 +51,21 @@ export const DescriptionContainer = styled.View`
 `;
 
 export const Price = styled.Text`
-    margin-top: 8px;
+    font-size: ${fonts.sizes.medium}px;
+    font-family: ${fonts.families.latoBold};
 
-    font-size: 15px;
+    margin-top: 14px;
+
     color: ${colors.black};
-    font-weight: 700;
 `;
 
 export const Installment = styled.Text`
-    font-size: 10px;
+    font-size: ${fonts.sizes.xSmall}px;
+    font-family: ${fonts.families.latoBold};
+
     color: ${colors.black};
-    font-weight: 700;
+
+    margin-top: 10px;
 `;
 
 export const PromotionContainer = styled.View`
@@ -65,25 +73,27 @@ export const PromotionContainer = styled.View`
     border-radius: 50px;
 
     padding: 2px 30px;
+    margin-top: 8px;
 
     align-items: center;
     justify-content: center;
-    margin: 4px 0;
 `;
 
 export const PromotionText = styled.Text`
-    font-size: 8px;
+    font-size: ${fonts.sizes.xSmall}px;
+    font-family: ${fonts.families.latoBold};
+
     color: ${colors.white};
-    font-weight: 600;
 `;
 
 type SoldByProps = {
   colorful?: boolean;
 }
 export const SoldBy = styled.Text<SoldByProps>`
-    padding: 4px 0;
-    font-size: 12px;
-    font-weight: 600;
+    font-size: ${fonts.sizes.small}px;
+    font-family: ${fonts.families.latoBold};
+
+    margin: 10px 0;
 
     text-align: center;
 
@@ -102,20 +112,22 @@ export const FooterContainer = styled.View`
 
 export const QRCodeContainer = styled.View`
     flex: 1;
-    margin: 8px 0;
+    margin: 10px 0 8px 0;
 
     align-items: center;
     justify-content: center;
 `;
 
 export const QRCodeTitle = styled.Text`
-    font-size: 14px;
+    font-size: ${fonts.sizes.regular}px;
+    font-family: ${fonts.families.latoBlack};
+
     color: ${colors.indigoA200};
-    font-weight: 800;
 `;
 
 export const QRCodeImage = styled.Image`
-    margin-top: 10px;
+    margin-top: 12px;
+
     width: 90px;
     height: 90px;
 `;

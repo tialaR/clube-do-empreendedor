@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components/native';
 import { colors } from '../../styles/colors';
+import { fonts } from '../../styles/fonts';
 
 type ColorfulContainerProps = {
     emphasis?: boolean;
@@ -50,7 +51,9 @@ export const NameContainer = styled.View`
 `;
 
 export const Name = styled.Text`
-    font-size: 10px;
+    font-size: ${fonts.sizes.xSmall}px;
+    font-family: ${fonts.families.latoRegular};
+
     color: ${colors.indigoA200};
     text-align: center;
 `;
@@ -58,15 +61,17 @@ export const Name = styled.Text`
 export const Price = styled.Text`
     margin-top: 8px;
 
-    font-size: 13px;
+    font-size: ${fonts.sizes.small}px;
+    font-family: ${fonts.families.latoBold};
+
     color: ${colors.black};
-    font-weight: 700;
 `;
 
 export const Installment = styled.Text`
-    font-size: 10px;
+    font-size: ${fonts.sizes.xxSmall}px;
+    font-family: ${fonts.families.latoBold};
+
     color: ${colors.black};
-    font-weight: 700;
 `;
 
 export const PromotionContainer = styled.View`
@@ -82,13 +87,15 @@ export const PromotionContainer = styled.View`
 `;
 
 export const PromotionText = styled.Text`
-    font-size: 8px;
+    font-size: ${fonts.sizes.xxSmall}px;
+    font-family: ${fonts.families.latoRegular};
+
     color: ${colors.white};
-    font-weight: 600;
 `;
 
 export const SoldBy = styled.Text`
-    font-size: 8px;
+    font-size: ${fonts.sizes.xxSmall}px;
+    font-family: ${fonts.families.latoBold};
+
     color: ${colors.black};
-    font-weight: 600;
 `;

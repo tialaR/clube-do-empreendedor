@@ -1,13 +1,12 @@
 import React from 'react';
-import { Text, View } from 'react-native';
 
 import ProductCard from '../../components/ProductCard';
 import SearchHeader from '../../components/SearchHeader';
 import SectionTitle from '../../components/SectionTitle';
+import DividerContainerWithText from '../../components/DividerContainerWithText';
 
 import { useProductDetailModal } from '../../hooks/useProductDetailModal';
 
-import { colors } from '../../styles/colors';
 import { SpacingX } from '../../styles/globalStyles';
 import { Container, ProducstList, SectionListContainer, SectionTitleContainer } from './styles';
 
@@ -108,13 +107,7 @@ const ClientDashboard: React.FC = () => {
                 />
             </SectionListContainer>
 
-            <View style={{
-                backgroundColor: '#E4E3F9',
-                paddingVertical: 20,
-                alignItems: 'center'
-            }}>
-                <Text style={{ fontSize: 13, fontWeight: '600', color: colors.indigoA200 }}>Anúncio</Text>
-            </View>
+            <DividerContainerWithText text="Anúncio" />
 
             <SectionListContainer>
             <SectionTitleContainer>

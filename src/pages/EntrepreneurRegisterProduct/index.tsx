@@ -14,7 +14,7 @@ import { colors } from '../../styles/colors';
 import { HeaderContainer, Container, ProductPhotosContainer, ProductPhoto, BodyContainer, ButtonsContainer, Pregress, Title, EntrepreneurProductDetailBodyContainer } from './styles';
 import EntrepreneurProductDetail from '../../components/EntrepreneurProductDetail';
 import { SpacingX, SpacingY } from '../../styles/globalStyles';
-import Panel from '../../components/Panel';
+import ExpandableListPanel from '../../components/ExpandableListPanel';
 
 export type Product = {
   id: string;
@@ -270,7 +270,7 @@ const EntrepreneurRegisterProduct: React.FC = () => {
                     <>
                       <Title withPadding>{PageTitles.discount}</Title>
                       <SpacingY medium />
-                      <Panel 
+                      <ExpandableListPanel 
                         title={selectedDiscountCode?.label}
                         list={discountCodes} 
                         onItemSelect={setSelectedDiscountCode}

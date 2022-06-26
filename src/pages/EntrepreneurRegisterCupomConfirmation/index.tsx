@@ -1,5 +1,5 @@
-import { StackActions, useNavigation } from '@react-navigation/native';
 import React from 'react';
+import { StackActions, useNavigation } from '@react-navigation/native';
 import { TouchableWithoutFeedback } from 'react-native';
 
 import { Container, ConfirmationText } from './styles';

@@ -1,5 +1,7 @@
 import styled from 'styled-components/native';
+
 import { colors } from '../../styles/colors';
+import { fonts } from '../../styles/fonts';
 
 export const Container = styled.View`
   background-color: ${colors.indigo50};
@@ -22,8 +24,10 @@ export const CleanNotificationListContainer = styled.View`
 `;
 
 export const CleanNotificationListText = styled.Text`
+  font-size: ${fonts.sizes.large}px;
+  font-family: ${fonts.families.latoBold};
+
   margin-left: 4px;
-  font-size: 15px;
-  font-weight: 700;
+
   color: ${colors.indigoA200};
 `;

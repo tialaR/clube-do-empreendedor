@@ -2,6 +2,7 @@ import { Dimensions, Platform } from 'react-native';
 import styled, { css } from 'styled-components/native';
 
 import { colors } from '../../styles/colors';
+import { fonts } from '../../styles/fonts';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -44,9 +45,10 @@ type TitleProps = {
   withPadding?: boolean;
 }
 export const Title = styled.Text<TitleProps>`
+  font-size: ${fonts.sizes.xLarge}px;
+  font-family: ${fonts.families.latoBold};
+
   color: ${colors.white};
-  font-size: 20px;
-  font-weight: 700;
 
   align-self: center;
 

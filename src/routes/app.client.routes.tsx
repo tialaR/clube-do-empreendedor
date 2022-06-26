@@ -2,7 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Feather';
 
-import { ProductDetailModalProvider } from '../hooks/useProductDetailModal';
+import { ClientProductDetailModalProvider } from '../hooks/useClientProductDetailModal';
 
 import ClientDashboard from '../pages/ClientDashboard';
 import ClientNotifications from '../pages/ClientNotifications';
@@ -13,9 +13,9 @@ import { colors } from '../styles/colors';
 const Tab = createBottomTabNavigator();
 
 const ClientDashboardWithProductDetailModalProvider = () => (
-  <ProductDetailModalProvider>
+  <ClientProductDetailModalProvider>
     <ClientDashboard/>
-  </ProductDetailModalProvider>
+  </ClientProductDetailModalProvider>
 );
 
 type TabBarIconProps = {

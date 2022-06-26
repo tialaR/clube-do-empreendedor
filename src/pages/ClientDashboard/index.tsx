@@ -1,11 +1,11 @@
 import React from 'react';
 
-import ProductCard from '../../components/ProductCard';
+import ClientProductCard from '../../components/ClientProductCard';
 import SearchHeader from '../../components/SearchHeader';
 import SectionTitle from '../../components/SectionTitle';
 import DividerContainerWithText from '../../components/DividerContainerWithText';
 
-import { useProductDetailModal } from '../../hooks/useProductDetailModal';
+import { useClientProductDetailModal } from '../../hooks/useClientProductDetailModal';
 
 import { SpacingX } from '../../styles/globalStyles';
 import { Container, ProducstList, SectionListContainer, SectionTitleContainer } from './styles';
@@ -75,7 +75,7 @@ const products: Product[] = [
 ]
 
 const ClientDashboard: React.FC = () => {
-  const { showProductDetailModal } = useProductDetailModal();
+  const { showClientProductDetailModal } = useClientProductDetailModal();
 
   return (
       <Container>
@@ -91,14 +91,14 @@ const ClientDashboard: React.FC = () => {
                     horizontal
                     showsHorizontalScrollIndicator={false}
                     renderItem={({ item: product }: { item: Product }) => (
-                        <ProductCard
+                        <ClientProductCard
                             name={product?.name}
                             img={product?.img}
                             price={product?.price}
                             promotion={product?.promotion}
                             soldBy={product?.soldBy}
                             installment={product?.installment}
-                            onPress={() => showProductDetailModal({ product: product })}
+                            onPress={() => showClientProductDetailModal({ product: product })}
                         />
                     )}
                     ItemSeparatorComponent={() => (
@@ -119,7 +119,7 @@ const ClientDashboard: React.FC = () => {
                     horizontal
                     showsHorizontalScrollIndicator={false}
                     renderItem={({ item: product }: { item: Product }) => (
-                        <ProductCard
+                        <ClientProductCard
                             emphasis
                             name={product?.name}
                             img={product?.img}
@@ -127,7 +127,7 @@ const ClientDashboard: React.FC = () => {
                             promotion={product?.promotion}
                             soldBy={product?.soldBy}
                             installment={product?.installment}
-                            onPress={() => showProductDetailModal({ 
+                            onPress={() => showClientProductDetailModal({ 
                                 product: product, 
                                 isEmphasisProduct: true 
                             })}

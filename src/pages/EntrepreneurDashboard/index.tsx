@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import React, { ReactNode } from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 
-import ProductCard from '../../components/ProductCard';
+import ClientProductCard from '../../components/ClientProductCard';
 import SearchHeader from '../../components/SearchHeader';
 import SectionTitle from '../../components/SectionTitle';
 import { useDiscountClientsModal } from '../../hooks/useDiscountClientsModal';
@@ -112,7 +112,7 @@ const EntrepreneurDashboard: React.FC = () => {
                     horizontal
                     showsHorizontalScrollIndicator={false}
                     renderItem={({ item: product }: { item: Product }) => (
-                        <ProductCard
+                        <ClientProductCard
                             name={product?.name}
                             img={product?.img}
                             price={product?.price}

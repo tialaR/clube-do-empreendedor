@@ -39,7 +39,7 @@ import {
   import { colors } from '../../styles/colors';
 import { SpacingY } from '../../styles/globalStyles';
   
-  export type ProductDetailModalHandlersToFather = {
+  export type ClientProductDetailModalHandlersToFather = {
     openModal: () => void;
     closeModal: () => void;
   };
@@ -63,7 +63,7 @@ import { SpacingY } from '../../styles/globalStyles';
 
   const features = ['Marca: LG', 'Modelo - modelo', 'Marca2: LG', 'Modelo2 - modelo', 'Marca3: LG', 'Modelo3 - modelo']
   
-  const ProductDetailModal: React.ForwardRefRenderFunction<ProductDetailModalHandlersToFather, Props> = (
+  const ClientProductDetailModal: React.ForwardRefRenderFunction<ClientProductDetailModalHandlersToFather, Props> = (
     {
       onClose,
       product,
@@ -196,6 +196,6 @@ import { SpacingY } from '../../styles/globalStyles';
     );
   };
   
-  const ForwardRefProductDetailModal = forwardRef(ProductDetailModal);
-  export default memo(ForwardRefProductDetailModal);
+  const ForwardRefClientProductDetailModal = forwardRef(ClientProductDetailModal);
+  export default memo(ForwardRefClientProductDetailModal);
   

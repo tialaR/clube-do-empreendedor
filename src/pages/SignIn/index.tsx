@@ -149,7 +149,7 @@ const SignIn: React.FC<SiginProps> = ({ route }) => {
                                 render={({ field: { onChange, onBlur } }) => (
                                 <Input
                                     placeholder='Digite seu CNPJ' 
-                                    maxLength={19}
+                                    maxLength={18}
                                     keyboardType='number-pad'
                                     value={cnpj}
                                     onBlur={onBlur}

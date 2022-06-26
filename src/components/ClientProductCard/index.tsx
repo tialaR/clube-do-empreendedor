@@ -12,7 +12,7 @@ type Props = {
     onPress: () => void;
 }
 
-const ProductCard: React.FC<Props> = ({ name, img, price, installment, promotion, soldBy, emphasis, onPress }) => {
+const ClientProductCard: React.FC<Props> = ({ name, img, price, installment, promotion, soldBy, emphasis, onPress }) => {
   return (
     <ColorfulContainer emphasis={emphasis} onPress={onPress}>
       <Container>
@@ -34,4 +34,4 @@ const ProductCard: React.FC<Props> = ({ name, img, price, installment, promotion
   );
 }
 
-export default memo(ProductCard);
+export default memo(ClientProductCard);

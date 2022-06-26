@@ -75,7 +75,6 @@ const Panel: React.FC<Props> = ({ title, list, error, errorText, onItemSelect })
     const handleSelectItem = (item: Item) => {
         onItemSelect(item);
         setSelectedItem(item);
-        // toggle();
     }
 
     let icon = icons['down'];
@@ -98,7 +97,7 @@ const Panel: React.FC<Props> = ({ title, list, error, errorText, onItemSelect })
                         </TouchableOpacity>
                     </View>
                     
-                        <ScrollView style={styles.body} onLayout={_setMaxHeight}>
+                        <ScrollView nestedScrollEnabled style={styles.body} onLayout={_setMaxHeight}>
                             {list.map((item: Item) => (
                                 <TouchableOpacity 
                                     key={String(item.label)} 

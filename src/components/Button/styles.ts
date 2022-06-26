@@ -15,7 +15,7 @@ type ButtonProps = {
 export const ContainerView = styled.View<ButtonProps>`
     border-radius: 10px;
 
-    height: 50px;
+    height: 60px;
     width: 100%;
 
     ${(props) => props.buttontypes.outlined && css`border: 2px solid ${colors.indigoA200};`};

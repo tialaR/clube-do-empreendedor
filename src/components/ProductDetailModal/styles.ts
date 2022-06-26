@@ -26,11 +26,13 @@ export const Container = styled.View`
 `;
 
 export const ProductContainer = styled.View`
+  position: relative;
+
   width: ${modalWidth}px;
   height: ${modalHeight}px;
 
   background-color: ${colors.gray50};
-  padding: 10px 20px 0 20px;
+  padding: 40px 20px 0 20px;
   border-radius: 10px;
   overflow: hidden;
 
@@ -42,8 +44,12 @@ export const ProductContainer = styled.View`
 `;
 
 export const ContainerIconButton = styled.View`
+  position: absolute;
+  top: 8px;
+  right: 8px;
+
   align-self: flex-end;
-  margin-bottom: 8px;
+  margin-bottom: 14px;
 `;
 
 export const ProductScrollContainer = styled.ScrollView.attrs({

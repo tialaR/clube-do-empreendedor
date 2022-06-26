@@ -8,7 +8,7 @@ interface ContainerProps {
 export const Container = styled.View<ContainerProps>`
   border-radius: 10px;
 
-  height: 50px;
+  height: 60px;
   width: 100%;
   padding: 0 16px;
   
@@ -18,7 +18,6 @@ export const Container = styled.View<ContainerProps>`
   flex-direction: row;
   align-items: center;
 
-  margin-bottom: ${props => (props.isErrored ? 0 : 8)}px;
   ${props =>
     props.isErrored &&
     css`

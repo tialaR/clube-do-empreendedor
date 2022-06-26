@@ -26,11 +26,13 @@ export const Container = styled.View`
 `;
 
 export const ProductContainer = styled.View`
+  position: relative;
+
   width: ${modalWidth}px;
   height: ${modalHeight}px;
 
   background-color: ${colors.gray50};
-  padding: 10px 20px 10px 20px;
+  padding: 40px 20px 10px 20px;
   border-radius: 10px;
   overflow: hidden;
 
@@ -41,11 +43,21 @@ export const ProductContainer = styled.View`
   justify-content: center;
 `;
 
+
+export const ContainerIconButton = styled.View`
+  position: absolute;
+  top: 8px;
+  right: 8px;
+
+  align-self: flex-end;
+  margin-bottom: 14px;
+`;
+
 export const DiscountClientsListTitle = styled.Text`
   font-size: 18px;
   font-weight: 700;
 
-  padding-bottom: 20px;
+  padding-bottom: 30px;
 
   color: ${colors.indigoA200};
 `;
@@ -57,11 +69,6 @@ export const DiscountClientsList = styled(
     paddingTop: 40
    },
 })`
-`;
-
-export const ContainerIconButton = styled.View`
-  align-self: flex-end;
-  margin-bottom: 8px;
 `;
 
 export const ClientItemButton = styled.TouchableOpacity.attrs(() => ({

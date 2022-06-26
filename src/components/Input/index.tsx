@@ -22,7 +22,7 @@ const Input: React.FC<Props> = ({ error, errorText, ...rest }) => {
         />
       </Container>
       {error && (
-        <ErrorMessage style={{ paddingBottom: 10 }}>{errorText}</ErrorMessage>
+        <ErrorMessage style={{ paddingBottom: 0 }}>{errorText}</ErrorMessage>
       )}
     </>
   );

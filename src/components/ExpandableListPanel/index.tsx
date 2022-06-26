@@ -16,7 +16,7 @@ type Item = {
     value: string;
 };
 
-const Panel: React.FC<Props> = ({ title, list, error, errorText, onItemSelect }) => {
+const ExpandableListPanel: React.FC<Props> = ({ title, list, error, errorText, onItemSelect }) => {
     const [animation, setAnimation] = useState(new Animated.Value(0));
     const [expanded, setExpanded] = useState(false);
     const [maxHeight, setMaxHeight] = useState(0);
@@ -165,4 +165,4 @@ var styles = StyleSheet.create({
     }
 });
 
-export default Panel;
+export default ExpandableListPanel;

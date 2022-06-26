@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { AuthProvider } from './auth';
+import { AuthProvider } from './useAuth';
 
 type Props = {
     children: ReactNode;

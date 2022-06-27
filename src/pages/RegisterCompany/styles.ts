@@ -22,7 +22,7 @@ export const HeaderContainer = styled.View`
 `;
 
 export const BodyContainer = styled.View`
-    margin-top: 32px;
+    margin-top: 18%;
     padding: 0 32px;
 
     flex: 1;

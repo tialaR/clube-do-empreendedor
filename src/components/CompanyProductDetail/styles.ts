@@ -31,7 +31,7 @@ export const ProductContainerContents = styled.View`
 `;
 
 export const Name = styled.Text`
-    font-size: ${fonts.sizes.regular}px;
+    font-size: ${fonts.sizes.medium}px;
     font-family: ${fonts.families.latoBlack};
 
     color: ${colors.indigoA200};
@@ -41,26 +41,26 @@ export const Name = styled.Text`
 `;
 
 export const Image = styled.Image`
-    width: 120px;
-    height: 120px;
+    width: 160px;
+    height: 160px;
 `;
 
 export const DescriptionContainer = styled.View`
     justify-content: center;
     align-items: center;
+
+    margin-top: 18px;
 `;
 
 export const Price = styled.Text`
-    font-size: ${fonts.sizes.medium}px;
+    font-size: ${fonts.sizes.large}px;
     font-family: ${fonts.families.latoBold};
-
-    margin-top: 14px;
 
     color: ${colors.black};
 `;
 
 export const Installment = styled.Text`
-    font-size: ${fonts.sizes.xSmall}px;
+    font-size: ${fonts.sizes.small}px;
     font-family: ${fonts.families.latoBold};
 
     color: ${colors.black};
@@ -80,7 +80,7 @@ export const PromotionContainer = styled.View`
 `;
 
 export const PromotionText = styled.Text`
-    font-size: ${fonts.sizes.xSmall}px;
+    font-size: ${fonts.sizes.small}px;
     font-family: ${fonts.families.latoBold};
 
     color: ${colors.white};
@@ -126,9 +126,9 @@ export const QRCodeTitle = styled.Text`
 `;
 
 export const QRCodeImage = styled.Image`
-    margin-top: 12px;
+    margin-top: 14px;
 
-    width: 90px;
-    height: 90px;
+    width: 80px;
+    height: 80px;
 `;
 

@@ -34,8 +34,10 @@ export const Container = styled.View`
 `;
 
 export const Image = styled.Image`
-    width: 98px;
-    height: 90px;
+    width: 100px;
+    height: 100px;
+
+    align-self: center;
 `;
 
 export const DescriptionContainer = styled.View`
@@ -51,7 +53,7 @@ export const NameContainer = styled.View`
 `;
 
 export const Name = styled.Text`
-    font-size: ${fonts.sizes.xSmall}px;
+    font-size: ${fonts.sizes.small}px;
     font-family: ${fonts.families.latoRegular};
 
     color: ${colors.indigoA200};

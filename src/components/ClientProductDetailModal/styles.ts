@@ -69,7 +69,7 @@ export const ProductContainerContents = styled.View`
 `;
 
 export const Name = styled.Text`
-    font-size: ${fonts.sizes.regular}px;
+    font-size: ${fonts.sizes.medium}px;
     font-family: ${fonts.families.latoBlack};
 
     color: ${colors.indigoA200};
@@ -79,26 +79,26 @@ export const Name = styled.Text`
 `;
 
 export const Image = styled.Image`
-    width: 120px;
-    height: 120px;
+    width: 160px;
+    height: 160px;
 `;
 
 export const DescriptionContainer = styled.View`
     justify-content: center;
     align-items: center;
+
+    margin-top: 18px;
 `;
 
 export const Price = styled.Text`
-    font-size: ${fonts.sizes.medium}px;
-    font-family: ${fonts.families.latoBold};
-
-    margin-top: 14px;
+    font-size: ${fonts.sizes.large}px;
+    font-family: ${fonts.families.latoBlack};
 
     color: ${colors.black};
 `;
 
 export const Installment = styled.Text`
-    font-size: ${fonts.sizes.xSmall}px;
+    font-size: ${fonts.sizes.small}px;
     font-family: ${fonts.families.latoBold};
 
     color: ${colors.black};
@@ -118,7 +118,7 @@ export const PromotionContainer = styled.View`
 `;
 
 export const PromotionText = styled.Text`
-    font-size: ${fonts.sizes.xSmall}px;
+    font-size: ${fonts.sizes.small}px;
     font-family: ${fonts.families.latoBold};
 
     color: ${colors.white};
@@ -128,7 +128,7 @@ type SoldByProps = {
   colorful?: boolean;
 }
 export const SoldBy = styled.Text<SoldByProps>`
-    font-size: ${fonts.sizes.regular}px;
+    font-size: ${fonts.sizes.small}px;
     font-family: ${fonts.families.latoRegular};
 
     margin: 10px 0;
@@ -203,13 +203,15 @@ export const QRCodeTitle = styled.Text`
 `;
 
 export const QRCodeImage = styled.Image`
-    margin-top: 8px;
-    width: 70px;
-    height: 70px;
+    margin-top: 14px;
+
+    width: 80px;
+    height: 80px;
 `;
 
 export const WhatsAppContainer = styled.View`
   flex: 1;
+
   align-items: center;
   justify-content: center;
 
@@ -224,16 +226,16 @@ export const WhatsAppButton = styled.TouchableOpacity.attrs(() => ({
     flex-direction: row;
 
     border-radius: 50px;
-    padding: 4px 10px;
+    padding: 6px 12px;
 
     background-color: ${colors.whatsApp};
 `;
 
 export const WhatsAppButtonText = styled.Text`
-    font-size: ${fonts.sizes.xxSmall}px;
+    font-size: ${fonts.sizes.xSmall}px;
     font-family: ${fonts.families.latoBlack};
 
-    padding-left: 2px;
+    padding-left: 4px;
 
     color: ${colors.white};
 `;
@@ -246,17 +248,18 @@ export const DiscountButton = styled.TouchableOpacity.attrs(() => ({
     flex-direction: row;
 
     border-radius: 50px;
-    padding: 4px 10px;
+
+    padding: 6px 12px;
     margin-top: 12px;
 
     background-color: ${colors.indigoA200};
 `;
 
 export const DiscountButtonText = styled.Text`
-    font-size: ${fonts.sizes.xxSmall}px;
+    font-size: ${fonts.sizes.xSmall}px;
     font-family: ${fonts.families.latoBlack};
 
-    padding-left: 2px;
+    padding-left: 4px;
 
     color: ${colors.white};
 `;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ClientProductCard from '../../components/ClientProductCard';
+import ProductCard from '../../components/ProductCard';
 import SearchHeader from '../../components/SearchHeader';
 import SectionTitle from '../../components/SectionTitle';
 import DividerContainerWithText from '../../components/DividerContainerWithText';
@@ -91,7 +91,7 @@ const ClientDashboard: React.FC = () => {
                     horizontal
                     showsHorizontalScrollIndicator={false}
                     renderItem={({ item: product }: { item: Product }) => (
-                        <ClientProductCard
+                        <ProductCard
                             name={product?.name}
                             img={product?.img}
                             price={product?.price}
@@ -119,7 +119,7 @@ const ClientDashboard: React.FC = () => {
                     horizontal
                     showsHorizontalScrollIndicator={false}
                     renderItem={({ item: product }: { item: Product }) => (
-                        <ClientProductCard
+                        <ProductCard
                             emphasis
                             name={product?.name}
                             img={product?.img}

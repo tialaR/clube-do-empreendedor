@@ -109,7 +109,6 @@ const RegisterClient: React.FC = () => {
             </HeaderContainer>
 
             <BodyContainer>
-
               {progress === 0 &&
                 <Controller
                   name="name"

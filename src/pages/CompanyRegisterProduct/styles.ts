@@ -27,7 +27,7 @@ export const HeaderContainer = styled.View`
 `;
 
 export const BodyContainer = styled.View`
-    margin-top: 32px;
+    margin-top: 18%;
     padding: 0 32px;
 
     flex: 1;
@@ -37,7 +37,6 @@ export const BodyContainer = styled.View`
 export const CompanyProductDetailBodyContainer = styled.View`
     padding: 0 38px;
 
-    flex: 1;
     width: 100%;
 `;
 

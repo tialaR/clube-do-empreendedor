@@ -167,7 +167,7 @@ const CompanyRegisterProduct: React.FC = () => {
             </HeaderContainer>
 
           <CompanyProductDetailBodyContainer>
-            <SpacingY medium />
+            <SpacingY large />
             <Title>{PageTitles.productRegister}</Title>
             <SpacingY medium />
             {productResgistered && <CompanyProductDetail product={productResgistered} />}
@@ -300,8 +300,6 @@ const CompanyRegisterProduct: React.FC = () => {
                     />}
                 </>
               )}
-
-              
             </BodyContainer>
 
             <ButtonsContainer>

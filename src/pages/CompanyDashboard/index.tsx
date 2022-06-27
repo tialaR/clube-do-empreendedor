@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import ClientProductCard from '../../components/ClientProductCard';
 import SearchHeader from '../../components/SearchHeader';
 import SectionTitle from '../../components/SectionTitle';
-import { useDiscountClientsModal } from '../../hooks/useDiscountClientsModal';
+import { useCompanyDiscountClientsModal } from '../../hooks/useCompanyDiscountClientsModal';
 import DividerContainerWithText from '../../components/DividerContainerWithText';
 
 import { colors } from '../../styles/colors';
@@ -94,9 +94,9 @@ const SquareButton: React.FC<SquareButtonProps> = ({ children, onPress }) => {
     )
 }
 
-const EntrepreneurDashboard: React.FC = () => {
+const CompanyDashboard: React.FC = () => {
   const navigation = useNavigation<any>();
-  const { showDiscountClientModal } = useDiscountClientsModal();
+  const { showDiscountClientModal } = useCompanyDiscountClientsModal();
 
   return (
       <Container>
@@ -119,7 +119,7 @@ const EntrepreneurDashboard: React.FC = () => {
                             promotion={product?.promotion}
                             soldBy={product?.soldBy}
                             installment={product?.installment}
-                            onPress={() => navigation.navigate('EntrepreneurEditProductDetail', { product })}
+                            onPress={() => navigation.navigate('CompanyEditProductDetail', { product })}
                         />
                     )}
                     ItemSeparatorComponent={() => (
@@ -137,14 +137,14 @@ const EntrepreneurDashboard: React.FC = () => {
                     <SquareButtonText>{`Clientes com\ndesconto`}</SquareButtonText>
                 </SquareButton>
                 <SpacingX medium />
-                <SquareButton onPress={() => navigation.navigate('EntrepreneurRegisterCupom')}>
+                <SquareButton onPress={() => navigation.navigate('CompanyRegisterCupom')}>
                     <SquareButtonText>
                         {`Cadastrar`}
                         <SquareButtonText bold>{`\nCUPOM`}</SquareButtonText>
                     </SquareButtonText>
                 </SquareButton>
                 <SpacingX medium />
-                <SquareButton onPress={() => navigation.navigate('EntrepreneurRegisterProduct')}>
+                <SquareButton onPress={() => navigation.navigate('CompanyRegisterProduct')}>
                     <SquareButtonText>
                         {`Cadastrar`}
                         <SquareButtonText bold>{`\nPRODUTO`}</SquareButtonText>
@@ -155,4 +155,4 @@ const EntrepreneurDashboard: React.FC = () => {
   );
 }
 
-export default EntrepreneurDashboard;
+export default CompanyDashboard;

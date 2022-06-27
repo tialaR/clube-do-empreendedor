@@ -33,7 +33,7 @@ import {
     product: Product;
   };
   
-  const EntrepreneurProductDetail: React.FC<Props> = ({ product }) => {  
+  const CompanyProductDetail: React.FC<Props> = ({ product }) => {  
   
     return (
             <Container>
@@ -63,5 +63,5 @@ import {
     );
   };
   
-export default EntrepreneurProductDetail;
+export default CompanyProductDetail;
   

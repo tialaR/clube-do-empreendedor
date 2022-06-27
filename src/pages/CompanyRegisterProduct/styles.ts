@@ -34,7 +34,7 @@ export const BodyContainer = styled.View`
     width: 100%;
 `;
 
-export const EntrepreneurProductDetailBodyContainer = styled.View`
+export const CompanyProductDetailBodyContainer = styled.View`
     padding: 0 38px;
 
     flex: 1;

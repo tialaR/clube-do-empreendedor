@@ -41,7 +41,7 @@ const validationSchema = yup.object().shape({
 });
 
 
-const RegisterEntrepreneur: React.FC = () => {
+const RegisterCompany: React.FC = () => {
   const navigation = useNavigation<any>();
 
   const {
@@ -308,4 +308,4 @@ const RegisterEntrepreneur: React.FC = () => {
   );
 }
 
-export default RegisterEntrepreneur;
+export default RegisterCompany;

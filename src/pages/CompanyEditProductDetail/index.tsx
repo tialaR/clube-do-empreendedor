@@ -7,7 +7,7 @@ import IconButton from '../../components/IconButton';
 
 import { colors } from '../../styles/colors';
 import { HeaderContainer, Container, BodyContainer, ButtonsContainer } from './styles';
-import EntrepreneurProductDetail from '../../components/EntrepreneurProductDetail';
+import CompanyProductDetail from '../../components/CompanyProductDetail';
 
 type Product = {
   id: string;
@@ -24,7 +24,7 @@ type Props = {
   route: RouteProp<{ params: { product: Product } }, 'params'>
 }
 
-const EntrepreneurEditProductDetail: React.FC<Props> = ({ route }) => {
+const CompanyEditProductDetail: React.FC<Props> = ({ route }) => {
   const navigation = useNavigation<any>();
 
   const product = useMemo(() => route.params?.product, [route]);
@@ -42,7 +42,7 @@ const EntrepreneurEditProductDetail: React.FC<Props> = ({ route }) => {
             </HeaderContainer>
 
             <BodyContainer>
-                <EntrepreneurProductDetail product={product} />
+                <CompanyProductDetail product={product} />
             </BodyContainer>
 
             <ButtonsContainer>
@@ -52,4 +52,4 @@ const EntrepreneurEditProductDetail: React.FC<Props> = ({ route }) => {
   );
 }
 
-export default EntrepreneurEditProductDetail;
+export default CompanyEditProductDetail;

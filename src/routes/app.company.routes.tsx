@@ -4,26 +4,26 @@ import { enableScreens } from 'react-native-screens';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import EntrepreneurDashboard from '../pages/EntrepreneurDashboard';
-import EntrepreneurNotifications from '../pages/EntrepreneurNotifications';
-import EntrepreneurProfile from '../pages/EntrepreneurProfile';
-import EntrepreneurRegisterCupom from '../pages/EntrepreneurRegisterCupom';
+import CompanyDashboard from '../pages/CompanyDashboard';
+import CompanyNotifications from '../pages/CompanyNotifications';
+import CompanyProfile from '../pages/CompanyProfile';
+import CompanyRegisterCupom from '../pages/CompanyRegisterCupom';
 
-import { DiscountClientsModalProvider } from '../hooks/useDiscountClientsModal';
+import { CompanyDiscountClientsModalProvider } from '../hooks/useCompanyDiscountClientsModal';
 
-import EntrepreneurRegisterCupomConfirmation from '../pages/EntrepreneurRegisterCupomConfirmation';
-import EntrepreneurEditProductDetail from '../pages/EntrepreneurEditProductDetail';
-import EntrepreneurRegisterProduct from '../pages/EntrepreneurRegisterProduct';
+import CompanyRegisterCupomConfirmation from '../pages/CompanyRegisterCupomConfirmation';
+import CompanyEditProductDetail from '../pages/CompanyEditProductDetail';
+import CompanyRegisterProduct from '../pages/CompanyRegisterProduct';
 
 import { colors } from '../styles/colors';
 
 enableScreens();
 const Stack = createNativeStackNavigator();
 
-const EntrepreneurDashboardWithDiscountClientsModalProvider = () => (
-  <DiscountClientsModalProvider>
-    <EntrepreneurDashboard/>
-  </DiscountClientsModalProvider>
+const CompanyDashboardWithDiscountClientsModalProvider = () => (
+  <CompanyDiscountClientsModalProvider>
+    <CompanyDashboard/>
+  </CompanyDiscountClientsModalProvider>
 );
 
 const Tab = createBottomTabNavigator();
@@ -32,10 +32,10 @@ type TabBarIconProps = {
     color: string;
 }
 
-export function TabEntrepreneurRoutes() {
+export function TabCompanyRoutes() {
   return (
     <Tab.Navigator
-        initialRouteName="TabEntrepreneurDashboard"
+        initialRouteName="TabCompanyDashboard"
         screenOptions={{
             headerShown: false,
             tabBarActiveTintColor: colors.white,
@@ -55,41 +55,41 @@ export function TabEntrepreneurRoutes() {
           tabBarIcon: ({ color }: TabBarIconProps) => (
             <Icon name="user" color={color} size={22} />
           )}} 
-          name="TabProfile" component={EntrepreneurProfile} 
+          name="TabProfile" component={CompanyProfile} 
         />
       <Tab.Screen
         options={{
             tabBarIcon: ({ color }: TabBarIconProps) => (
               <Icon name="home" color={color} size={22} />
             )}}
-        name="TabEntrepreneurDashboard" component={EntrepreneurDashboardWithDiscountClientsModalProvider} 
+        name="TabCompanyDashboard" component={CompanyDashboardWithDiscountClientsModalProvider} 
         />
       <Tab.Screen 
         options={{
             tabBarIcon: ({ color }: TabBarIconProps) => (
               <Icon name="bell" color={color} size={22} />
         )}}
-        name="TabNotifications" component={EntrepreneurNotifications} 
+        name="TabNotifications" component={CompanyNotifications} 
       />
     </Tab.Navigator>
   );
 }
 
-export const AppEntrepreneurRoutes = () => {
+export const AppCompanyRoutes = () => {
   return (
     <Stack.Navigator 
         screenOptions={{
             headerShown: false
         }}
     >
-      <Stack.Screen name="EntrepreneurDashboard" component={TabEntrepreneurRoutes} />
+      <Stack.Screen name="CompanyDashboard" component={TabCompanyRoutes} />
 
-      <Stack.Screen name="EntrepreneurRegisterCupom" component={EntrepreneurRegisterCupom} />
-      <Stack.Screen name="EntrepreneurRegisterCupomConfirmation" component={EntrepreneurRegisterCupomConfirmation} />
+      <Stack.Screen name="CompanyRegisterCupom" component={CompanyRegisterCupom} />
+      <Stack.Screen name="CompanyRegisterCupomConfirmation" component={CompanyRegisterCupomConfirmation} />
 
-      <Stack.Screen name="EntrepreneurEditProductDetail" component={EntrepreneurEditProductDetail} />
+      <Stack.Screen name="CompanyEditProductDetail" component={CompanyEditProductDetail} />
     
-      <Stack.Screen name="EntrepreneurRegisterProduct" component={EntrepreneurRegisterProduct} />
+      <Stack.Screen name="CompanyRegisterProduct" component={CompanyRegisterProduct} />
     </Stack.Navigator>
   );
 }

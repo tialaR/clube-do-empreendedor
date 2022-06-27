@@ -5,12 +5,12 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SignIn from '../pages/SignIn';
 import Wellcome from '../pages/Wellcome';
 import RegisterClient from '../pages/RegisterClient';
-import RegisterEntrepreneur from '../pages/RegisterEntrepreneur';
+import RegisterCompany from '../pages/RegisterCompany';
 import RecoverPassword from '../pages/RecoverPassword';
 import RecoverPasswordConfirmation from '../pages/RecoverPasswordConfirmation';
 
 import { AppClientRoutes } from './app.client.routes';
-import { AppEntrepreneurRoutes } from './app.entrepreneur.routes';
+import { AppCompanyRoutes } from './app.company.routes';
 
 enableScreens();
 const Stack = createNativeStackNavigator();
@@ -26,13 +26,13 @@ export function AuthRoutes() {
       <Stack.Screen name="SignIn" component={SignIn} />
 
       <Stack.Screen name="RegisterClient" component={RegisterClient} />
-      <Stack.Screen name="RegisterEntrepreneur" component={RegisterEntrepreneur} />
+      <Stack.Screen name="RegisterCompany" component={RegisterCompany} />
 
       <Stack.Screen name="RecoverPassword" component={RecoverPassword} />
       <Stack.Screen name="RecoverPasswordConfirmation" component={RecoverPasswordConfirmation} />
 
       <Stack.Screen name="AppClientRoutes" component={AppClientRoutes} />
-      <Stack.Screen name="AppEntrepreneurRoutes" component={AppEntrepreneurRoutes} />
+      <Stack.Screen name="AppCompanyRoutes" component={AppCompanyRoutes} />
     </Stack.Navigator>
   );
 }

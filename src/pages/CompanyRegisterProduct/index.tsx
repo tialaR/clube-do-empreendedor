@@ -8,13 +8,13 @@ import {  Alert, Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedb
 import Button from '../../components/Button';
 import IconButton from '../../components/IconButton';
 import InputLine from '../../components/InputLine';
+import CompanyProductDetail from '../../components/CompanyProductDetail';
+import ExpandableListPanel from '../../components/ExpandableListPanel';
 
 
 import { colors } from '../../styles/colors';
-import { HeaderContainer, Container, ProductPhotosContainer, ProductPhoto, BodyContainer, ButtonsContainer, Pregress, Title, EntrepreneurProductDetailBodyContainer } from './styles';
-import EntrepreneurProductDetail from '../../components/EntrepreneurProductDetail';
 import { SpacingX, SpacingY } from '../../styles/globalStyles';
-import ExpandableListPanel from '../../components/ExpandableListPanel';
+import { HeaderContainer, Container, ProductPhotosContainer, ProductPhoto, BodyContainer, ButtonsContainer, Pregress, Title, CompanyProductDetailBodyContainer } from './styles';
 
 export type Product = {
   id: string;
@@ -58,7 +58,7 @@ const discountCodeValidationSchema = yup.object().shape({
   value: yup.string().required('Campo obrigatório'),
 });
 
-const EntrepreneurRegisterProduct: React.FC = () => {
+const CompanyRegisterProduct: React.FC = () => {
   const navigation = useNavigation<any>();
 
   const {
@@ -166,12 +166,12 @@ const EntrepreneurRegisterProduct: React.FC = () => {
                 </View>
             </HeaderContainer>
 
-          <EntrepreneurProductDetailBodyContainer>
+          <CompanyProductDetailBodyContainer>
             <SpacingY medium />
             <Title>{PageTitles.productRegister}</Title>
             <SpacingY medium />
-            {productResgistered && <EntrepreneurProductDetail product={productResgistered} />}
-          </EntrepreneurProductDetailBodyContainer>
+            {productResgistered && <CompanyProductDetail product={productResgistered} />}
+          </CompanyProductDetailBodyContainer>
       </Container>
     )
   }
@@ -199,7 +199,7 @@ const EntrepreneurRegisterProduct: React.FC = () => {
                 <>
                   <Title>{PageTitles.productRegister}</Title>
                   <SpacingY small />
-                  {productResgistered && <EntrepreneurProductDetail product={productResgistered} />}
+                  {productResgistered && <CompanyProductDetail product={productResgistered} />}
                   <SpacingY large />
                 </>
               ) : (
@@ -317,4 +317,4 @@ const EntrepreneurRegisterProduct: React.FC = () => {
   );
 }
 
-export default EntrepreneurRegisterProduct;
+export default CompanyRegisterProduct;

@@ -3,7 +3,7 @@ import { ActivityIndicator, View } from 'react-native';
 
 import { AuthRoutes } from './auth.routes';
 import { AppClientRoutes } from './app.client.routes';
-import { AppEntrepreneurRoutes } from './app.entrepreneur.routes';
+import { AppCompanyRoutes } from './app.company.routes';
 
 import { useAuth } from '../hooks/useAuth';
 
@@ -28,7 +28,7 @@ const Routes: React.FC = () => {
   }
 
   if (user?.document) {
-    return user?.type === 'CPF' ? <AppClientRoutes /> : <AppEntrepreneurRoutes />;
+    return user?.type === 'CPF' ? <AppClientRoutes /> : <AppCompanyRoutes />;
   } else {
     return <AuthRoutes />;
   }

@@ -1,6 +1,6 @@
 import React, { ReactNode, useCallback, useRef, useState } from 'react';
 import { createContext, useContextSelector } from 'use-context-selector';
-import DiscountClientsModal, { DiscountClientsModalHandlersToFather } from '../components/DiscountClientsModal';
+import DiscountClientsModal, { DiscountClientsModalHandlersToFather } from '../components/CompanyDiscountClientsModal';
 
 type DiscountClientsModalContextData = {
     showDiscountClientModal(): void;
@@ -120,7 +120,7 @@ type DiscountClientsModalProviderProps = {
     children: ReactNode;
 }
 
-const DiscountClientsModalProvider: React.FC<DiscountClientsModalProviderProps> = ({ children }) => {
+const CompanyDiscountClientsModalProvider: React.FC<DiscountClientsModalProviderProps> = ({ children }) => {
   const discountClientsModalRef = useRef<DiscountClientsModalHandlersToFather>(null);
 
   const showDiscountClientModal = useCallback(() => {
@@ -154,7 +154,7 @@ const DiscountClientsModalProvider: React.FC<DiscountClientsModalProviderProps> 
   );
 };
 
-function useDiscountClientsModal(): DiscountClientsModalContextData {
+function useCompanyDiscountClientsModal(): DiscountClientsModalContextData {
     const showDiscountClientModal = useContextSelector(DiscountClientsModalContext, (discountClientsModalContext: DiscountClientsModalContextData) => discountClientsModalContext.showDiscountClientModal);
     const closeDiscountClientModal = useContextSelector(DiscountClientsModalContext, (discountClientsModalContext: DiscountClientsModalContextData) => discountClientsModalContext.closeDiscountClientModal);
 
@@ -164,4 +164,4 @@ function useDiscountClientsModal(): DiscountClientsModalContextData {
     };
 }
 
-export { DiscountClientsModalProvider, useDiscountClientsModal };
+export { CompanyDiscountClientsModalProvider, useCompanyDiscountClientsModal };

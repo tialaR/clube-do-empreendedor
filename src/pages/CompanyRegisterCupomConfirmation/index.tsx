@@ -4,7 +4,7 @@ import { TouchableWithoutFeedback } from 'react-native';
 
 import { Container, ConfirmationText } from './styles';
 
-const EntrepreneurRegisterCupomConfirmation: React.FC = () => {
+const CompanyRegisterCupomConfirmation: React.FC = () => {
   const navigation = useNavigation();
 
   // Back to dashboard
@@ -21,4 +21,4 @@ const EntrepreneurRegisterCupomConfirmation: React.FC = () => {
   );
 }
 
-export default EntrepreneurRegisterCupomConfirmation;
+export default CompanyRegisterCupomConfirmation;

@@ -58,7 +58,7 @@ import {
     </ClientItemButton>
   )
   
-  const DiscountClientsModal: React.ForwardRefRenderFunction<DiscountClientsModalHandlersToFather, Props> = (
+  const CompanyDiscountClientsModal: React.ForwardRefRenderFunction<DiscountClientsModalHandlersToFather, Props> = (
     {
       onClose,
       discountClients,
@@ -184,6 +184,6 @@ import {
     );
   };
   
-  const ForwardRefProductDetailModal = forwardRef(DiscountClientsModal);
-  export default memo(ForwardRefProductDetailModal);
+  const ForwardRefCompanyDiscountClientsModal = forwardRef(CompanyDiscountClientsModal);
+  export default memo(ForwardRefCompanyDiscountClientsModal);
   

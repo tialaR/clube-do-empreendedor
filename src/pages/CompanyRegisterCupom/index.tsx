@@ -17,7 +17,7 @@ const validationSchema = yup.object().shape({
 });
 
 
-const EntrepreneurRegisterCupom: React.FC = () => {
+const CompanyRegisterCupom: React.FC = () => {
   const navigation = useNavigation<any>();
 
   const {
@@ -33,7 +33,7 @@ const EntrepreneurRegisterCupom: React.FC = () => {
 
   const onSubmit = (data: any) => {
     resetInputs(); 
-    navigation.navigate('EntrepreneurRegisterCupomConfirmation');
+    navigation.navigate('CompanyRegisterCupomConfirmation');
   };
 
   return (
@@ -78,4 +78,4 @@ const EntrepreneurRegisterCupom: React.FC = () => {
   );
 }
 
-export default EntrepreneurRegisterCupom;
+export default CompanyRegisterCupom;

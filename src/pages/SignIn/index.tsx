@@ -36,7 +36,7 @@ const clientValidationSchema = yup.object().shape({
     password: yup.string().required('Campo obrigatório').min(6, 'A senha deve conter no mínimo 6 caracteres')
 }).required();
 
-const entrepreneurValidationSchema = yup.object().shape({
+const companyValidationSchema = yup.object().shape({
     cnpj: yup.string().matches(isValidCNPJ , 'Formato incorreto').required('Campo obrigatório'),
     password: yup.string().required('Campo obrigatório').min(6, 'A senha deve conter no mínimo 6 caracteres')
 }).required();
@@ -53,13 +53,13 @@ const SignIn: React.FC<SiginProps> = ({ route }) => {
       const [cnpj, setCnpj] = useState('');
 
       const isClient = useMemo(() => route.params?.isClient, [route]);
-      const validationSchema = useMemo(() => isClient ? clientValidationSchema : entrepreneurValidationSchema, [isClient])
+      const validationSchema = useMemo(() => isClient ? clientValidationSchema : companyValidationSchema, [isClient])
       
       const handleFirstAccessNavigation = useCallback(() => {
           if (isClient) {
             navigation.navigate('RegisterClient')
           } else {
-              navigation.navigate('RegisterEntrepreneur')
+              navigation.navigate('RegisterCompany')
           } 
       },[navigation, isClient])
 

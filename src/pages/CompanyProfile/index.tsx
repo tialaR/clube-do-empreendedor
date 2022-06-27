@@ -19,7 +19,7 @@ const RoundButton: React.FC<RoundButtonProps> = ({ children, onPress, fullWidth 
   </RoundButtonContainer>
 )
 
-const EntrepreneurProfile: React.FC = () => {
+const CompanyProfile: React.FC = () => {
   const { signOut } = useAuth();
   
   return (
@@ -40,4 +40,4 @@ const EntrepreneurProfile: React.FC = () => {
   );
 }
 
-export default EntrepreneurProfile;
+export default CompanyProfile;

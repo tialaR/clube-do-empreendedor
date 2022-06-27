@@ -5,7 +5,7 @@ import { colors } from '../../styles/colors';
 import { Container, BodyContainer, CleanNotificationListContainer, CleanNotificationListText } from './styles';
 import { BigTitle } from '../../styles/globalStyles';
 
-const EntrepreneurNotifications: React.FC = () => {
+const CompanyNotifications: React.FC = () => {
   return (
       <Container>
           <BigTitle>Notificações</BigTitle>
@@ -22,4 +22,4 @@ const EntrepreneurNotifications: React.FC = () => {
   );
 }
 
-export default EntrepreneurNotifications;
+export default CompanyNotifications;

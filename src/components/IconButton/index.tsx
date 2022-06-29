@@ -1,8 +1,8 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 
-import { Container } from './styles';
-import { colors } from '../../styles/colors';
+import {Container} from './styles';
+import {colors} from '../../styles/colors';
 
 interface Props {
   icon: string;

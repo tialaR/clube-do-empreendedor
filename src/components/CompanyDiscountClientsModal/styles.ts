@@ -1,11 +1,11 @@
 import styled from 'styled-components/native';
-import { Dimensions, FlatList } from 'react-native';
+import {Dimensions, FlatList} from 'react-native';
 
-import { colors } from '../../styles/colors';
-import { fonts } from '../../styles/fonts';
+import {colors} from '../../styles/colors';
+import {fonts} from '../../styles/fonts';
 
-const { width } = Dimensions.get('window');
-const { height } = Dimensions.get('window');
+const {width} = Dimensions.get('window');
+const {height} = Dimensions.get('window');
 
 const modalWidth = width - 60;
 const modalHeight = height - 70;
@@ -45,7 +45,6 @@ export const ProductContainer = styled.View`
   justify-content: center;
 `;
 
-
 export const ContainerIconButton = styled.View`
   position: absolute;
   top: 8px;
@@ -67,14 +66,13 @@ export const DiscountClientsListTitle = styled.Text`
 export const DiscountClientsList = styled(
   FlatList as new () => FlatList<any>,
 ).attrs({
-  contentContainerStyle: { 
-    paddingTop: 40
-   },
-})`
-`;
+  contentContainerStyle: {
+    paddingTop: 40,
+  },
+})``;
 
 export const ClientItemButton = styled.TouchableOpacity.attrs(() => ({
-  activeOpacity: 1
+  activeOpacity: 1,
 }))`
   flex-direction: row;
   align-items: center;
@@ -111,7 +109,7 @@ export const SeeMoreInformations = styled.Text`
 `;
 
 export const ClientMoreInformationContainer = styled.ScrollView.attrs(() => ({
-  showsVerticalScrollIndicator: false
+  showsVerticalScrollIndicator: false,
 }))``;
 
 export const ClientName = styled.Text`
@@ -121,8 +119,7 @@ export const ClientName = styled.Text`
   color: ${colors.indigoA200};
 `;
 
-export const DescriptionsContainer = styled.View`
-`;
+export const DescriptionsContainer = styled.View``;
 
 export const Title = styled.Text`
   font-size: ${fonts.sizes.regular}px;

@@ -1,8 +1,8 @@
-import { Platform } from 'react-native';
+import {Platform} from 'react-native';
 import styled from 'styled-components/native';
 
-import { colors } from '../../styles/colors';
-import { fonts } from '../../styles/fonts';
+import {colors} from '../../styles/colors';
+import {fonts} from '../../styles/fonts';
 
 export const Container = styled.ScrollView.attrs({
   keyboardShouldPersistTaps: 'handled',
@@ -52,8 +52,8 @@ export const LineButtonsContainer = styled.View`
   padding: 0 10px;
 `;
 
-export const LineButtonContainer = styled.TouchableOpacity.attrs(props => ({
-    activeOpacity: 1
+export const LineButtonContainer = styled.TouchableOpacity.attrs(() => ({
+  activeOpacity: 1,
 }))``;
 
 export const LineButtonText = styled.Text`

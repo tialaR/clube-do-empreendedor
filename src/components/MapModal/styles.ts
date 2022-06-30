@@ -1,7 +1,8 @@
-import styled from 'styled-components/native';
+import styled, {css} from 'styled-components/native';
 import {Dimensions} from 'react-native';
 
 import {colors} from '../../styles/colors';
+import {fonts} from '../../styles/fonts';
 
 const {width} = Dimensions.get('window');
 const {height} = Dimensions.get('window');
@@ -42,4 +43,50 @@ export const ContainerIconButton = styled.View`
   right: 20px;
 
   z-index: 10;
+`;
+
+export const PinContainer = styled.View`
+  align-items: center;
+  justify-content: center;
+`;
+
+export const PinMoreInfoContainer = styled.View`
+  background-color: ${colors.indigoA200};
+
+  width: 190px;
+  padding: 20px 10px;
+
+  justify-content: center;
+
+  border-radius: 10px;
+`;
+
+type PinTitleProps = {
+  colorful?: boolean;
+};
+export const PinTitle = styled.Text<PinTitleProps>`
+  font-family: ${fonts.families.latoBlack};
+  font-size: ${fonts.sizes.medium}px;
+
+  color: ${colors.white};
+
+  ${props =>
+    props.colorful &&
+    css`
+      color: ${colors.indigoA200};
+    `};
+`;
+
+export const PinDescription = styled.Text`
+  font-family: ${fonts.families.latoBlack};
+  font-size: ${fonts.sizes.xSmall}px;
+
+  color: ${colors.white};
+`;
+
+export const PinThinDescription = styled.Text`
+  font-family: ${fonts.families.latoBold};
+  font-size: ${fonts.sizes.xxSmall}px;
+
+  color: ${colors.green200};
 `;

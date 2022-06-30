@@ -1,26 +1,22 @@
+import {Dimensions} from 'react-native';
 import styled from 'styled-components/native';
-import { colors } from '../../styles/colors';
-import { fonts } from '../../styles/fonts';
+
+const {width} = Dimensions.get('window');
+
+const logoWidth = width - 40;
 
 export const Container = styled.View`
-  flex-direction: row;
   align-items: center;
   justify-content: center;
+
+  width: ${logoWidth}px;
+  height: 85px;
 `;
 
-export const LogoImg = styled.Image`
-  align-self: center;
-  
-  width: 75px;
-  height: 75px;
-`;
+export const LogoImg = styled.Image.attrs(() => ({
+  resizeMode: 'contain',
+}))`
+  width: 100%;
 
-type TitleProps = {
-    bold?: boolean;
-}
-export const Title = styled.Text<TitleProps>`
-  font-family: ${props => props.bold ? fonts.families.latoBlack : fonts.families.latoBold};
-  font-size: ${fonts.sizes.large}px;
-
-  color: ${colors.white}
+  margin-right: 30px;
 `;

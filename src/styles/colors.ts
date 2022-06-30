@@ -11,4 +11,5 @@ export const colors = {
   gray50: '#F7F7F7',
   gray100: '#EBE9E9',
   whatsApp: '#24C21A',
+  green200: '#03F63C',
 };

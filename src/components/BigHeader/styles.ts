@@ -1,15 +1,16 @@
-import { Dimensions } from 'react-native';
+import {Dimensions} from 'react-native';
 import styled from 'styled-components/native';
-import { colors } from '../../styles/colors';
+
+import {colors} from '../../styles/colors';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
-const bigHeaderHeight = screenHeight - (screenHeight/100 * 72);
+const bigHeaderHeight = screenHeight - (screenHeight / 100) * 80;
 
 export const Container = styled.View`
   position: relative;
-  
+
   background-color: ${colors.indigoA200};
 
   width: ${screenWidth}px;
@@ -27,6 +28,6 @@ export const Container = styled.View`
 
 export const BackButtonContainer = styled.View`
   position: absolute;
-  top: 20px;
-  left: 20px;
+  top: 10px;
+  left: 30px;
 `;

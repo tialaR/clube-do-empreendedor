@@ -42,6 +42,7 @@ const RecoverPassword: React.FC = () => {
 
   const onSubmit = (data?: any) => {
     navigation.navigate('RecoverPasswordConfirmation');
+    resetInputs();
   };
 
   return (

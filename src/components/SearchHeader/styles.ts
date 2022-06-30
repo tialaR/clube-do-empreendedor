@@ -1,5 +1,6 @@
 import {Dimensions} from 'react-native';
 import styled from 'styled-components/native';
+
 import {colors} from '../../styles/colors';
 
 const screenWidth = Dimensions.get('window').width;
@@ -8,7 +9,7 @@ export const Container = styled.View`
   background-color: ${colors.indigoA200};
 
   width: ${screenWidth}px;
-  padding: 20px 0 16px;
+  padding: 10px 0 16px;
 
   align-items: center;
 
@@ -21,6 +22,7 @@ export const Container = styled.View`
 
 export const SearchBarContainer = styled.View`
   width: 80%;
+
   align-items: center;
   justify-content: center;
 `;

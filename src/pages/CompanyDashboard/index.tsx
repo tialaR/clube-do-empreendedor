@@ -1,6 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {ReactNode} from 'react';
-import Icon from 'react-native-vector-icons/Feather';
+import React, {ReactNode, useMemo} from 'react';
 
 import ProductCard from '../../components/ProductCard';
 import SearchHeader from '../../components/SearchHeader';
@@ -10,7 +9,9 @@ import DividerContainerWithText from '../../components/DividerContainerWithText'
 
 import {MapModalProvider} from '../../hooks/useMapModal';
 
-import {colors} from '../../styles/colors';
+import Cupom from '../../assets/cupom.svg';
+import CheckedSquare from '../../assets/checkedSquare.svg';
+import Discount from '../../assets/discount.svg';
 import {SpacingX, SpacingY} from '../../styles/globalStyles';
 import {
   SquareIconContainer,
@@ -94,17 +95,53 @@ const products: Product[] = [
 
 type SquareButtonProps = {
   onPress: () => void;
-  children: ReactNode;
+  icon: 'checkedQuare' | 'discount' | 'cupom';
 };
 
-const SquareButton: React.FC<SquareButtonProps> = ({children, onPress}) => {
+const SquareButton: React.FC<SquareButtonProps> = ({icon, onPress}) => {
+  const image = useMemo(() => {
+    if (icon === 'checkedQuare') {
+      return <CheckedSquare />;
+    }
+    if (icon === 'discount') {
+      return <Discount />;
+    }
+    if (icon === 'cupom') {
+      return <Cupom />;
+    }
+
+    return null;
+  }, [icon]);
+
+  const text = useMemo(() => {
+    if (icon === 'checkedQuare') {
+      return (
+        <SquareButtonText>
+          {'Cadastrar'}
+          <SquareButtonText bold>{'\nPRODUTO'}</SquareButtonText>
+        </SquareButtonText>
+      );
+    }
+    if (icon === 'discount') {
+      return <SquareButtonText>{'Clientes com\ndesconto'}</SquareButtonText>;
+    }
+    if (icon === 'cupom') {
+      return (
+        <SquareButtonText>
+          {'Cadastrar'}
+          <SquareButtonText bold>{'\nCUPOM'}</SquareButtonText>
+        </SquareButtonText>
+      );
+    }
+
+    return null;
+  }, [icon]);
+
   return (
     <>
       <SquareButtonContainer onPress={onPress}>
-        <SquareIconContainer>
-          <Icon name="codesandbox" size={40} color={colors.white} />
-        </SquareIconContainer>
-        {children}
+        <SquareIconContainer>{image}</SquareIconContainer>
+        {text}
       </SquareButtonContainer>
     </>
   );
@@ -154,25 +191,17 @@ const CompanyDashboard: React.FC = () => {
       <SpacingY small />
 
       <SectionButtonsContainer>
-        <SquareButton onPress={showDiscountClientModal}>
-          <SquareButtonText>{'Clientes com\ndesconto'}</SquareButtonText>
-        </SquareButton>
+        <SquareButton icon="discount" onPress={showDiscountClientModal} />
         <SpacingX medium />
         <SquareButton
-          onPress={() => navigation.navigate('CompanyRegisterCupom')}>
-          <SquareButtonText>
-            {'Cadastrar'}
-            <SquareButtonText bold>{'\nCUPOM'}</SquareButtonText>
-          </SquareButtonText>
-        </SquareButton>
+          icon="cupom"
+          onPress={() => navigation.navigate('CompanyRegisterCupom')}
+        />
         <SpacingX medium />
         <SquareButton
-          onPress={() => navigation.navigate('CompanyRegisterProduct')}>
-          <SquareButtonText>
-            {'Cadastrar'}
-            <SquareButtonText bold>{'\nPRODUTO'}</SquareButtonText>
-          </SquareButtonText>
-        </SquareButton>
+          icon="checkedQuare"
+          onPress={() => navigation.navigate('CompanyRegisterProduct')}
+        />
       </SectionButtonsContainer>
     </Container>
   );

@@ -1,9 +1,8 @@
 import React from 'react';
-import {Modal} from 'react-native';
+import {Dimensions, Modal} from 'react-native';
 import LottieView from 'lottie-react-native';
 
 import {SplasScreenAux} from '../../styles/globalStyles';
-import {AnimationSizeContainer} from './styles';
 
 type Props = {
   isAppInitialized: boolean;
@@ -22,14 +21,16 @@ const SplashScreen: React.FC<Props> = ({isAppInitialized}) => {
   return (
     <Modal visible={isModalVisible} animationType="fade">
       <SplasScreenAux>
-        <AnimationSizeContainer>
-          <LottieView
-            source={require('../../assets/teste.json')}
-            loop={false}
-            autoPlay
-            onAnimationFinish={handleAnimationFinish}
-          />
-        </AnimationSizeContainer>
+        <LottieView
+          source={require('../../assets/teste.json')}
+          loop={false}
+          autoPlay
+          onAnimationFinish={handleAnimationFinish}
+          style={{
+            height: Dimensions.get('window').height,
+            width: Dimensions.get('window').width,
+          }}
+        />
       </SplasScreenAux>
     </Modal>
   );

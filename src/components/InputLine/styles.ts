@@ -1,7 +1,7 @@
-import styled, { css } from 'styled-components/native';
+import styled, {css} from 'styled-components/native';
 
-import { colors } from '../../styles/colors';
-import { fonts } from '../../styles/fonts';
+import {colors} from '../../styles/colors';
+import {fonts} from '../../styles/fonts';
 
 interface ContainerProps {
   isErrored: boolean;
@@ -10,7 +10,7 @@ interface ContainerProps {
 export const Container = styled.View<ContainerProps>`
   width: 100%;
   padding: 16px 16px 0 16px;
-  
+
   border-bottom-width: 2px;
   border-bottom-color: ${colors.white};
 
@@ -18,12 +18,16 @@ export const Container = styled.View<ContainerProps>`
   justify-content: center;
 
   margin-bottom: ${props => (props.isErrored ? 0 : 4)}px;
-  ${props => props.isErrored && css`border-bottom-color: ${colors.red};`}
+  ${props =>
+    props.isErrored &&
+    css`
+      border-bottom-color: ${colors.red};
+    `}
 `;
 
 export const Title = styled.Text`
   color: ${colors.white};
-  
+
   font-size: ${fonts.sizes.xLarge}px;
   font-family: ${fonts.families.latoBold};
 
@@ -39,7 +43,7 @@ export const TextInputContainer = styled.View`
 
 export const TextInput = styled.TextInput`
   flex: 1;
-  
+
   font-size: ${fonts.sizes.medium}px;
   font-family: ${fonts.families.latoRegular};
 
@@ -53,6 +57,6 @@ export const ErrorMessage = styled.Text`
 
   font-size: ${fonts.sizes.small}px;
   font-family: ${fonts.families.latoRegular};
-  
+
   padding: 4px 0 8px 8px;
 `;

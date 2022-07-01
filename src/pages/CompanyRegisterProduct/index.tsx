@@ -1,15 +1,22 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
+import {
+  launchImageLibrary,
+  ImagePickerResponse,
+  Asset,
+} from 'react-native-image-picker';
 import * as yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {Controller, useForm} from 'react-hook-form';
 import {
+  Alert,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/Feather';
 
 import Button from '../../components/Button';
 import IconButton from '../../components/IconButton';
@@ -29,6 +36,8 @@ import {
   Pregress,
   Title,
   CompanyProductDetailBodyContainer,
+  ProductPhotoImage,
+  ErrorMessage,
 } from './styles';
 
 export type Product = {
@@ -64,14 +73,30 @@ const validationSchema = yup.object().shape({
   productValue: yup.string().required('Campo obrigatório'),
 });
 
-const productPhotosValidationSchema = yup.object().shape({
-  value: yup.string().required('Campo obrigatório'),
-});
+const productPhotosValidationSchema = yup
+  .array()
+  .min(1, 'Pelo menos uma foto deve ser adicionada')
+  .of(
+    yup
+      .object()
+      .shape({
+        uri: yup.string(),
+        type: yup.string(),
+        name: yup.string(),
+      })
+      .required('Pelo menos uma foto deve ser adicionada'),
+  );
 
 const discountCodeValidationSchema = yup.object().shape({
   label: yup.string().required('Campo obrigatório'),
   value: yup.string().required('Campo obrigatório'),
 });
+
+type Photo = {
+  uri: string | undefined;
+  type: string | undefined;
+  name: string | undefined;
+};
 
 const CompanyRegisterProduct: React.FC = () => {
   const navigation = useNavigation<any>();
@@ -83,7 +108,7 @@ const CompanyRegisterProduct: React.FC = () => {
     reset: resetInputs,
   } = useForm({resolver: yupResolver(validationSchema)});
 
-  const [photos, setPhotos] = useState(undefined);
+  const [photos, setPhotos] = useState<Photo[]>([] as Photo[]);
   const [selectedDiscountCode, setSelectedDiscountCode] = useState<Code>({
     label: 'Selecione um códido',
     value: undefined,
@@ -107,6 +132,7 @@ const CompanyRegisterProduct: React.FC = () => {
   ];
 
   const [progress, setProgress] = useState(0);
+
   const [productResgistered, setProductResgistered] = useState<
     Product | undefined
   >();
@@ -126,13 +152,15 @@ const CompanyRegisterProduct: React.FC = () => {
     [progress],
   );
   const isProgressStart = useMemo(() => progress === 0, [progress]);
+
   const isSelectedDiscountCode = useMemo(
     () => selectedDiscountCode.value !== undefined,
     [selectedDiscountCode],
   );
+  const isSelectedPhoto = useMemo(() => photos.length > 0, [photos]);
 
   useEffect(() => {
-    if (progress === 1) {
+    if (progress === 2) {
       productPhotosValidationSchema.validate(photos).catch(err => {
         setPhotosError(err.errors[0]);
       });
@@ -148,6 +176,10 @@ const CompanyRegisterProduct: React.FC = () => {
   useEffect(() => {
     setDiscountCodeError(undefined);
   }, [isSelectedDiscountCode]);
+
+  useEffect(() => {
+    setPhotosError(undefined);
+  }, [isSelectedPhoto]);
 
   const handleContinue = () => {
     makeProgress();
@@ -170,13 +202,14 @@ const CompanyRegisterProduct: React.FC = () => {
   };
 
   const onSubmit = (data: any) => {
-    const showRegisterProductPage = isProgressEnd && isSelectedDiscountCode;
+    const showRegisterProductPage =
+      isProgressEnd && isSelectedDiscountCode && isSelectedPhoto;
 
     if (showRegisterProductPage) {
       setProductResgistered({
         id: '0',
         name: 'Mac Monitor',
-        img: 'https://www.imagensempng.com.br/wp-content/uploads/2021/09/01-43.png',
+        img: 'https://www.uniir.com.br/wp-content/uploads/2021/03/uniir-aluguel-de-celular-aparelho-iphone-12.png',
         price: 'R$ 1234.89',
         promotion: '16% OFF',
         soldBy: 'Eletro Magazine',
@@ -187,6 +220,29 @@ const CompanyRegisterProduct: React.FC = () => {
 
       resetInputs();
     }
+  };
+
+  const handleSelectPhoto = (selectedPhotoIndex: number) => {
+    launchImageLibrary(
+      {
+        mediaType: 'photo',
+      },
+      (response: ImagePickerResponse) => {
+        let images = [...photos];
+
+        if (response && response?.assets?.[0].uri) {
+          const image = {
+            uri: response?.assets?.[0].uri,
+            type: response?.assets?.[0].type,
+            name: response?.assets?.[0].fileName,
+          };
+
+          images[selectedPhotoIndex] = image;
+
+          setPhotos(images);
+        }
+      },
+    );
   };
 
   if (isProductRegistered) {
@@ -276,20 +332,82 @@ const CompanyRegisterProduct: React.FC = () => {
                     <Title withPadding>{PageTitles.productPhotos}</Title>
                     <SpacingY medium />
                     <ProductPhotosContainer>
-                      <ProductPhoto />
+                      <ProductPhoto onPress={() => handleSelectPhoto(0)}>
+                        {photos[0]?.uri ? (
+                          <ProductPhotoImage
+                            source={{
+                              uri: photos[0]?.uri,
+                            }}
+                          />
+                        ) : (
+                          <Icon name="image" size={20} />
+                        )}
+                      </ProductPhoto>
                       <SpacingX small />
-                      <ProductPhoto />
+                      <ProductPhoto onPress={() => handleSelectPhoto(1)}>
+                        {photos[1]?.uri ? (
+                          <ProductPhotoImage
+                            source={{
+                              uri: photos[1]?.uri,
+                            }}
+                          />
+                        ) : (
+                          <Icon name="image" size={20} />
+                        )}
+                      </ProductPhoto>
                       <SpacingX small />
-                      <ProductPhoto />
+                      <ProductPhoto onPress={() => handleSelectPhoto(2)}>
+                        {photos[2]?.uri ? (
+                          <ProductPhotoImage
+                            source={{
+                              uri: photos[2]?.uri,
+                            }}
+                          />
+                        ) : (
+                          <Icon name="image" size={20} />
+                        )}
+                      </ProductPhoto>
                     </ProductPhotosContainer>
                     <SpacingY small />
                     <ProductPhotosContainer>
-                      <ProductPhoto />
+                      <ProductPhoto onPress={() => handleSelectPhoto(3)}>
+                        {photos[3]?.uri ? (
+                          <ProductPhotoImage
+                            source={{
+                              uri: photos[3]?.uri,
+                            }}
+                          />
+                        ) : (
+                          <Icon name="image" size={20} />
+                        )}
+                      </ProductPhoto>
                       <SpacingX small />
-                      <ProductPhoto />
+                      <ProductPhoto onPress={() => handleSelectPhoto(4)}>
+                        {photos[4]?.uri ? (
+                          <ProductPhotoImage
+                            source={{
+                              uri: photos[4]?.uri,
+                            }}
+                          />
+                        ) : (
+                          <Icon name="image" size={20} />
+                        )}
+                      </ProductPhoto>
                       <SpacingX small />
-                      <ProductPhoto />
+                      <ProductPhoto onPress={() => handleSelectPhoto(5)}>
+                        {photos[5]?.uri ? (
+                          <ProductPhotoImage
+                            source={{
+                              uri: photos[5]?.uri,
+                            }}
+                          />
+                        ) : (
+                          <Icon name="image" size={20} />
+                        )}
+                      </ProductPhoto>
                     </ProductPhotosContainer>
+
+                    {photosError && <ErrorMessage>{photosError}</ErrorMessage>}
                   </>
                 )}
 

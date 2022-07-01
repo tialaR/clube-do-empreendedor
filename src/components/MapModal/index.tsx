@@ -7,24 +7,12 @@ import React, {
   useState,
 } from 'react';
 import {Modal} from 'react-native';
-import MapView, {Callout, Marker} from 'react-native-maps';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 
 import IconButton from '../IconButton';
+import PinMarker from './PinMarker';
 
-import {colors} from '../../styles/colors';
-import {
-  Overlay,
-  Container,
-  ContainerIconButton,
-  MapContainer,
-  PinTitle,
-  PinDescription,
-  PinMoreInfoContainer,
-  PinThinDescription,
-  PinContainer,
-} from './styles';
-import {SpacingY} from '../../styles/globalStyles';
+import {Overlay, Container, ContainerIconButton, MapContainer} from './styles';
 
 export type MapModalHandlersToFather = {
   openModal: () => void;
@@ -103,8 +91,6 @@ const MapModal: React.ForwardRefRenderFunction<
   const [region, setRegion] = useState<any>(undefined);
   const [markers] = useState<PinProps[]>(markersMock); //Lista de marcadores no mapa (virá do back)
 
-  const [showMoreInfo, setShowMoreInfo] = useState(false);
-
   /* Hook que será utilizado para carregar a localização da empresa/produto
   buscada na search bar */
   useEffect(() => {
@@ -135,10 +121,6 @@ const MapModal: React.ForwardRefRenderFunction<
     };
   });
 
-  const handlePinPress = () => {
-    setShowMoreInfo(!showMoreInfo);
-  };
-
   return (
     <Modal
       transparent
@@ -152,40 +134,22 @@ const MapModal: React.ForwardRefRenderFunction<
             <IconButton icon="x" size={26} onPress={onClose} />
           </ContainerIconButton>
           <MapView
+            provider={PROVIDER_GOOGLE}
             onMapReady={() => false} // Ação realizada assim que o mapa é carregado (Nesse caso a ação deve ser localizar a empresa ou produto inserido na search bar)
             style={{flex: 1}}
             region={region}
             zoomEnabled
             minZoomLevel={17} //Deixa o mapa maios próximo
-            showsUserLocation //Mostra a bolinha de onde o usuário está localizado
-            loadingEnabled>
+          >
             {markers?.map((marker: PinProps) => (
-              <Marker
-                key={marker.id}
-                title={marker.name}
-                coordinate={marker.coords}
-                pinColor={colors.indigoA200}
-                onSelect={handlePinPress}>
-                <PinContainer>
-                  <PinTitle colorful>{marker.name}</PinTitle>
-                  <SpacingY small />
-                  <Icon
-                    name="location-on"
-                    size={24}
-                    color={colors.indigoA200}
-                  />
-                </PinContainer>
-                <Callout tooltip>
-                  <PinMoreInfoContainer>
-                    <PinTitle>{marker.name}</PinTitle>
-                    <SpacingY small />
-                    <PinDescription>{marker.description}</PinDescription>
-                    <PinThinDescription>
-                      {marker.description}
-                    </PinThinDescription>
-                  </PinMoreInfoContainer>
-                </Callout>
-              </Marker>
+              <PinMarker
+                key={marker?.id}
+                id={marker?.id}
+                name={marker?.name}
+                coords={marker?.coords}
+                description={marker?.description}
+                openingHours={marker?.openingHours}
+              />
             ))}
           </MapView>
         </MapContainer>

@@ -38,7 +38,7 @@ const products: Product[] = [
   {
     id: '0',
     name: 'Product one - Monitor Macbook teste Product one - Monitor Macbook teste Product one',
-    img: 'https://www.imagensempng.com.br/wp-content/uploads/2021/09/01-43.png',
+    img: 'https://i.pinimg.com/originals/c5/95/c9/c595c9dc092cb7fbfecedde02a6952ae.png',
     price: 'R$ 1234.89',
     promotion: '16% OFF',
     soldBy: 'Eletro Magazine',
@@ -49,7 +49,7 @@ const products: Product[] = [
   {
     id: '1',
     name: 'Product two',
-    img: 'https://www.imagensempng.com.br/wp-content/uploads/2021/09/01-43.png',
+    img: 'https://www.dhcp.com.br/media/wysiwyg/descricoes/dell/vostro-3470_monitor-e1916h.png',
     price: 'R$ 1234.89',
     promotion: '16% OFF',
     soldBy: 'Eletro Magazine',
@@ -60,7 +60,7 @@ const products: Product[] = [
   {
     id: '2',
     name: 'Product tree - teste',
-    img: 'https://www.imagensempng.com.br/wp-content/uploads/2021/09/01-43.png',
+    img: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MX432?wid=266&hei=291&fmt=png-alpha&.v=1570119317387',
     price: 'R$ 1234.89',
     promotion: '16% OFF',
     soldBy: 'Eletro Magazine',
@@ -71,7 +71,7 @@ const products: Product[] = [
   {
     id: '3',
     name: 'Product four',
-    img: 'https://www.imagensempng.com.br/wp-content/uploads/2021/09/01-43.png',
+    img: 'https://lojaonline.vivo.com.br/medias/sys_master/root/h3c/hca/13503022989342/POSICAO1-DGAP104C3000.png',
     price: 'R$ 1234.89',
     promotion: '16% OFF',
     soldBy: 'Eletro Magazine',
@@ -82,7 +82,7 @@ const products: Product[] = [
   {
     id: '4',
     name: 'Product',
-    img: 'https://www.imagensempng.com.br/wp-content/uploads/2021/09/01-43.png',
+    img: 'https://www.uniir.com.br/wp-content/uploads/2021/03/uniir-aluguel-de-celular-aparelho-iphone-12.png',
     price: 'R$ 1234.89',
     promotion: '16% OFF',
     soldBy: 'Eletro Magazine',

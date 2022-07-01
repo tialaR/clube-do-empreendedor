@@ -76,9 +76,15 @@ export const ProductPhoto = styled.TouchableOpacity.attrs(() => ({
   elevation: 4;
 
   border-radius: 10px;
+  overflow: hidden;
 
   align-items: center;
   justify-content: center;
+`;
+
+export const ProductPhotoImage = styled.Image`
+  width: ${productPhotoWidth}px;
+  height: ${productPhotoHeight}px;
 `;
 
 export const ButtonsContainer = styled.View`
@@ -131,4 +137,13 @@ export const Pregress = styled.View<ProgressProps>`
       color: ${colors.white};
       width: ${screenWidth}px;
     `}
+`;
+
+export const ErrorMessage = styled.Text`
+  color: ${colors.red};
+
+  font-size: ${fonts.sizes.small}px;
+  font-family: ${fonts.families.latoRegular};
+
+  margin: 10px 0 0 8px;
 `;

@@ -56,7 +56,7 @@ const CompanyRegisterCupom: React.FC = () => {
           <HeaderContainer>
             <View style={{marginLeft: 30, paddingBottom: 30}}>
               <IconButton
-                icon="arrow-left-circle"
+                icon="chevron-left-circle-outline"
                 color={colors.white}
                 onPress={handleBack}
               />

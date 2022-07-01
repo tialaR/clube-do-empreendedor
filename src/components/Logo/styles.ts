@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 
 const {width} = Dimensions.get('window');
 
-const logoWidth = width - 40;
+const logoWidth = width - 70;
 
 export const Container = styled.View`
   align-items: center;
@@ -17,6 +17,4 @@ export const LogoImg = styled.Image.attrs(() => ({
   resizeMode: 'contain',
 }))`
   width: 100%;
-
-  margin-right: 30px;
 `;

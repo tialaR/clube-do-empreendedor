@@ -8,11 +8,18 @@ import React, {
 } from 'react';
 import {Modal} from 'react-native';
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
+import {SpacingX} from '../../styles/globalStyles';
 
 import IconButton from '../IconButton';
 import PinMarker from './PinMarker';
 
-import {Overlay, Container, ContainerIconButton, MapContainer} from './styles';
+import {
+  Overlay,
+  Container,
+  ContainerIconButton,
+  MapContainer,
+  FooterButtonsContainer,
+} from './styles';
 
 export type MapModalHandlersToFather = {
   openModal: () => void;
@@ -131,16 +138,16 @@ const MapModal: React.ForwardRefRenderFunction<
       <Container>
         <MapContainer>
           <ContainerIconButton>
-            <IconButton icon="x" size={26} onPress={onClose} />
+            <IconButton icon="close" size={26} onPress={onClose} />
           </ContainerIconButton>
+
           <MapView
             provider={PROVIDER_GOOGLE}
             onMapReady={() => false} // Ação realizada assim que o mapa é carregado (Nesse caso a ação deve ser localizar a empresa ou produto inserido na search bar)
             style={{flex: 1}}
             region={region}
             zoomEnabled
-            minZoomLevel={17} //Deixa o mapa maios próximo
-          >
+            minZoomLevel={17}>
             {markers?.map((marker: PinProps) => (
               <PinMarker
                 key={marker?.id}
@@ -152,6 +159,16 @@ const MapModal: React.ForwardRefRenderFunction<
               />
             ))}
           </MapView>
+
+          <FooterButtonsContainer>
+            <IconButton icon="whatsapp" roundLight onPress={() => false} />
+            <SpacingX tiny />
+            <IconButton icon="instagram" roundLight onPress={() => false} />
+            <SpacingX tiny />
+            <IconButton icon="facebook" roundLight onPress={() => false} />
+            <SpacingX tiny />
+            <IconButton icon="qrcode" roundLight onPress={() => false} />
+          </FooterButtonsContainer>
         </MapContainer>
       </Container>
     </Modal>

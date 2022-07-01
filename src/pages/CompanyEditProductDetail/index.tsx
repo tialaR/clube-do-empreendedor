@@ -43,7 +43,7 @@ const CompanyEditProductDetail: React.FC<Props> = ({route}) => {
       <HeaderContainer>
         <View style={{marginLeft: 20, paddingBottom: 30}}>
           <IconButton
-            icon="arrow-left-circle"
+            icon="chevron-left-circle-outline"
             color={colors.white}
             onPress={handleBack}
           />

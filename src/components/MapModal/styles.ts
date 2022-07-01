@@ -90,3 +90,18 @@ export const PinThinDescription = styled.Text`
 
   color: ${colors.green200};
 `;
+
+export const FooterButtonsContainer = styled.View`
+  position: absolute;
+  bottom: 30px;
+  left: 20px;
+  right: 20px;
+
+  padding: 10px;
+
+  z-index: 10;
+
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+`;

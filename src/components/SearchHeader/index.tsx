@@ -1,5 +1,6 @@
 import React from 'react';
 import {useMapModal} from '../../hooks/useMapModal';
+import {SpacingY} from '../../styles/globalStyles';
 
 import Logo from '../Logo';
 import SearchBar from '../SearchBar';
@@ -21,6 +22,7 @@ const SearchHeader: React.FC<Props> = ({
     <Container>
       <Logo />
 
+      <SpacingY tiny />
       <SearchBarContainer>
         <SearchBar placeholder={placeholder} onPress={showMapModal} />
       </SearchBarContainer>

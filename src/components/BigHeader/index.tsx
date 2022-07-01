@@ -22,7 +22,7 @@ const BigHeader: React.FC<Props> = ({
       {showBackButton && (
         <BackButtonContainer>
           <IconButton
-            icon="arrow-left-circle"
+            icon="chevron-left-circle-outline"
             color={colors.white}
             onPress={onBackButtonPress}
           />

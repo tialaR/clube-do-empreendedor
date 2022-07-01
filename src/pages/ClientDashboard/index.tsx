@@ -6,6 +6,7 @@ import SectionTitle from '../../components/SectionTitle';
 import DividerContainerWithText from '../../components/DividerContainerWithText';
 
 import {useClientProductDetailModal} from '../../hooks/useClientProductDetailModal';
+import {MapModalProvider} from '../../hooks/useMapModal';
 
 import {SpacingX} from '../../styles/globalStyles';
 import {
@@ -89,10 +90,12 @@ const ClientDashboard: React.FC = () => {
 
   return (
     <Container>
-      <SearchHeader
-        placeholder="Encontre empresas ou produtos"
-        onSearchPress={() => false}
-      />
+      <MapModalProvider>
+        <SearchHeader
+          placeholder="Encontre empresas ou produtos"
+          onSearchPress={() => false}
+        />
+      </MapModalProvider>
 
       <SectionListContainer>
         <SectionTitleContainer>

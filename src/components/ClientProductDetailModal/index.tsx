@@ -115,7 +115,7 @@ const ClientProductDetailModal: React.ForwardRefRenderFunction<
       <Container>
         <ProductContainer>
           <ContainerIconButton>
-            <IconButton icon="x" size={24} onPress={onClose} />
+            <IconButton icon="close" size={24} onPress={onClose} />
           </ContainerIconButton>
           <ProductScrollContainer>
             <ProductContainerContents>

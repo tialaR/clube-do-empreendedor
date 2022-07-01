@@ -114,7 +114,7 @@ const CompanyDiscountClientsModal: React.ForwardRefRenderFunction<
       <Container>
         <ProductContainer>
           <ContainerIconButton>
-            <IconButton icon="x" size={24} onPress={handleClose} />
+            <IconButton icon="close" size={24} onPress={handleClose} />
           </ContainerIconButton>
           <View style={{flex: 1, width: '100%'}}>
             {!showClientMoreInformation && (

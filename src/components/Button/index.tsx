@@ -1,6 +1,6 @@
-import React, { useMemo } from 'react';
-import { TouchableOpacityProps } from 'react-native';
-import { ButtonText, Container, ContainerView } from './styles';
+import React, {useMemo} from 'react';
+import {TouchableOpacityProps} from 'react-native';
+import {ButtonText, Container, ContainerView} from './styles';
 
 interface Props extends TouchableOpacityProps {
   children: string;
@@ -10,17 +10,23 @@ interface Props extends TouchableOpacityProps {
   outlinedLight?: boolean;
 }
 
-const Button: React.FC<Props> = ({ children, filled = false, filledLight = false, outlined = false, outlinedLight = false, ...rest }) => {
-
+const Button: React.FC<Props> = ({
+  children,
+  filled = false,
+  filledLight = false,
+  outlined = false,
+  outlinedLight = false,
+  ...rest
+}) => {
   const buttontypes = useMemo(() => {
     return {
-      filled, 
-      filledLight, 
+      filled,
+      filledLight,
       outlined,
-      outlinedLight
-    }
+      outlinedLight,
+    };
   }, [filled, filledLight, outlined, outlinedLight]);
-  
+
   return (
     <ContainerView buttontypes={buttontypes}>
       <Container {...rest} buttontypes={buttontypes}>

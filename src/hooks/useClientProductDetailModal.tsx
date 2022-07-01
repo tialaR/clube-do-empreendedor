@@ -1,7 +1,9 @@
-import React, { ReactNode, useCallback, useRef, useState } from 'react';
-import { createContext, useContextSelector } from 'use-context-selector';
+import React, {ReactNode, useCallback, useRef, useState} from 'react';
+import {createContext, useContextSelector} from 'use-context-selector';
 
-import ClientProductDetailModal, { ClientProductDetailModalHandlersToFather } from '../components/ClientProductDetailModal';
+import ClientProductDetailModal, {
+  ClientProductDetailModalHandlersToFather,
+} from '../components/ClientProductDetailModal';
 
 type Product = {
   id: string;
@@ -12,33 +14,52 @@ type Product = {
   promotion: string;
   soldBy: string;
   qrCodeImg: string;
-}
-
-type ClientProductDetailContextData = {
-    showClientProductDetailModal(
-      { product, isEmphasisProduct }: { product: Product; isEmphasisProduct?: boolean }): void;
-    closeClientProductDetailModal(): void;
 };
 
-const ClientProductDetailModalContext = createContext<ClientProductDetailContextData>({} as ClientProductDetailContextData);
+type ClientProductDetailContextData = {
+  showClientProductDetailModal({
+    product,
+    isEmphasisProduct,
+  }: {
+    product: Product;
+    isEmphasisProduct?: boolean;
+  }): void;
+  closeClientProductDetailModal(): void;
+};
+
+const ClientProductDetailModalContext =
+  createContext<ClientProductDetailContextData>(
+    {} as ClientProductDetailContextData,
+  );
 
 type ClientProductDetailModalProviderProps = {
-    children: ReactNode;
-}
+  children: ReactNode;
+};
 
-const ClientProductDetailModalProvider: React.FC<ClientProductDetailModalProviderProps> = ({ children }) => {
-  const productDetailModalRef = useRef<ClientProductDetailModalHandlersToFather>(null);
+const ClientProductDetailModalProvider: React.FC<
+  ClientProductDetailModalProviderProps
+> = ({children}) => {
+  const productDetailModalRef =
+    useRef<ClientProductDetailModalHandlersToFather>(null);
 
   const [product, setProduct] = useState<Product | undefined>();
   const [isEmphasisProduct, setIsEmphasisProduct] = useState(false);
 
-  const showClientProductDetailModal = useCallback((
-    { product, isEmphasisProduct }: { product: Product, isEmphasisProduct: boolean }) => {
-    productDetailModalRef.current?.openModal();
+  const showClientProductDetailModal = useCallback(
+    ({
+      product,
+      isEmphasisProduct,
+    }: {
+      product: Product;
+      isEmphasisProduct: boolean;
+    }) => {
+      productDetailModalRef.current?.openModal();
 
-    setProduct(product);
-    setIsEmphasisProduct(isEmphasisProduct)
-    }, [productDetailModalRef]);
+      setProduct(product);
+      setIsEmphasisProduct(isEmphasisProduct);
+    },
+    [productDetailModalRef],
+  );
 
   const closeClientProductDetailModal = useCallback(() => {
     productDetailModalRef.current?.closeModal();
@@ -53,15 +74,19 @@ const ClientProductDetailModalProvider: React.FC<ClientProductDetailModalProvide
         onClose={closeClientProductDetailModal}
       />
     );
-  }, [productDetailModalRef, product, isEmphasisProduct, closeClientProductDetailModal]);
+  }, [
+    productDetailModalRef,
+    product,
+    isEmphasisProduct,
+    closeClientProductDetailModal,
+  ]);
 
   return (
     <ClientProductDetailModalContext.Provider
       value={{
         showClientProductDetailModal,
         closeClientProductDetailModal,
-      }}
-    >
+      }}>
       {children}
       {renderClientProductDetailModal()}
     </ClientProductDetailModalContext.Provider>
@@ -69,13 +94,21 @@ const ClientProductDetailModalProvider: React.FC<ClientProductDetailModalProvide
 };
 
 function useClientProductDetailModal(): ClientProductDetailContextData {
-  const showClientProductDetailModal = useContextSelector(ClientProductDetailModalContext, (clientProductDetailContext: ClientProductDetailContextData) => clientProductDetailContext.showClientProductDetailModal);
-  const closeClientProductDetailModal = useContextSelector(ClientProductDetailModalContext, (clientProductDetailContext: ClientProductDetailContextData) => clientProductDetailContext.closeClientProductDetailModal);
+  const showClientProductDetailModal = useContextSelector(
+    ClientProductDetailModalContext,
+    (clientProductDetailContext: ClientProductDetailContextData) =>
+      clientProductDetailContext.showClientProductDetailModal,
+  );
+  const closeClientProductDetailModal = useContextSelector(
+    ClientProductDetailModalContext,
+    (clientProductDetailContext: ClientProductDetailContextData) =>
+      clientProductDetailContext.closeClientProductDetailModal,
+  );
 
   return {
     showClientProductDetailModal,
-    closeClientProductDetailModal
+    closeClientProductDetailModal,
   };
 }
 
-export { ClientProductDetailModalProvider, useClientProductDetailModal };
+export {ClientProductDetailModalProvider, useClientProductDetailModal};

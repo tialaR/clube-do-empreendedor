@@ -4,7 +4,6 @@ import * as yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {Controller, useForm} from 'react-hook-form';
 import {
-  Alert,
   Keyboard,
   KeyboardAvoidingView,
   Platform,

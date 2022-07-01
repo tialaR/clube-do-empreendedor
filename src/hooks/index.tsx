@@ -1,11 +1,11 @@
-import React, { ReactNode } from 'react';
-import { AuthProvider } from './useAuth';
+import React, {ReactNode} from 'react';
+import {AuthProvider} from './useAuth';
 
 type Props = {
-    children: ReactNode;
-}
+  children: ReactNode;
+};
 
-const AppProvider: React.FC<Props> = ({ children }) => (
+const AppProvider: React.FC<Props> = ({children}) => (
   <AuthProvider>{children}</AuthProvider>
 );
 

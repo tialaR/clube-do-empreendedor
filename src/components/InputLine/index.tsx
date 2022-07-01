@@ -1,8 +1,15 @@
 import React from 'react';
-import { TextInputProps } from 'react-native';
+import {TextInputProps} from 'react-native';
 
-import { Container, ErrorMessage, TextInput, Title, TextInputContainer } from './styles';
-import { colors } from '../../styles/colors';
+import {
+  Container,
+  ErrorMessage,
+  TextInput,
+  Title,
+  TextInputContainer,
+} from './styles';
+import {colors} from '../../styles/colors';
+import {SpacingY} from '../../styles/globalStyles';
 
 interface Props extends TextInputProps {
   title: string;
@@ -10,23 +17,24 @@ interface Props extends TextInputProps {
   errorText?: string;
 }
 
-const InputLine: React.FC<Props> = ({ title, error, errorText, ...rest }) => {
+const InputLine: React.FC<Props> = ({title, error, errorText, ...rest}) => {
   return (
     <>
-      <Container
-        isErrored={!!error}
-      >
+      <Container isErrored={!!error}>
         <Title>{title}</Title>
-        <TextInputContainer >
-            <TextInput
-                {...rest}
-                keyboardAppearance="dark"
-                placeholderTextColor={colors.white}
-            />
+        <TextInputContainer>
+          <TextInput
+            {...rest}
+            keyboardAppearance="dark"
+            placeholderTextColor={colors.white}
+          />
         </TextInputContainer>
       </Container>
       {error && (
-        <ErrorMessage style={{ paddingBottom: 10 }}>{errorText}</ErrorMessage>
+        <>
+          <SpacingY tiny />
+          <ErrorMessage>{errorText}</ErrorMessage>
+        </>
       )}
     </>
   );

@@ -1,7 +1,7 @@
-import styled, { css } from 'styled-components/native';
+import styled, {css} from 'styled-components/native';
 
-import { colors } from '../../styles/colors';
-import { fonts } from '../../styles/fonts';
+import {colors} from '../../styles/colors';
+import {fonts} from '../../styles/fonts';
 
 export const Container = styled.View`
   flex: 1;
@@ -13,15 +13,19 @@ export const Container = styled.View`
 `;
 
 type ConfirmationTextProps = {
-    bold?: boolean;
-}
+  bold?: boolean;
+};
 export const ConfirmationText = styled.Text<ConfirmationTextProps>`
   font-size: ${fonts.sizes.xLarge}px;
   font-family: ${fonts.families.latoRegular};
-  
+
   color: ${colors.indigoA200};
 
   text-align: center;
 
-  ${(props) => props.bold && css`font-family: ${fonts.families.latoBold};`}
+  ${props =>
+    props.bold &&
+    css`
+      font-family: ${fonts.families.latoBold};
+    `}
 `;

@@ -3,13 +3,11 @@ import {useNavigation} from '@react-navigation/native';
 import {
   launchImageLibrary,
   ImagePickerResponse,
-  Asset,
 } from 'react-native-image-picker';
 import * as yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {Controller, useForm} from 'react-hook-form';
 import {
-  Alert,
   Keyboard,
   KeyboardAvoidingView,
   Platform,

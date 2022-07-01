@@ -1,7 +1,7 @@
-import styled, { css } from 'styled-components/native';
+import styled, {css} from 'styled-components/native';
 
-import { colors } from '../../styles/colors';
-import { fonts } from '../../styles/fonts';
+import {colors} from '../../styles/colors';
+import {fonts} from '../../styles/fonts';
 
 export const Container = styled.ScrollView`
   flex: 1;
@@ -43,14 +43,14 @@ export const ButtonsContainer = styled.View`
   padding: 10px;
 `;
 
-export const TermsButtonContainer = styled.TouchableOpacity.attrs(props => ({
-  activeOpacity: 1
+export const TermsButtonContainer = styled.TouchableOpacity.attrs(() => ({
+  activeOpacity: 1,
 }))``;
 
 type TermsButtonTextProps = {
   link?: boolean;
   bold?: boolean;
-}
+};
 export const TermsButtonText = styled.Text<TermsButtonTextProps>`
   color: ${colors.black};
 
@@ -59,12 +59,18 @@ export const TermsButtonText = styled.Text<TermsButtonTextProps>`
 
   text-align: center;
 
-  ${(props) => props.link && css`
-    color: ${colors.indigoA200}; 
+  ${props =>
+    props.link &&
+    css`
+      color: ${colors.indigoA200};
 
-    text-decoration: underline; 
-    font-family: ${fonts.families.latoBold};
-  `};
+      text-decoration: underline;
+      font-family: ${fonts.families.latoBold};
+    `};
 
-  ${(props) => props.bold && css`font-family: ${fonts.families.latoBold};`};
+  ${props =>
+    props.bold &&
+    css`
+      font-family: ${fonts.families.latoBold};
+    `};
 `;

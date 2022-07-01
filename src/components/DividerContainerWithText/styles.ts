@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 
-import { colors } from '../../styles/colors';
-import { fonts } from '../../styles/fonts';
+import {colors} from '../../styles/colors';
+import {fonts} from '../../styles/fonts';
 
 export const Container = styled.View`
   background-color: ${colors.indigo50};
@@ -10,8 +10,8 @@ export const Container = styled.View`
 `;
 
 export const Title = styled.Text`
-    font-size: ${fonts.sizes.regular}px;
-    font-family: ${fonts.families.latoRegular};
+  font-size: ${fonts.sizes.regular}px;
+  font-family: ${fonts.families.latoRegular};
 
-    color: ${colors.indigoA200};
+  color: ${colors.indigoA200};
 `;

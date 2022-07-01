@@ -1,131 +1,152 @@
-import React, { ReactNode, useCallback, useRef, useState } from 'react';
-import { createContext, useContextSelector } from 'use-context-selector';
-import DiscountClientsModal, { DiscountClientsModalHandlersToFather } from '../components/CompanyDiscountClientsModal';
+import React, {ReactNode, useCallback, useRef} from 'react';
+import {createContext, useContextSelector} from 'use-context-selector';
+import DiscountClientsModal, {
+  DiscountClientsModalHandlersToFather,
+} from '../components/CompanyDiscountClientsModal';
 
 type DiscountClientsModalContextData = {
-    showDiscountClientModal(): void;
-    closeDiscountClientModal(): void;
+  showDiscountClientModal(): void;
+  closeDiscountClientModal(): void;
 };
 
 const discountClientsList = [
   {
     id: '0',
     name: 'MARIA APARECIDA SILVA',
-    product: 'Produto Monitor para PC Full HD UltraWide LG LED IPS 29” - 29WK600',
+    product:
+      'Produto Monitor para PC Full HD UltraWide LG LED IPS 29” - 29WK600',
     telephone: '(71) 98339-3679',
     email: 'mariaap@hotmail.com',
-    address: 'Endereço Rua Padre Filgues, Pituba - Salvador-BA'
+    address: 'Endereço Rua Padre Filgues, Pituba - Salvador-BA',
   },
   {
     id: '1',
     name: 'MARIA',
-    product: 'Produto Monitor para PC Full HD UltraWide LG LED IPS 29” - 29WK600',
+    product:
+      'Produto Monitor para PC Full HD UltraWide LG LED IPS 29” - 29WK600',
     telephone: '(71) 98339-3679',
     email: 'mariaap@hotmail.com',
-    address: 'Endereço Rua Padre Filgues, Pituba - Salvador-BA'
+    address: 'Endereço Rua Padre Filgues, Pituba - Salvador-BA',
   },
   {
     id: '2',
     name: 'MARIA APARECIDA SILVA',
-    product: 'Produto Monitor para PC Full HD UltraWide LG LED IPS 29” - 29WK600',
+    product:
+      'Produto Monitor para PC Full HD UltraWide LG LED IPS 29” - 29WK600',
     telephone: '(71) 98339-3679',
     email: 'mariaap@hotmail.com',
-    address: 'Endereço Rua Padre Filgues, Pituba - Salvador-BA'
+    address: 'Endereço Rua Padre Filgues, Pituba - Salvador-BA',
   },
   {
     id: '3',
     name: 'MARIA APARECIDA',
-    product: 'Produto Monitor para PC Full HD UltraWide LG LED IPS 29” - 29WK600',
+    product:
+      'Produto Monitor para PC Full HD UltraWide LG LED IPS 29” - 29WK600',
     telephone: '(71) 98339-3679',
     email: 'mariaap@hotmail.com',
-    address: 'Endereço Rua Padre Filgues, Pituba - Salvador-BA'
+    address: 'Endereço Rua Padre Filgues, Pituba - Salvador-BA',
   },
   {
     id: '4',
     name: 'APARECIDA SILVA',
-    product: 'Produto Monitor para PC Full HD UltraWide LG LED IPS 29” - 29WK600',
+    product:
+      'Produto Monitor para PC Full HD UltraWide LG LED IPS 29” - 29WK600',
     telephone: '(71) 98339-3679',
     email: 'mariaap@hotmail.com',
-    address: 'Endereço Rua Padre Filgues, Pituba - Salvador-BA'
+    address: 'Endereço Rua Padre Filgues, Pituba - Salvador-BA',
   },
   {
     id: '5',
     name: 'MARIA APARECIDA SILVA CAROLINA CAROLA',
-    product: 'Produto Monitor para PC Full HD UltraWide LG LED IPS 29” - 29WK600',
+    product:
+      'Produto Monitor para PC Full HD UltraWide LG LED IPS 29” - 29WK600',
     telephone: '(71) 98339-3679',
     email: 'mariaap@hotmail.com',
-    address: 'Endereço Rua Padre Filgues, Pituba - Salvador-BA'
+    address: 'Endereço Rua Padre Filgues, Pituba - Salvador-BA',
   },
   {
     id: '6',
     name: 'MARIA APARECIDA SILVA',
-    product: 'Produto Monitor para PC Full HD UltraWide LG LED IPS 29” - 29WK600',
+    product:
+      'Produto Monitor para PC Full HD UltraWide LG LED IPS 29” - 29WK600',
     telephone: '(71) 98339-3679',
     email: 'mariaap@hotmail.com',
-    address: 'Endereço Rua Padre Filgues, Pituba - Salvador-BA'
+    address: 'Endereço Rua Padre Filgues, Pituba - Salvador-BA',
   },
   {
     id: '7',
     name: 'MARIA APARECIDA SILVA',
-    product: 'Produto Monitor para PC Full HD UltraWide LG LED IPS 29” - 29WK600',
+    product:
+      'Produto Monitor para PC Full HD UltraWide LG LED IPS 29” - 29WK600',
     telephone: '(71) 98339-3679',
     email: 'mariaap@hotmail.com',
-    address: 'Endereço Rua Padre Filgues, Pituba - Salvador-BA'
+    address: 'Endereço Rua Padre Filgues, Pituba - Salvador-BA',
   },
   {
     id: '8',
     name: 'MARIA APARECIDA SILVA',
-    product: 'Produto Monitor para PC Full HD UltraWide LG LED IPS 29” - 29WK600',
+    product:
+      'Produto Monitor para PC Full HD UltraWide LG LED IPS 29” - 29WK600',
     telephone: '(71) 98339-3679',
     email: 'mariaap@hotmail.com',
-    address: 'Endereço Rua Padre Filgues, Pituba - Salvador-BA'
+    address: 'Endereço Rua Padre Filgues, Pituba - Salvador-BA',
   },
   {
     id: '9',
     name: 'MARIA APARECIDA SILVA',
-    product: 'Produto Monitor para PC Full HD UltraWide LG LED IPS 29” - 29WK600',
+    product:
+      'Produto Monitor para PC Full HD UltraWide LG LED IPS 29” - 29WK600',
     telephone: '(71) 98339-3679',
     email: 'mariaap@hotmail.com',
-    address: 'Endereço Rua Padre Filgues, Pituba - Salvador-BA'
+    address: 'Endereço Rua Padre Filgues, Pituba - Salvador-BA',
   },
   {
     id: '10',
     name: 'MARIA APARECIDA SILVA',
-    product: 'Produto Monitor para PC Full HD UltraWide LG LED IPS 29” - 29WK600',
+    product:
+      'Produto Monitor para PC Full HD UltraWide LG LED IPS 29” - 29WK600',
     telephone: '(71) 98339-3679',
     email: 'mariaap@hotmail.com',
-    address: 'Endereço Rua Padre Filgues, Pituba - Salvador-BA'
+    address: 'Endereço Rua Padre Filgues, Pituba - Salvador-BA',
   },
   {
     id: '11',
     name: 'MARIA APARECIDA SILVA',
-    product: 'Produto Monitor para PC Full HD UltraWide LG LED IPS 29” - 29WK600',
+    product:
+      'Produto Monitor para PC Full HD UltraWide LG LED IPS 29” - 29WK600',
     telephone: '(71) 98339-3679',
     email: 'mariaap@hotmail.com',
-    address: 'Endereço Rua Padre Filgues, Pituba - Salvador-BA'
+    address: 'Endereço Rua Padre Filgues, Pituba - Salvador-BA',
   },
   {
     id: '12',
     name: 'MARIA APARECIDA SILVA',
-    product: 'Produto Monitor para PC Full HD UltraWide LG LED IPS 29” - 29WK600',
+    product:
+      'Produto Monitor para PC Full HD UltraWide LG LED IPS 29” - 29WK600',
     telephone: '(71) 98339-3679',
     email: 'mariaap@hotmail.com',
-    address: 'Endereço Rua Padre Filgues, Pituba - Salvador-BA'
+    address: 'Endereço Rua Padre Filgues, Pituba - Salvador-BA',
   },
-]
+];
 
-const DiscountClientsModalContext = createContext<DiscountClientsModalContextData>({} as DiscountClientsModalContextData);
+const DiscountClientsModalContext =
+  createContext<DiscountClientsModalContextData>(
+    {} as DiscountClientsModalContextData,
+  );
 
 type DiscountClientsModalProviderProps = {
-    children: ReactNode;
-}
+  children: ReactNode;
+};
 
-const CompanyDiscountClientsModalProvider: React.FC<DiscountClientsModalProviderProps> = ({ children }) => {
-  const discountClientsModalRef = useRef<DiscountClientsModalHandlersToFather>(null);
+const CompanyDiscountClientsModalProvider: React.FC<
+  DiscountClientsModalProviderProps
+> = ({children}) => {
+  const discountClientsModalRef =
+    useRef<DiscountClientsModalHandlersToFather>(null);
 
   const showDiscountClientModal = useCallback(() => {
     discountClientsModalRef.current?.openModal();
-    }, [discountClientsModalRef]);
+  }, [discountClientsModalRef]);
 
   const closeDiscountClientModal = useCallback(() => {
     discountClientsModalRef.current?.closeModal();
@@ -139,15 +160,14 @@ const CompanyDiscountClientsModalProvider: React.FC<DiscountClientsModalProvider
         onClose={closeDiscountClientModal}
       />
     );
-  }, [discountClientsModalRef, discountClientsList, closeDiscountClientModal]);
+  }, [discountClientsModalRef, closeDiscountClientModal]);
 
   return (
     <DiscountClientsModalContext.Provider
       value={{
         showDiscountClientModal,
         closeDiscountClientModal,
-      }}
-    >
+      }}>
       {children}
       {renderDiscountClientModal()}
     </DiscountClientsModalContext.Provider>
@@ -155,13 +175,21 @@ const CompanyDiscountClientsModalProvider: React.FC<DiscountClientsModalProvider
 };
 
 function useCompanyDiscountClientsModal(): DiscountClientsModalContextData {
-    const showDiscountClientModal = useContextSelector(DiscountClientsModalContext, (discountClientsModalContext: DiscountClientsModalContextData) => discountClientsModalContext.showDiscountClientModal);
-    const closeDiscountClientModal = useContextSelector(DiscountClientsModalContext, (discountClientsModalContext: DiscountClientsModalContextData) => discountClientsModalContext.closeDiscountClientModal);
+  const showDiscountClientModal = useContextSelector(
+    DiscountClientsModalContext,
+    (discountClientsModalContext: DiscountClientsModalContextData) =>
+      discountClientsModalContext.showDiscountClientModal,
+  );
+  const closeDiscountClientModal = useContextSelector(
+    DiscountClientsModalContext,
+    (discountClientsModalContext: DiscountClientsModalContextData) =>
+      discountClientsModalContext.closeDiscountClientModal,
+  );
 
-    return {
-      showDiscountClientModal,
-      closeDiscountClientModal
-    };
+  return {
+    showDiscountClientModal,
+    closeDiscountClientModal,
+  };
 }
 
-export { CompanyDiscountClientsModalProvider, useCompanyDiscountClientsModal };
+export {CompanyDiscountClientsModalProvider, useCompanyDiscountClientsModal};

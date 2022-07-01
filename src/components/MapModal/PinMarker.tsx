@@ -34,7 +34,8 @@ const Pin: React.FC<Props> = ({
     <Marker
       key={id}
       tracksViewChanges={false}
-      // title={name}
+      title={name}
+      description={description}
       coordinate={coords}
       anchor={{x: 0.5, y: 0.5}}
       pinColor={colors.indigoA200}>

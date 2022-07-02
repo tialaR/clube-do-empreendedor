@@ -1,5 +1,5 @@
 import React from 'react';
-import {Dimensions, Modal} from 'react-native';
+import {Modal} from 'react-native';
 import LottieView from 'lottie-react-native';
 
 import {SplasScreenAux} from '../../styles/globalStyles';
@@ -22,14 +22,11 @@ const SplashScreen: React.FC<Props> = ({isAppInitialized}) => {
     <Modal visible={isModalVisible} animationType="fade">
       <SplasScreenAux>
         <LottieView
-          source={require('../../assets/teste.json')}
+          source={require('../../assets/animation.json')}
           loop={false}
           autoPlay
           onAnimationFinish={handleAnimationFinish}
-          style={{
-            height: Dimensions.get('window').height,
-            width: Dimensions.get('window').width,
-          }}
+          resizeMode="contain"
         />
       </SplasScreenAux>
     </Modal>

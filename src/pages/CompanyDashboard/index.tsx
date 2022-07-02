@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {ReactNode, useMemo} from 'react';
+import React, {useMemo} from 'react';
 
 import ProductCard from '../../components/ProductCard';
 import SearchHeader from '../../components/SearchHeader';

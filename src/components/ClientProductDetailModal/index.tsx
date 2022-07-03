@@ -6,7 +6,6 @@ import React, {
   useState,
 } from 'react';
 import {Modal, View} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import IconButton from '../IconButton';
 
@@ -45,6 +44,7 @@ import {
 } from './styles';
 import {colors} from '../../styles/colors';
 import {SpacingY} from '../../styles/globalStyles';
+import {SvgIcon} from '../SvgIcon';
 
 export type ClientProductDetailModalHandlersToFather = {
   openModal: () => void;
@@ -159,7 +159,12 @@ const ClientProductDetailModal: React.ForwardRefRenderFunction<
                     </QRCodeContainer>
                     <WhatsAppContainer>
                       <WhatsAppButton onPress={() => false}>
-                        <Icon name="whatsapp" size={15} color={colors.white} />
+                        <SvgIcon
+                          name="whatsapp"
+                          width={15}
+                          height={15}
+                          color={colors.white}
+                        />
                         <WhatsAppButtonText>
                           ACESSE O WHATSAPP
                         </WhatsAppButtonText>
@@ -167,9 +172,10 @@ const ClientProductDetailModal: React.ForwardRefRenderFunction<
 
                       {emphasisProduct && (
                         <DiscountButton onPress={handleGuarantedProduct}>
-                          <Icon
-                            name="check-circle"
-                            size={15}
+                          <SvgIcon
+                            name="circleCheck"
+                            width={15}
+                            height={15}
                             color={colors.white}
                           />
                           <DiscountButtonText>
@@ -198,7 +204,12 @@ const ClientProductDetailModal: React.ForwardRefRenderFunction<
 
                   <View style={{paddingHorizontal: 30}}>
                     <WhatsAppButton onPress={() => false}>
-                      <Icon name="whatsapp" size={15} color={colors.white} />
+                      <SvgIcon
+                        name="whatsapp"
+                        width={15}
+                        height={15}
+                        color={colors.white}
+                      />
                       <WhatsAppButtonText>
                         ACESSE O WHATSAPP DA LOJA
                       </WhatsAppButtonText>

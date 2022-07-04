@@ -40,7 +40,9 @@ export const Name = styled.Text`
   margin-bottom: 8px;
 `;
 
-export const Image = styled.Image`
+export const Image = styled.Image.attrs(() => ({
+  resizeMode: 'contain',
+}))`
   width: 160px;
   height: 160px;
 `;

@@ -1,12 +1,13 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Icon from 'react-native-vector-icons/Feather';
 
 import {ClientProductDetailModalProvider} from '../hooks/useClientProductDetailModal';
 
 import ClientDashboard from '../pages/ClientDashboard';
 import ClientNotifications from '../pages/ClientNotifications';
 import ClientProfile from '../pages/ClientProfile';
+
+import {SvgIcon} from '../components/SvgIcon';
 
 import {colors} from '../styles/colors';
 
@@ -42,7 +43,7 @@ export function AppClientRoutes() {
       <Tab.Screen
         options={{
           tabBarIcon: ({color}: TabBarIconProps) => (
-            <Icon name="user" color={color} size={22} />
+            <SvgIcon name="userCircle" color={color} width={30} height={30} />
           ),
         }}
         name="Profile"
@@ -51,7 +52,7 @@ export function AppClientRoutes() {
       <Tab.Screen
         options={{
           tabBarIcon: ({color}: TabBarIconProps) => (
-            <Icon name="home" color={color} size={22} />
+            <SvgIcon name="homeOutline" color={color} width={30} height={30} />
           ),
         }}
         name="ClientDashboard"
@@ -60,7 +61,12 @@ export function AppClientRoutes() {
       <Tab.Screen
         options={{
           tabBarIcon: ({color}: TabBarIconProps) => (
-            <Icon name="bell" color={color} size={22} />
+            <SvgIcon
+              name="notificationOutline"
+              color={color}
+              width={30}
+              height={30}
+            />
           ),
         }}
         name="Notifications"

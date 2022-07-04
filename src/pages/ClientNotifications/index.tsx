@@ -1,6 +1,6 @@
 import React from 'react';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {colors} from '../../styles/colors';
+
+import {SvgIcon} from '../../components/SvgIcon';
 
 import {
   Container,
@@ -8,6 +8,7 @@ import {
   CleanNotificationListContainer,
   CleanNotificationListText,
 } from './styles';
+import {colors} from '../../styles/colors';
 import {BigTitle} from '../../styles/globalStyles';
 
 const ClientNotifications: React.FC = () => {
@@ -17,7 +18,12 @@ const ClientNotifications: React.FC = () => {
 
       <BodyContainer>
         <CleanNotificationListContainer>
-          <Icon name="bell-off" size={24} color={colors.indigoA200} />
+          <SvgIcon
+            name="notificationDeactivated"
+            width={30}
+            height={30}
+            color={colors.indigoA200}
+          />
           <CleanNotificationListText>
             Não há notificaçãoes
           </CleanNotificationListText>

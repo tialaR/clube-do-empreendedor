@@ -9,9 +9,6 @@ import DividerContainerWithText from '../../components/DividerContainerWithText'
 
 import {MapModalProvider} from '../../hooks/useMapModal';
 
-import Cupom from '../../assets/cupom.svg';
-import CheckedSquare from '../../assets/checkedSquare.svg';
-import Discount from '../../assets/discount.svg';
 import {SpacingX, SpacingY} from '../../styles/globalStyles';
 import {
   SquareIconContainer,
@@ -23,6 +20,8 @@ import {
   SquareButtonContainer,
   SquareButtonText,
 } from './styles';
+import {SvgIcon} from '../../components/SvgIcon';
+import {colors} from '../../styles/colors';
 
 export type Product = {
   id: string;
@@ -101,13 +100,24 @@ type SquareButtonProps = {
 const SquareButton: React.FC<SquareButtonProps> = ({icon, onPress}) => {
   const image = useMemo(() => {
     if (icon === 'checkedQuare') {
-      return <CheckedSquare />;
+      return (
+        <SvgIcon
+          name="checkedSquare"
+          color={colors.white}
+          width={50}
+          height={50}
+        />
+      );
     }
     if (icon === 'discount') {
-      return <Discount />;
+      return (
+        <SvgIcon name="discount" color={colors.white} width={50} height={50} />
+      );
     }
     if (icon === 'cupom') {
-      return <Cupom />;
+      return (
+        <SvgIcon name="cupom" color={colors.white} width={50} height={50} />
+      );
     }
 
     return null;

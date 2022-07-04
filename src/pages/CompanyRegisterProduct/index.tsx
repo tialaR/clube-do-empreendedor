@@ -14,13 +14,13 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Feather';
 
 import Button from '../../components/Button';
 import IconButton from '../../components/IconButton';
 import InputLine from '../../components/InputLine';
 import CompanyProductDetail from '../../components/CompanyProductDetail';
 import ExpandableListPanel from '../../components/ExpandableListPanel';
+import {SvgIcon} from '../../components/SvgIcon';
 
 import {colors} from '../../styles/colors';
 import {SpacingX, SpacingY} from '../../styles/globalStyles';
@@ -249,8 +249,10 @@ const CompanyRegisterProduct: React.FC = () => {
         <HeaderContainer>
           <View style={{marginLeft: 30}}>
             <IconButton
-              icon="chevron-left-circle-outline"
+              name="back"
               color={colors.white}
+              width={30}
+              height={30}
               onPress={() => navigation.goBack()}
             />
           </View>
@@ -280,8 +282,10 @@ const CompanyRegisterProduct: React.FC = () => {
           <HeaderContainer>
             <View style={{marginLeft: 30}}>
               <IconButton
-                icon="chevron-left-circle-outline"
+                name="back"
                 color={colors.white}
+                width={30}
+                height={30}
                 onPress={handleBack}
               />
             </View>
@@ -338,7 +342,12 @@ const CompanyRegisterProduct: React.FC = () => {
                             }}
                           />
                         ) : (
-                          <Icon name="image" size={20} />
+                          <SvgIcon
+                            name="image"
+                            width={20}
+                            height={20}
+                            color={colors.black}
+                          />
                         )}
                       </ProductPhoto>
                       <SpacingX small />
@@ -350,7 +359,12 @@ const CompanyRegisterProduct: React.FC = () => {
                             }}
                           />
                         ) : (
-                          <Icon name="image" size={20} />
+                          <SvgIcon
+                            name="image"
+                            width={20}
+                            height={20}
+                            color={colors.black}
+                          />
                         )}
                       </ProductPhoto>
                       <SpacingX small />
@@ -362,7 +376,12 @@ const CompanyRegisterProduct: React.FC = () => {
                             }}
                           />
                         ) : (
-                          <Icon name="image" size={20} />
+                          <SvgIcon
+                            name="image"
+                            width={20}
+                            height={20}
+                            color={colors.black}
+                          />
                         )}
                       </ProductPhoto>
                     </ProductPhotosContainer>
@@ -376,7 +395,12 @@ const CompanyRegisterProduct: React.FC = () => {
                             }}
                           />
                         ) : (
-                          <Icon name="image" size={20} />
+                          <SvgIcon
+                            name="image"
+                            width={20}
+                            height={20}
+                            color={colors.black}
+                          />
                         )}
                       </ProductPhoto>
                       <SpacingX small />
@@ -388,7 +412,12 @@ const CompanyRegisterProduct: React.FC = () => {
                             }}
                           />
                         ) : (
-                          <Icon name="image" size={20} />
+                          <SvgIcon
+                            name="image"
+                            width={20}
+                            height={20}
+                            color={colors.black}
+                          />
                         )}
                       </ProductPhoto>
                       <SpacingX small />
@@ -400,7 +429,12 @@ const CompanyRegisterProduct: React.FC = () => {
                             }}
                           />
                         ) : (
-                          <Icon name="image" size={20} />
+                          <SvgIcon
+                            name="image"
+                            width={20}
+                            height={20}
+                            color={colors.black}
+                          />
                         )}
                       </ProductPhoto>
                     </ProductPhotosContainer>

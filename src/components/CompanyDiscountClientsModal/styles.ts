@@ -34,7 +34,7 @@ export const ProductContainer = styled.View`
   height: ${modalHeight}px;
 
   background-color: ${colors.gray50};
-  padding: 40px 20px 10px 20px;
+  padding: 50px 20px 10px 20px;
   border-radius: 10px;
   overflow: hidden;
 
@@ -47,8 +47,8 @@ export const ProductContainer = styled.View`
 
 export const ContainerIconButton = styled.View`
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 14px;
+  right: 14px;
 
   align-self: flex-end;
   margin-bottom: 14px;

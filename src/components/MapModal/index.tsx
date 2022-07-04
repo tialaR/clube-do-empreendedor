@@ -8,9 +8,9 @@ import React, {
 } from 'react';
 import {Modal} from 'react-native';
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
-import {SpacingX} from '../../styles/globalStyles';
 
 import IconButton from '../IconButton';
+import RoundIconButton from '../RoundIconButton';
 import PinMarker from './PinMarker';
 
 import {
@@ -20,6 +20,8 @@ import {
   MapContainer,
   FooterButtonsContainer,
 } from './styles';
+import {SpacingX} from '../../styles/globalStyles';
+import {colors} from '../../styles/colors';
 
 export type MapModalHandlersToFather = {
   openModal: () => void;
@@ -138,7 +140,13 @@ const MapModal: React.ForwardRefRenderFunction<
       <Container>
         <MapContainer>
           <ContainerIconButton>
-            <IconButton icon="close" size={26} onPress={onClose} />
+            <IconButton
+              name="close"
+              color={colors.indigoA200}
+              width={30}
+              height={30}
+              onPress={onClose}
+            />
           </ContainerIconButton>
 
           <MapView
@@ -161,13 +169,13 @@ const MapModal: React.ForwardRefRenderFunction<
           </MapView>
 
           <FooterButtonsContainer>
-            <IconButton icon="whatsapp" roundLight onPress={() => false} />
+            <RoundIconButton type="whatsapp" onPress={() => false} />
             <SpacingX tiny />
-            <IconButton icon="instagram" roundLight onPress={() => false} />
+            <RoundIconButton type="instagram" onPress={() => false} />
             <SpacingX tiny />
-            <IconButton icon="facebook" roundLight onPress={() => false} />
+            <RoundIconButton type="facebook" onPress={() => false} />
             <SpacingX tiny />
-            <IconButton icon="qrcode" roundLight onPress={() => false} />
+            <RoundIconButton type="qrcode" onPress={() => false} />
           </FooterButtonsContainer>
         </MapContainer>
       </Container>

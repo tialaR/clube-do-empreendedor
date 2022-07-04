@@ -1,6 +1,7 @@
 import React from 'react';
 import {Callout, Marker} from 'react-native-maps';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+
+import {SvgIcon} from '../SvgIcon';
 
 import {colors} from '../../styles/colors';
 import {SpacingY} from '../../styles/globalStyles';
@@ -41,7 +42,12 @@ const Pin: React.FC<Props> = ({
       pinColor={colors.indigoA200}>
       <PinContainer>
         <PinTitle colorful>{name}</PinTitle>
-        <Icon name="location-on" size={42} color={colors.indigoA200} />
+        <SvgIcon
+          name="location"
+          width={40}
+          height={40}
+          color={colors.indigoA200}
+        />
       </PinContainer>
       <Callout tooltip>
         <PinMoreInfoContainer>

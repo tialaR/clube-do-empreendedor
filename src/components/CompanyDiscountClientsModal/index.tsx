@@ -6,6 +6,7 @@ import React, {
   useState,
 } from 'react';
 import {Modal, View} from 'react-native';
+import {colors} from '../../styles/colors';
 import {SpacingY} from '../../styles/globalStyles';
 
 import IconButton from '../IconButton';
@@ -114,7 +115,13 @@ const CompanyDiscountClientsModal: React.ForwardRefRenderFunction<
       <Container>
         <ProductContainer>
           <ContainerIconButton>
-            <IconButton icon="close" size={24} onPress={handleClose} />
+            <IconButton
+              name="close"
+              color={colors.indigoA200}
+              width={30}
+              height={30}
+              onPress={handleClose}
+            />
           </ContainerIconButton>
           <View style={{flex: 1, width: '100%'}}>
             {!showClientMoreInformation && (

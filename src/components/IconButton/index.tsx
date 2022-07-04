@@ -1,37 +1,30 @@
-import React from 'react';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import React, {useMemo} from 'react';
+import {SvgProps} from 'react-native-svg';
 
 import {Container} from './styles';
-import {colors} from '../../styles/colors';
 
-interface Props {
-  icon: string;
+import CloseSvg from '../../assets/svgs/close.svg';
+import ChevronLeftSvg from '../../assets/svgs/chevronLeft.svg';
+
+interface Props extends SvgProps {
+  name: 'close' | 'back';
   size?: number;
   color?: string;
-  roundLight?: boolean;
   onPress: () => void;
 }
 
-const IconButton: React.FC<Props> = ({
-  icon,
-  size = 30,
-  color = colors.indigoA200,
-  roundLight = false,
-  onPress,
-}) => {
-  if (roundLight) {
-    return (
-      <Container onPress={onPress} roundLight>
-        <Icon name={icon} size={size} color={colors.indigoA200} />
-      </Container>
-    );
-  }
+const IconButton: React.FC<Props> = ({name, onPress, ...rest}) => {
+  const iconSvg = useMemo(() => {
+    if (name === 'close') {
+      return <CloseSvg {...rest} />;
+    }
 
-  return (
-    <Container onPress={onPress}>
-      <Icon name={icon} size={size} color={color} />
-    </Container>
-  );
+    if (name === 'back') {
+      return <ChevronLeftSvg {...rest} />;
+    }
+  }, [name, rest]);
+
+  return <Container onPress={onPress}>{iconSvg}</Container>;
 };
 
 export default IconButton;

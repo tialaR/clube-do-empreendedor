@@ -1,5 +1,4 @@
 import React from 'react';
-import Icon from 'react-native-vector-icons/Feather';
 import {enableScreens} from 'react-native-screens';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -14,6 +13,8 @@ import {CompanyDiscountClientsModalProvider} from '../hooks/useCompanyDiscountCl
 import CompanyRegisterCupomConfirmation from '../pages/CompanyRegisterCupomConfirmation';
 import CompanyEditProductDetail from '../pages/CompanyEditProductDetail';
 import CompanyRegisterProduct from '../pages/CompanyRegisterProduct';
+
+import {SvgIcon} from '../components/SvgIcon';
 
 import {colors} from '../styles/colors';
 
@@ -52,7 +53,7 @@ export function TabCompanyRoutes() {
       <Tab.Screen
         options={{
           tabBarIcon: ({color}: TabBarIconProps) => (
-            <Icon name="user" color={color} size={22} />
+            <SvgIcon name="userCircle" color={color} width={30} height={30} />
           ),
         }}
         name="TabProfile"
@@ -61,7 +62,7 @@ export function TabCompanyRoutes() {
       <Tab.Screen
         options={{
           tabBarIcon: ({color}: TabBarIconProps) => (
-            <Icon name="home" color={color} size={22} />
+            <SvgIcon name="homeOutline" color={color} width={30} height={30} />
           ),
         }}
         name="TabCompanyDashboard"
@@ -70,7 +71,12 @@ export function TabCompanyRoutes() {
       <Tab.Screen
         options={{
           tabBarIcon: ({color}: TabBarIconProps) => (
-            <Icon name="bell" color={color} size={22} />
+            <SvgIcon
+              name="notificationOutline"
+              color={color}
+              width={30}
+              height={30}
+            />
           ),
         }}
         name="TabNotifications"

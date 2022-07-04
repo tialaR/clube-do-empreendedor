@@ -133,8 +133,10 @@ const RegisterCompany: React.FC = () => {
           <HeaderContainer>
             <View style={{marginLeft: 30}}>
               <IconButton
-                icon="chevron-left-circle-outline"
+                name="back"
                 color={colors.white}
+                width={30}
+                height={30}
                 onPress={handleBack}
               />
             </View>

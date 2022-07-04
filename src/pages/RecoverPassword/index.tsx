@@ -54,8 +54,10 @@ const RecoverPassword: React.FC = () => {
         <Container>
           <HeaderContainer>
             <IconButton
-              icon="chevron-left-circle-outline"
-              color={colors.indigoA200}
+              name="back"
+              color={colors.white}
+              width={30}
+              height={30}
               onPress={() => navigation.goBack()}
             />
             <HeaderTexts>

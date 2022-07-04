@@ -7,7 +7,9 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+
+import {SvgIcon} from '../SvgIcon';
+
 import {colors} from '../../styles/colors';
 
 type Props = {
@@ -30,7 +32,7 @@ const ExpandableListPanel: React.FC<Props> = ({
   errorText,
   onItemSelect,
 }) => {
-  const [animation, setAnimation] = useState(new Animated.Value(0));
+  const [animation] = useState(new Animated.Value(0));
   const [expanded, setExpanded] = useState(false);
   const [maxHeight, setMaxHeight] = useState(0);
   const [minHeight, setMinHeight] = useState(0);
@@ -40,11 +42,6 @@ const ExpandableListPanel: React.FC<Props> = ({
 
   const [selectedItem, setSelectedItem] = useState<Item | undefined>();
 
-  const icons = {
-    up: 'caret-up',
-    down: 'caret-down',
-  };
-
   useEffect(() => {
     const animationId = animation.addListener(({value}: any) => {
       setCardHeight(value);
@@ -53,11 +50,11 @@ const ExpandableListPanel: React.FC<Props> = ({
     return () => {
       animation.removeListener(animationId);
     };
-  }, []);
+  }, [animation]);
 
   const toggle = () => {
-    let initialValue = expanded ? maxHeight + minHeight : minHeight,
-      finalValue = expanded ? minHeight : maxHeight + minHeight;
+    // let initialValue = expanded ? maxHeight + minHeight : minHeight;
+    let finalValue = expanded ? minHeight : maxHeight + minHeight;
 
     setExpanded(!expanded);
 
@@ -90,11 +87,27 @@ const ExpandableListPanel: React.FC<Props> = ({
     setSelectedItem(item);
   };
 
-  let icon = icons.down;
+  const renderIcon = () => {
+    if (expanded) {
+      return (
+        <SvgIcon
+          name="caretUp"
+          color={colors.indigoA200}
+          width={44}
+          height={44}
+        />
+      );
+    }
 
-  if (expanded) {
-    icon = icons.up;
-  }
+    return (
+      <SvgIcon
+        name="caretDown"
+        color={colors.indigoA200}
+        width={44}
+        height={44}
+      />
+    );
+  };
 
   return (
     <>
@@ -107,7 +120,7 @@ const ExpandableListPanel: React.FC<Props> = ({
           )}
 
           <TouchableOpacity style={styles.button} onPress={toggle}>
-            <Icon name={icon} size={28} color={colors.indigoA200} />
+            {renderIcon()}
           </TouchableOpacity>
         </View>
 
@@ -159,7 +172,7 @@ var styles = StyleSheet.create({
     top: 0,
     bottom: 0,
 
-    paddingRight: 20,
+    paddingRight: 10,
     paddingLeft: 30,
 
     justifyContent: 'center',

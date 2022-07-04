@@ -13,6 +13,8 @@ import IconButton from '../IconButton';
 import RoundIconButton from '../RoundIconButton';
 import PinMarker from './PinMarker';
 
+import {openFacebook, openInstagram, openWhatsapp} from '../../utils/deepLinks';
+
 import {
   Overlay,
   Container,
@@ -169,13 +171,11 @@ const MapModal: React.ForwardRefRenderFunction<
           </MapView>
 
           <FooterButtonsContainer>
-            <RoundIconButton type="whatsapp" onPress={() => false} />
+            <RoundIconButton type="whatsapp" onPress={openWhatsapp} />
             <SpacingX tiny />
-            <RoundIconButton type="instagram" onPress={() => false} />
+            <RoundIconButton type="instagram" onPress={openInstagram} />
             <SpacingX tiny />
-            <RoundIconButton type="facebook" onPress={() => false} />
-            <SpacingX tiny />
-            <RoundIconButton type="qrcode" onPress={() => false} />
+            <RoundIconButton type="facebook" onPress={openFacebook} />
           </FooterButtonsContainer>
         </MapContainer>
       </Container>

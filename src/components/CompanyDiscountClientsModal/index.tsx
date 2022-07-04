@@ -6,22 +6,18 @@ import React, {
   useState,
 } from 'react';
 import {Modal, View} from 'react-native';
-import {colors} from '../../styles/colors';
-import {SpacingY} from '../../styles/globalStyles';
 
 import IconButton from '../IconButton';
+import ClientItem from './ClientItem';
 
+import {colors} from '../../styles/colors';
+import {SpacingY} from '../../styles/globalStyles';
 import {
   Overlay,
   Container,
   ProductContainer,
   ContainerIconButton,
   DiscountClientsList,
-  ClientItemButton,
-  ClientItemName,
-  SeeMoreInformations,
-  SeeMoreInformationsContainer,
-  ClientItemNameContainer,
   ClientMoreInformationContainer,
   DescriptionsContainer,
   ClientName,
@@ -40,11 +36,6 @@ type Props = {
   discountClients: any;
 };
 
-type ClientItemProps = {
-  name: string;
-  onPress: () => void;
-};
-
 type Client = {
   id: string;
   name: string;
@@ -53,17 +44,6 @@ type Client = {
   email: string;
   address: string;
 };
-
-const ClientItem: React.FC<ClientItemProps> = ({name, onPress}) => (
-  <ClientItemButton onPress={onPress}>
-    <ClientItemNameContainer>
-      <ClientItemName>{name}</ClientItemName>
-    </ClientItemNameContainer>
-    <SeeMoreInformationsContainer>
-      <SeeMoreInformations>Ver mais informações</SeeMoreInformations>
-    </SeeMoreInformationsContainer>
-  </ClientItemButton>
-);
 
 const CompanyDiscountClientsModal: React.ForwardRefRenderFunction<
   DiscountClientsModalHandlersToFather,
@@ -132,11 +112,11 @@ const CompanyDiscountClientsModal: React.ForwardRefRenderFunction<
                 <DiscountClientsList<React.ElementType>
                   data={discountClients}
                   showsVerticalScrollIndicator={false}
-                  keyExtractor={(client: any) => client.id}
-                  renderItem={({item: client}: {item: any}) => (
+                  keyExtractor={(client: Client) => client.id}
+                  renderItem={({item}: {item: Client}) => (
                     <ClientItem
-                      name={client.name}
-                      onPress={() => handleSelectClient(client)}
+                      name={item.name}
+                      onPress={() => handleSelectClient(item)}
                     />
                   )}
                   ItemSeparatorComponent={() => <SpacingY medium />}

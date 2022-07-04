@@ -57,7 +57,9 @@ const CompanyEditProductDetail: React.FC<Props> = ({route}) => {
       </BodyContainer>
 
       <ButtonsContainer>
-        <Button filledLight onPress={() => false}>
+        <Button
+          filledLight
+          onPress={() => navigation.navigate('CompanyRegisterProduct')}>
           Editar Produto
         </Button>
       </ButtonsContainer>

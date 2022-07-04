@@ -1,5 +1,7 @@
 import React from 'react';
+import {enableScreens} from 'react-native-screens';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import {ClientProductDetailModalProvider} from '../hooks/useClientProductDetailModal';
 
@@ -10,7 +12,10 @@ import ClientProfile from '../pages/ClientProfile';
 import {SvgIcon} from '../components/SvgIcon';
 
 import {colors} from '../styles/colors';
+import RegisterClient from '../pages/RegisterClient';
 
+enableScreens();
+const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const ClientDashboardWithProductDetailModalProvider = () => (
@@ -23,7 +28,7 @@ type TabBarIconProps = {
   color: string;
 };
 
-export function AppClientRoutes() {
+function ClientDashboardTabs() {
   return (
     <Tab.Navigator
       initialRouteName="ClientDashboard"
@@ -75,3 +80,16 @@ export function AppClientRoutes() {
     </Tab.Navigator>
   );
 }
+
+export const AppClientRoutes = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}>
+      <Stack.Screen name="ClientDashboard" component={ClientDashboardTabs} />
+
+      <Stack.Screen name="RegisterClient" component={RegisterClient} />
+    </Stack.Navigator>
+  );
+};

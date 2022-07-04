@@ -17,6 +17,7 @@ import CompanyRegisterProduct from '../pages/CompanyRegisterProduct';
 import {SvgIcon} from '../components/SvgIcon';
 
 import {colors} from '../styles/colors';
+import RegisterCompany from '../pages/RegisterCompany';
 
 enableScreens();
 const Stack = createNativeStackNavigator();
@@ -93,6 +94,8 @@ export const AppCompanyRoutes = () => {
         headerShown: false,
       }}>
       <Stack.Screen name="CompanyDashboard" component={TabCompanyRoutes} />
+
+      <Stack.Screen name="RegisterCompany" component={RegisterCompany} />
 
       <Stack.Screen
         name="CompanyRegisterCupom"

@@ -10,6 +10,7 @@ import {
   RoundButtonText,
 } from './styles';
 import {BigTitle, SpacingY} from '../../styles/globalStyles';
+import {useNavigation} from '@react-navigation/native';
 
 type RoundButtonProps = {
   children: ReactNode;
@@ -31,6 +32,7 @@ const RoundButton: React.FC<RoundButtonProps> = ({
 
 const ClientProfile: React.FC = () => {
   const {signOut} = useAuth();
+  const navigation = useNavigation<any>();
 
   return (
     <Container>
@@ -38,7 +40,9 @@ const ClientProfile: React.FC = () => {
 
       <BodyContainer>
         <SpacingY medium />
-        <RoundButton fullWidth onPress={() => false}>
+        <RoundButton
+          fullWidth
+          onPress={() => navigation.navigate('RegisterClient')}>
           Dados do Perfil
         </RoundButton>
         <SpacingY small />

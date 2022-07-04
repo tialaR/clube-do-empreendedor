@@ -1,4 +1,5 @@
 import React, {ReactNode} from 'react';
+import {useNavigation} from '@react-navigation/native';
 
 import {useAuth} from '../../hooks/useAuth';
 
@@ -31,6 +32,7 @@ const RoundButton: React.FC<RoundButtonProps> = ({
 
 const CompanyProfile: React.FC = () => {
   const {signOut} = useAuth();
+  const navigation = useNavigation<any>();
 
   return (
     <Container>
@@ -38,7 +40,9 @@ const CompanyProfile: React.FC = () => {
 
       <BodyContainer>
         <SpacingY medium />
-        <RoundButton fullWidth onPress={() => false}>
+        <RoundButton
+          fullWidth
+          onPress={() => navigation.navigate('RegisterCompany')}>
           Dados do Perfil
         </RoundButton>
         <SpacingY small />

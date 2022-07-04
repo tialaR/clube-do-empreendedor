@@ -106,11 +106,6 @@ const CompanyRegisterProduct: React.FC = () => {
     reset: resetInputs,
   } = useForm({resolver: yupResolver(validationSchema)});
 
-  const [photos, setPhotos] = useState<Photo[]>([] as Photo[]);
-  const [selectedDiscountCode, setSelectedDiscountCode] = useState<Code>({
-    label: 'Selecione um códido',
-    value: undefined,
-  });
   const discountCodes = [
     {label: 'CÓDIGO 01', value: 'CÓDIGO 01'},
     {label: 'CÓDIGO 02', value: 'CÓDIGO 02'},
@@ -130,6 +125,15 @@ const CompanyRegisterProduct: React.FC = () => {
   ];
 
   const [progress, setProgress] = useState(0);
+
+  const [productName, setProductName] = useState('');
+  const [photos, setPhotos] = useState<Photo[]>([] as Photo[]);
+  const [productDescription, setProductDescription] = useState('');
+  const [selectedDiscountCode, setSelectedDiscountCode] = useState<Code>({
+    label: 'Selecione um códido',
+    value: undefined,
+  });
+  const [productValue, setProductValue] = useState('');
 
   const [productResgistered, setProductResgistered] = useState<
     Product | undefined
@@ -310,18 +314,22 @@ const CompanyRegisterProduct: React.FC = () => {
                 {progress === 0 && (
                   <Controller
                     name="productName"
+                    defaultValue={productName}
                     control={control}
                     rules={{
                       required: true,
                     }}
-                    render={({field: {onChange, onBlur, value}}) => (
+                    render={({field: {onChange, onBlur}}) => (
                       <InputLine
                         title={PageTitles.productName}
+                        value={productName}
                         maxLength={200}
                         autoCorrect={false}
-                        value={value}
                         onBlur={onBlur}
-                        onChangeText={onChange}
+                        onChangeText={e => {
+                          setProductName(e);
+                          onChange(e);
+                        }}
                         error={errors.productName}
                         errorText={errors.productName?.message}
                       />
@@ -446,17 +454,21 @@ const CompanyRegisterProduct: React.FC = () => {
                 {progress === 2 && (
                   <Controller
                     name="productDescription"
+                    defaultValue={productDescription}
                     control={control}
                     rules={{
                       required: true,
                     }}
-                    render={({field: {onChange, onBlur, value}}) => (
+                    render={({field: {onChange, onBlur}}) => (
                       <InputLine
                         title={PageTitles.productDescription}
+                        value={productDescription}
                         maxLength={500}
-                        value={value}
                         onBlur={onBlur}
-                        onChangeText={onChange}
+                        onChangeText={e => {
+                          setProductDescription(e);
+                          onChange(e);
+                        }}
                         error={errors.productDescription}
                         errorText={errors.productDescription?.message}
                       />
@@ -481,17 +493,21 @@ const CompanyRegisterProduct: React.FC = () => {
                 {progress === 4 && (
                   <Controller
                     name="productValue"
+                    defaultValue={productValue}
                     control={control}
                     rules={{
                       required: true,
                     }}
-                    render={({field: {onChange, onBlur, value}}) => (
+                    render={({field: {onChange, onBlur}}) => (
                       <InputLine
                         title={PageTitles.productValue}
+                        value={productValue}
                         maxLength={200}
-                        value={value}
                         onBlur={onBlur}
-                        onChangeText={onChange}
+                        onChangeText={e => {
+                          setProductValue(e);
+                          onChange(e);
+                        }}
                         error={errors.productValue}
                         errorText={errors.productValue?.message}
                       />

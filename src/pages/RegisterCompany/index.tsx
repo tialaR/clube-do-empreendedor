@@ -67,7 +67,16 @@ const RegisterCompany: React.FC = () => {
   } = useForm({resolver: yupResolver(validationSchema)});
 
   const [progress, setProgress] = useState(0);
+
+  const [name, setName] = useState('');
+  const [fantasyName, setFantasyName] = useState('');
   const [cnpj, setCnpj] = useState('');
+  const [address, setAddress] = useState('');
+  const [openingHours, setOpeningHours] = useState('');
+  const [companyDescription, setCompanyDescription] = useState('');
+  const [email, setEmail] = useState('tialarocha@gmail.com');
+  const [occupationArea, setOccupationArea] = useState('');
+  const [socialNetworks, setSocialNetworks] = useState('');
 
   const isProgressEnd = useMemo(
     () => progress === FORM_ELEMENTS_SIZE,
@@ -76,10 +85,6 @@ const RegisterCompany: React.FC = () => {
   const isProgressStart = useMemo(() => progress === 0, [progress]);
 
   const handleContinue = () => {
-    if (isProgressEnd) {
-      () => handleSubmit(onSubmit);
-    }
-
     makeProgress();
   };
 
@@ -149,18 +154,22 @@ const RegisterCompany: React.FC = () => {
             {progress === 0 && (
               <Controller
                 name="name"
+                defaultValue={name}
                 control={control}
                 rules={{
                   required: true,
                 }}
-                render={({field: {onChange, onBlur, value}}) => (
+                render={({field: {onChange, onBlur}}) => (
                   <InputLine
                     title={PageTitles.name}
                     maxLength={100}
                     autoCorrect={false}
-                    value={value}
+                    value={name}
                     onBlur={onBlur}
-                    onChangeText={onChange}
+                    onChangeText={e => {
+                      setName(e);
+                      onChange(e);
+                    }}
                     error={errors.name}
                     errorText={errors.name?.message}
                   />
@@ -171,18 +180,22 @@ const RegisterCompany: React.FC = () => {
             {progress === 1 && (
               <Controller
                 name="fantasyName"
+                defaultValue={fantasyName}
                 control={control}
                 rules={{
                   required: true,
                 }}
-                render={({field: {onChange, onBlur, value}}) => (
+                render={({field: {onChange, onBlur}}) => (
                   <InputLine
                     title={PageTitles.fantasyName}
                     maxLength={100}
                     autoCorrect={false}
-                    value={value}
+                    value={fantasyName}
                     onBlur={onBlur}
-                    onChangeText={onChange}
+                    onChangeText={e => {
+                      setFantasyName(e);
+                      onChange(e);
+                    }}
                     error={errors.fantasyName}
                     errorText={errors.fantasyName?.message}
                   />
@@ -193,6 +206,7 @@ const RegisterCompany: React.FC = () => {
             {progress === 2 && (
               <Controller
                 name="cnpj"
+                defaultValue={cnpj}
                 control={control}
                 rules={{
                   required: true,
@@ -218,17 +232,21 @@ const RegisterCompany: React.FC = () => {
             {progress === 3 && (
               <Controller
                 name="address"
+                defaultValue={address}
                 control={control}
                 rules={{
                   required: true,
                 }}
-                render={({field: {value, onChange, onBlur}}) => (
+                render={({field: {onChange, onBlur}}) => (
                   <InputLine
                     title={PageTitles.address}
                     maxLength={10}
-                    value={value}
+                    value={address}
                     onBlur={onBlur}
-                    onChangeText={onChange}
+                    onChangeText={e => {
+                      setAddress(e);
+                      onChange(e);
+                    }}
                     error={errors.address}
                     errorText={errors.address?.message}
                   />
@@ -239,18 +257,22 @@ const RegisterCompany: React.FC = () => {
             {progress === 4 && (
               <Controller
                 name="openingHours"
+                defaultValue={openingHours}
                 control={control}
                 rules={{
                   required: true,
                 }}
-                render={({field: {onChange, onBlur, value}}) => (
+                render={({field: {onChange, onBlur}}) => (
                   <InputLine
                     title={PageTitles.openingHours}
                     maxLength={150}
                     autoCorrect={false}
-                    value={value}
+                    value={openingHours}
                     onBlur={onBlur}
-                    onChangeText={onChange}
+                    onChangeText={e => {
+                      setOpeningHours(e);
+                      onChange(e);
+                    }}
                     error={errors.openingHours}
                     errorText={errors.openingHours?.message}
                   />
@@ -261,17 +283,21 @@ const RegisterCompany: React.FC = () => {
             {progress === 5 && (
               <Controller
                 name="companyDescription"
+                defaultValue={companyDescription}
                 control={control}
                 rules={{
                   required: true,
                 }}
-                render={({field: {onChange, onBlur, value}}) => (
+                render={({field: {onChange, onBlur}}) => (
                   <InputLine
                     title={PageTitles.companyDescription}
                     maxLength={200}
-                    value={value}
+                    value={companyDescription}
                     onBlur={onBlur}
-                    onChangeText={onChange}
+                    onChangeText={e => {
+                      setCompanyDescription(e);
+                      onChange(e);
+                    }}
                     error={errors.companyDescription}
                     errorText={errors.companyDescription?.message}
                   />
@@ -282,19 +308,23 @@ const RegisterCompany: React.FC = () => {
             {progress === 6 && (
               <Controller
                 name="email"
+                defaultValue={email}
                 control={control}
                 rules={{
                   required: true,
                 }}
-                render={({field: {onChange, onBlur, value}}) => (
+                render={({field: {onChange, onBlur}}) => (
                   <InputLine
                     title={PageTitles.email}
                     maxLength={50}
                     keyboardType="email-address"
                     autoCorrect={false}
-                    value={value}
+                    value={email}
                     onBlur={onBlur}
-                    onChangeText={onChange}
+                    onChangeText={e => {
+                      setEmail(e);
+                      onChange(e);
+                    }}
                     error={errors.email}
                     errorText={errors.email?.message}
                   />
@@ -305,17 +335,21 @@ const RegisterCompany: React.FC = () => {
             {progress === 7 && (
               <Controller
                 name="occupationArea"
+                defaultValue={occupationArea}
                 control={control}
                 rules={{
                   required: true,
                 }}
-                render={({field: {onChange, onBlur, value}}) => (
+                render={({field: {onChange, onBlur}}) => (
                   <InputLine
                     title={PageTitles.occupationArea}
                     maxLength={200}
-                    value={value}
+                    value={occupationArea}
                     onBlur={onBlur}
-                    onChangeText={onChange}
+                    onChangeText={e => {
+                      setOccupationArea(e);
+                      onChange(e);
+                    }}
                     error={errors.occupationArea}
                     errorText={errors.occupationArea?.message}
                   />
@@ -326,17 +360,21 @@ const RegisterCompany: React.FC = () => {
             {progress === 8 && (
               <Controller
                 name="socialNetworks"
+                defaultValue={socialNetworks}
                 control={control}
                 rules={{
                   required: true,
                 }}
-                render={({field: {onChange, onBlur, value}}) => (
+                render={({field: {onChange, onBlur}}) => (
                   <InputLine
                     title={PageTitles.socialNetworks}
                     maxLength={300}
-                    value={value}
+                    value={socialNetworks}
                     onBlur={onBlur}
-                    onChangeText={onChange}
+                    onChangeText={e => {
+                      setSocialNetworks(e);
+                      onChange(e);
+                    }}
                     error={errors.socialNetworks}
                     errorText={errors.socialNetworks?.message}
                   />

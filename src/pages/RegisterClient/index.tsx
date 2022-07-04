@@ -76,8 +76,13 @@ const RegisterClient: React.FC = () => {
   } = useForm({resolver: yupResolver(validationSchema)});
 
   const [progress, setProgress] = useState(0);
+
+  const [name, setName] = useState('');
   const [cpf, setCpf] = useState('');
   const [birthDate, setBirthDate] = useState('');
+  const [address, setAddress] = useState('');
+  const [genre, setGenre] = useState('');
+  const [email, setEmail] = useState('');
   const [telephone, setTelephone] = useState('');
 
   const isProgressEnd = useMemo(
@@ -87,10 +92,6 @@ const RegisterClient: React.FC = () => {
   const isProgressStart = useMemo(() => progress === 0, [progress]);
 
   const handleContinue = () => {
-    if (isProgressEnd) {
-      () => handleSubmit(onSubmit);
-    }
-
     makeProgress();
   };
 
@@ -160,18 +161,22 @@ const RegisterClient: React.FC = () => {
             {progress === 0 && (
               <Controller
                 name="name"
+                defaultValue={name}
                 control={control}
                 rules={{
                   required: true,
                 }}
-                render={({field: {onChange, onBlur, value}}) => (
+                render={({field: {onChange, onBlur}}) => (
                   <InputLine
                     title={PageTitles.name}
+                    value={name}
                     maxLength={100}
                     autoCorrect={false}
-                    value={value}
                     onBlur={onBlur}
-                    onChangeText={onChange}
+                    onChangeText={e => {
+                      setName(e);
+                      onChange(e);
+                    }}
                     error={errors.name}
                     errorText={errors.name?.message}
                   />
@@ -182,6 +187,7 @@ const RegisterClient: React.FC = () => {
             {progress === 1 && (
               <Controller
                 name="cpf"
+                defaultValue={cpf}
                 control={control}
                 rules={{
                   required: true,
@@ -189,9 +195,9 @@ const RegisterClient: React.FC = () => {
                 render={({field: {onBlur, onChange}}) => (
                   <InputLine
                     title={PageTitles.cpf}
+                    value={cpf}
                     maxLength={14}
                     keyboardType="number-pad"
-                    value={cpf}
                     onBlur={onBlur}
                     onChangeText={e => {
                       setCpf(maskCPF(e));
@@ -207,6 +213,7 @@ const RegisterClient: React.FC = () => {
             {progress === 2 && (
               <Controller
                 name="birthDate"
+                defaultValue={birthDate}
                 control={control}
                 rules={{
                   required: true,
@@ -214,9 +221,9 @@ const RegisterClient: React.FC = () => {
                 render={({field: {onChange, onBlur}}) => (
                   <InputLine
                     title={PageTitles.birthDate}
+                    value={birthDate}
                     maxLength={10}
                     keyboardType="number-pad"
-                    value={birthDate}
                     onBlur={onBlur}
                     onChangeText={e => {
                       setBirthDate(maskDate(e));
@@ -232,18 +239,22 @@ const RegisterClient: React.FC = () => {
             {progress === 3 && (
               <Controller
                 name="address"
+                defaultValue={address}
                 control={control}
                 rules={{
                   required: true,
                 }}
-                render={({field: {onChange, onBlur, value}}) => (
+                render={({field: {onChange, onBlur}}) => (
                   <InputLine
                     title={PageTitles.address}
+                    value={address}
                     maxLength={150}
                     autoCorrect={false}
-                    value={value}
                     onBlur={onBlur}
-                    onChangeText={onChange}
+                    onChangeText={e => {
+                      setAddress(e);
+                      onChange(e);
+                    }}
                     error={errors.address}
                     errorText={errors.address?.message}
                   />
@@ -254,17 +265,21 @@ const RegisterClient: React.FC = () => {
             {progress === 4 && (
               <Controller
                 name="genre"
+                defaultValue={genre}
                 control={control}
                 rules={{
                   required: true,
                 }}
-                render={({field: {onChange, onBlur, value}}) => (
+                render={({field: {onChange, onBlur}}) => (
                   <InputLine
                     title={PageTitles.genre}
+                    value={genre}
                     maxLength={20}
-                    value={value}
                     onBlur={onBlur}
-                    onChangeText={onChange}
+                    onChangeText={e => {
+                      setGenre(e);
+                      onChange(e);
+                    }}
                     error={errors.genre}
                     errorText={errors.genre?.message}
                   />
@@ -275,19 +290,23 @@ const RegisterClient: React.FC = () => {
             {progress === 5 && (
               <Controller
                 name="email"
+                defaultValue={email}
                 control={control}
                 rules={{
                   required: true,
                 }}
-                render={({field: {onChange, onBlur, value}}) => (
+                render={({field: {onChange, onBlur}}) => (
                   <InputLine
                     title={PageTitles.email}
+                    value={email}
                     maxLength={50}
                     keyboardType="email-address"
                     autoCorrect={false}
-                    value={value}
                     onBlur={onBlur}
-                    onChangeText={onChange}
+                    onChangeText={e => {
+                      setEmail(e);
+                      onChange(e);
+                    }}
                     error={errors.email}
                     errorText={errors.email?.message}
                   />
@@ -298,6 +317,7 @@ const RegisterClient: React.FC = () => {
             {progress === 6 && (
               <Controller
                 name="telephone"
+                defaultValue={telephone}
                 control={control}
                 rules={{
                   required: true,
@@ -305,9 +325,9 @@ const RegisterClient: React.FC = () => {
                 render={({field: {onChange, onBlur}}) => (
                   <InputLine
                     title={PageTitles.telephone}
+                    value={telephone}
                     maxLength={15}
                     keyboardType="phone-pad"
-                    value={telephone}
                     onBlur={onBlur}
                     onChangeText={e => {
                       setTelephone(maskPhone(e));
@@ -324,7 +344,7 @@ const RegisterClient: React.FC = () => {
           <ButtonsContainer>
             {isProgressEnd ? (
               <Button outlinedLight onPress={handleSubmit(onSubmit)}>
-                Continuar
+                Concluir
               </Button>
             ) : (
               <Button outlinedLight onPress={handleContinue}>

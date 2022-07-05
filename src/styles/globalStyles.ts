@@ -1,3 +1,4 @@
+import LinearGradient from 'react-native-linear-gradient';
 import styled, {css} from 'styled-components/native';
 
 import {colors} from './colors';
@@ -70,4 +71,44 @@ export const SplasScreenAux = styled.View`
 
   align-items: center;
   justify-content: center;
+`;
+
+type BoxSkeletonLoadingProps = {
+  width: number;
+  height: number;
+};
+export const BoxSkeletonLoading = styled(LinearGradient).attrs({
+  colors: [colors.gradientStart, colors.gradientEnd],
+  start: {x: 0, y: 0},
+  end: {x: 1, y: 0},
+})<BoxSkeletonLoadingProps>`
+  width: ${props => props.width}px;
+  height: ${props => props.height}px;
+
+  border-radius: 10px;
+
+  align-self: center;
+`;
+
+type TextsSkeletonLoadingProps = {
+  width: number;
+  thin?: boolean;
+};
+export const TextsSkeletonLoading = styled(LinearGradient).attrs({
+  colors: [colors.gradientStart, colors.gradientEnd],
+  start: {x: 0, y: 0},
+  end: {x: 1, y: 0},
+})<TextsSkeletonLoadingProps>`
+  width: ${props => props.width}px;
+
+  ${props =>
+    props.thin
+      ? css`
+          height: 12px;
+        `
+      : css`
+          height: 18px;
+        `}
+
+  border-radius: 5px;
 `;

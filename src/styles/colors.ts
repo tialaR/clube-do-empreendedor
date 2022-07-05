@@ -12,4 +12,6 @@ export const colors = {
   gray100: '#EBE9E9',
   whatsApp: '#24C21A',
   green200: '#03F63C',
+  gradientStart: '#dedede',
+  gradientEnd: '#d3d3d3',
 };

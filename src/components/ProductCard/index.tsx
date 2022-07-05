@@ -1,4 +1,10 @@
-import React, {memo} from 'react';
+import React, {memo, useMemo} from 'react';
+
+import {
+  BoxSkeletonLoading,
+  SpacingY,
+  TextsSkeletonLoading,
+} from '../../styles/globalStyles';
 import {
   ColorfulContainer,
   Container,
@@ -12,6 +18,24 @@ import {
   PromotionText,
   SoldBy,
 } from './styles';
+
+const renderImageLoading = () => (
+  <BoxSkeletonLoading width={100} height={100} />
+);
+const ImageLoading = () => renderImageLoading();
+
+const renderDescriptionsLoading = () => (
+  <>
+    <TextsSkeletonLoading width={90} />
+    <SpacingY small />
+    <TextsSkeletonLoading width={150} thin />
+    <SpacingY tiny />
+    <TextsSkeletonLoading width={150} thin />
+    <SpacingY tiny />
+    <TextsSkeletonLoading width={150} thin />
+  </>
+);
+const DewscriptionsLoading = () => renderDescriptionsLoading();
 
 type Props = {
   name: string;
@@ -34,23 +58,34 @@ const ProductCard: React.FC<Props> = ({
   emphasis,
   onPress,
 }) => {
+  const isDescriptionsLoaded = useMemo(
+    () => name || price || installment || promotion || soldBy,
+    [name, price, installment, promotion, soldBy],
+  );
+
   return (
     <ColorfulContainer emphasis={emphasis} onPress={onPress}>
       <Container>
-        <Image source={{uri: img}} />
+        {img ? <Image source={{uri: img}} /> : <ImageLoading />}
 
         <DescriptionContainer>
-          <NameContainer>
-            <Name numberOfLines={2} ellipsizeMode="tail">
-              {name}
-            </Name>
-          </NameContainer>
-          <Price>{price}</Price>
-          <Installment>{installment}</Installment>
-          <PromotionContainer>
-            <PromotionText>{promotion}</PromotionText>
-          </PromotionContainer>
-          <SoldBy>Vendido por {soldBy}</SoldBy>
+          {isDescriptionsLoaded ? (
+            <>
+              <NameContainer>
+                <Name numberOfLines={2} ellipsizeMode="tail">
+                  {name}
+                </Name>
+              </NameContainer>
+              <Price>{price}</Price>
+              <Installment>{installment}</Installment>
+              <PromotionContainer>
+                <PromotionText>{promotion}</PromotionText>
+              </PromotionContainer>
+              <SoldBy>Vendido por {soldBy}</SoldBy>
+            </>
+          ) : (
+            <DewscriptionsLoading />
+          )}
         </DescriptionContainer>
       </Container>
     </ColorfulContainer>

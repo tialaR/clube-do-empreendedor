@@ -86,6 +86,7 @@ const CompanyProductDetail: React.FC<Props> = ({product}) => {
       product?.soldBy,
     [product],
   );
+
   return (
     <Container>
       <ProductContainer>

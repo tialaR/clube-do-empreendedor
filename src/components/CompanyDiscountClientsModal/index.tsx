@@ -11,7 +11,7 @@ import IconButton from '../IconButton';
 import ClientItem from './ClientItem';
 
 import {colors} from '../../styles/colors';
-import {SpacingY} from '../../styles/globalStyles';
+import {SpacingY, TextsSkeletonLoading} from '../../styles/globalStyles';
 import {
   Overlay,
   Container,
@@ -25,6 +25,22 @@ import {
   Description,
   DiscountClientsListTitle,
 } from './styles';
+
+const listLoadingNumbersAux = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const renderListLoading = () => (
+  <>
+    <TextsSkeletonLoading width={200} />
+    <SpacingY large />
+    <SpacingY large />
+    {listLoadingNumbersAux.map(() => (
+      <>
+        <TextsSkeletonLoading width={260} thin />
+        <SpacingY small />
+      </>
+    ))}
+  </>
+);
+const ListLoading = () => renderListLoading();
 
 export type DiscountClientsModalHandlersToFather = {
   openModal: () => void;
@@ -106,21 +122,27 @@ const CompanyDiscountClientsModal: React.ForwardRefRenderFunction<
           <View style={{flex: 1, width: '100%'}}>
             {!showClientMoreInformation && (
               <>
-                <DiscountClientsListTitle>
-                  CLIENTES COM DESCONTO
-                </DiscountClientsListTitle>
-                <DiscountClientsList<React.ElementType>
-                  data={discountClients}
-                  showsVerticalScrollIndicator={false}
-                  keyExtractor={(client: Client) => client.id}
-                  renderItem={({item}: {item: Client}) => (
-                    <ClientItem
-                      name={item.name}
-                      onPress={() => handleSelectClient(item)}
+                {discountClients ? (
+                  <>
+                    <DiscountClientsListTitle>
+                      CLIENTES COM DESCONTO
+                    </DiscountClientsListTitle>
+                    <DiscountClientsList<React.ElementType>
+                      data={discountClients}
+                      showsVerticalScrollIndicator={false}
+                      keyExtractor={(client: Client) => client.id}
+                      renderItem={({item}: {item: Client}) => (
+                        <ClientItem
+                          name={item.name}
+                          onPress={() => handleSelectClient(item)}
+                        />
+                      )}
+                      ItemSeparatorComponent={() => <SpacingY medium />}
                     />
-                  )}
-                  ItemSeparatorComponent={() => <SpacingY medium />}
-                />
+                  </>
+                ) : (
+                  <ListLoading />
+                )}
               </>
             )}
 

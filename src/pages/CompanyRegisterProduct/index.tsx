@@ -20,6 +20,7 @@ import IconButton from '../../components/IconButton';
 import InputLine from '../../components/InputLine';
 import CompanyProductDetail from '../../components/CompanyProductDetail';
 import ExpandableListPanel from '../../components/ExpandableListPanel';
+import ProgressBar from '../../components/ProgressBar';
 import {SvgIcon} from '../../components/SvgIcon';
 
 import {colors} from '../../styles/colors';
@@ -31,7 +32,6 @@ import {
   ProductPhoto,
   BodyContainer,
   ButtonsContainer,
-  Pregress,
   Title,
   CompanyProductDetailBodyContainer,
   ProductPhotoImage,
@@ -261,7 +261,10 @@ const CompanyRegisterProduct: React.FC = () => {
             />
           </View>
           <View style={{paddingTop: 14}}>
-            <Pregress currentValue={progress} maxValue={FORM_ELEMENTS_SIZE} />
+            <ProgressBar
+              currentValue={progress}
+              maxValue={FORM_ELEMENTS_SIZE}
+            />
           </View>
         </HeaderContainer>
 
@@ -295,7 +298,10 @@ const CompanyRegisterProduct: React.FC = () => {
             </View>
 
             <View style={{paddingTop: 14}}>
-              <Pregress currentValue={progress} maxValue={FORM_ELEMENTS_SIZE} />
+              <ProgressBar
+                currentValue={progress}
+                maxValue={FORM_ELEMENTS_SIZE}
+              />
             </View>
           </HeaderContainer>
 

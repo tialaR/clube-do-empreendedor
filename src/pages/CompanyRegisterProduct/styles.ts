@@ -92,53 +92,6 @@ export const ButtonsContainer = styled.View`
   padding: 10px;
 `;
 
-type ProgressProps = {
-  currentValue: number;
-  maxValue: number;
-};
-
-export const Pregress = styled.View<ProgressProps>`
-  height: 10px;
-  width: ${screenWidth}px;
-
-  ${props =>
-    props.currentValue > 0 &&
-    css`
-      background-color: ${colors.white};
-    `}
-
-  ${props =>
-    props.currentValue === 1 &&
-    css`
-      color: ${colors.white};
-      width: ${screenWidth / props.maxValue}px;
-    `}
-  ${props =>
-    props.currentValue === 2 &&
-    css`
-      color: ${colors.white};
-      width: ${(screenWidth / props.maxValue) * props.currentValue}px;
-    `}
-  ${props =>
-    props.currentValue === 3 &&
-    css`
-      color: ${colors.white};
-      width: ${(screenWidth / props.maxValue) * props.currentValue}px;
-    `}
-  ${props =>
-    props.currentValue === 4 &&
-    css`
-      color: ${colors.white};
-      width: ${(screenWidth / props.maxValue) * props.currentValue}px;
-    `}
-  ${props =>
-    props.currentValue === (5 | 6) &&
-    css`
-      color: ${colors.white};
-      width: ${screenWidth}px;
-    `}
-`;
-
 export const ErrorMessage = styled.Text`
   color: ${colors.red};
 

@@ -15,6 +15,7 @@ import {
 import Button from '../../components/Button';
 import IconButton from '../../components/IconButton';
 import InputLine from '../../components/InputLine';
+import ProgressBar from '../../components/ProgressBar';
 
 import {maskCNPJ, isValidCNPJ} from '../../utils/helpers';
 
@@ -24,7 +25,6 @@ import {
   Container,
   BodyContainer,
   ButtonsContainer,
-  Pregress,
 } from './styles';
 
 enum PageTitles {
@@ -146,7 +146,10 @@ const RegisterCompany: React.FC = () => {
               />
             </View>
             <View style={{paddingTop: 14}}>
-              <Pregress currentValue={progress} maxValue={FORM_ELEMENTS_SIZE} />
+              <ProgressBar
+                currentValue={progress}
+                maxValue={FORM_ELEMENTS_SIZE}
+              />
             </View>
           </HeaderContainer>
 

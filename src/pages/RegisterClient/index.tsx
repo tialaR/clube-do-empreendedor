@@ -15,6 +15,7 @@ import {
 import Button from '../../components/Button';
 import IconButton from '../../components/IconButton';
 import InputLine from '../../components/InputLine';
+import ProgressBar from '../../components/ProgressBar';
 
 import {
   maskCPF,
@@ -31,7 +32,6 @@ import {
   Container,
   BodyContainer,
   ButtonsContainer,
-  Pregress,
 } from './styles';
 
 enum PageTitles {
@@ -153,7 +153,10 @@ const RegisterClient: React.FC = () => {
               />
             </View>
             <View style={{paddingTop: 14}}>
-              <Pregress currentValue={progress} maxValue={FORM_ELEMENTS_SIZE} />
+              <ProgressBar
+                currentValue={progress}
+                maxValue={FORM_ELEMENTS_SIZE}
+              />
             </View>
           </HeaderContainer>
 

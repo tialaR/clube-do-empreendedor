@@ -87,7 +87,10 @@ export const AppClientRoutes = () => {
       screenOptions={{
         headerShown: false,
       }}>
-      <Stack.Screen name="ClientDashboard" component={ClientDashboardTabs} />
+      <Stack.Screen
+        name="ClientDashboardTabs"
+        component={ClientDashboardTabs}
+      />
 
       <Stack.Screen name="RegisterClient" component={RegisterClient} />
     </Stack.Navigator>

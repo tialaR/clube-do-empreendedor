@@ -42,6 +42,8 @@ import {
   GuarantedProductDescriptionContainer,
   GuarantedProductTitle,
   GuarantedProductDescription,
+  QrCodeScannerButtonText,
+  QrCodeScannerButton,
 } from './styles';
 import {colors} from '../../styles/colors';
 import {
@@ -276,17 +278,31 @@ const ClientProductDetailModal: React.ForwardRefRenderFunction<
                           </WhatsAppButton>
 
                           {emphasisProduct && (
-                            <DiscountButton onPress={handleGuarantedProduct}>
-                              <SvgIcon
-                                name="circleCheck"
-                                width={15}
-                                height={15}
-                                color={colors.white}
-                              />
-                              <DiscountButtonText>
-                                GARANTIR DESCONTO
-                              </DiscountButtonText>
-                            </DiscountButton>
+                            <>
+                              <DiscountButton onPress={handleGuarantedProduct}>
+                                <SvgIcon
+                                  name="circleCheck"
+                                  width={15}
+                                  height={15}
+                                  color={colors.white}
+                                />
+                                <DiscountButtonText>
+                                  GARANTIR DESCONTO
+                                </DiscountButtonText>
+                              </DiscountButton>
+
+                              <QrCodeScannerButton onPress={() => false}>
+                                <SvgIcon
+                                  name="qrCode"
+                                  width={15}
+                                  height={15}
+                                  color={colors.black}
+                                />
+                                <QrCodeScannerButtonText>
+                                  ESCANEAR QR CODE
+                                </QrCodeScannerButtonText>
+                              </QrCodeScannerButton>
+                            </>
                           )}
                         </>
                       ) : (

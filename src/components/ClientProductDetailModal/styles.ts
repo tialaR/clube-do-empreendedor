@@ -259,13 +259,38 @@ export const DiscountButton = styled.TouchableOpacity.attrs(() => ({
   background-color: ${colors.indigoA200};
 `;
 
+export const QrCodeScannerButtonText = styled.Text`
+  font-size: ${fonts.sizes.xSmall}px;
+  font-family: ${fonts.families.latoBlack};
+
+  padding-left: 4px;
+
+  color: ${colors.black};
+`;
+
+export const QrCodeScannerButton = styled.TouchableOpacity.attrs(() => ({
+  activeOpacity: 1,
+}))`
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+
+  border-radius: 50px;
+  border: 1px solid ${colors.black};
+
+  padding: 6px 12px;
+  margin-top: 12px;
+
+  background-color: 'transparent';
+`;
+
 export const DiscountButtonText = styled.Text`
   font-size: ${fonts.sizes.xSmall}px;
   font-family: ${fonts.families.latoBlack};
 
   padding-left: 4px;
 
-  color: ${colors.white};
+  color: ${colors.black};
 `;
 
 export const GuarantedProductContainer = styled.View`

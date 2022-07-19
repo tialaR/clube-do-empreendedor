@@ -8,6 +8,8 @@ import {ClientProductDetailModalProvider} from '../hooks/useClientProductDetailM
 import ClientDashboard from '../pages/ClientDashboard';
 import ClientNotifications from '../pages/ClientNotifications';
 import ClientProfile from '../pages/ClientProfile';
+import QRCodeScanner from '../pages/QRCodeScanner';
+import QRCodeRegisterConfirmation from '../pages/QRCodeRegisterConfirmation';
 
 import {SvgIcon} from '../components/SvgIcon';
 
@@ -93,6 +95,12 @@ export const AppClientRoutes = () => {
       />
 
       <Stack.Screen name="RegisterClient" component={RegisterClient} />
+
+      <Stack.Screen name="QRCodeScanner" component={QRCodeScanner} />
+      <Stack.Screen
+        name="QRCodeRegisterConfirmation"
+        component={QRCodeRegisterConfirmation}
+      />
     </Stack.Navigator>
   );
 };

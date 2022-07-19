@@ -2,11 +2,14 @@ import React, {
   forwardRef,
   memo,
   useCallback,
+  useEffect,
   useImperativeHandle,
   useMemo,
   useState,
 } from 'react';
-import {Modal, View} from 'react-native';
+import {Linking, Modal, Platform, View} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import {BarCodeScanner, PermissionStatus} from 'expo-barcode-scanner';
 
 import IconButton from '../IconButton';
 
@@ -150,8 +153,16 @@ const ClientProductDetailModal: React.ForwardRefRenderFunction<
   ClientProductDetailModalHandlersToFather,
   Props
 > = ({onClose, product, emphasisProduct}: Props, ref) => {
+  const navigation = useNavigation<any>();
+
   const [isVisibleModal, setIsVisibleModal] = useState(false);
   const [isGuaranteedProduct, setIsGuaranteedProduct] = useState(false);
+
+  const [hasCameraPermission, setHasCameraPermission] = useState<
+    | PermissionStatus.UNDETERMINED
+    | PermissionStatus.GRANTED
+    | PermissionStatus.DENIED
+  >(PermissionStatus.UNDETERMINED);
 
   const isDescriptionLoaded = useMemo(
     () =>
@@ -182,6 +193,37 @@ const ClientProductDetailModal: React.ForwardRefRenderFunction<
   const handleGuarantedProduct = () => {
     setIsGuaranteedProduct(true);
   };
+
+  useEffect(() => {
+    if (hasCameraPermission === PermissionStatus.DENIED) {
+      if (Platform.OS === 'ios') {
+        Linking.openURL('app-settings:');
+      } else {
+        Linking.openSettings();
+      }
+    }
+
+    if (hasCameraPermission === PermissionStatus.GRANTED) {
+      onClose();
+      navigation.navigate('QRCodeScanner');
+    }
+  }, [hasCameraPermission, navigation, onClose]);
+
+  const handleScannerQRCode = useCallback(() => {
+    (async () => {
+      setHasCameraPermission(PermissionStatus.UNDETERMINED);
+
+      const {status} = await BarCodeScanner.requestPermissionsAsync();
+
+      if (status === PermissionStatus.GRANTED) {
+        setHasCameraPermission(PermissionStatus.GRANTED);
+      }
+
+      if (status === PermissionStatus.DENIED) {
+        setHasCameraPermission(PermissionStatus.DENIED);
+      }
+    })();
+  }, []);
 
   return (
     <Modal
@@ -291,7 +333,8 @@ const ClientProductDetailModal: React.ForwardRefRenderFunction<
                                 </DiscountButtonText>
                               </DiscountButton>
 
-                              <QrCodeScannerButton onPress={() => false}>
+                              <QrCodeScannerButton
+                                onPress={handleScannerQRCode}>
                                 <SvgIcon
                                   name="qrCode"
                                   width={15}

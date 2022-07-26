@@ -46,14 +46,6 @@ const CompanyProfile: React.FC = () => {
           Dados do Perfil
         </RoundButton>
         <SpacingY small />
-        <RoundButton fullWidth onPress={() => false}>
-          Meus Descontos
-        </RoundButton>
-        <SpacingY small />
-        <RoundButton fullWidth onPress={() => false}>
-          Configurações
-        </RoundButton>
-        <SpacingY small />
         <RoundButton onPress={signOut}>Sair da Conta</RoundButton>
       </BodyContainer>
     </Container>

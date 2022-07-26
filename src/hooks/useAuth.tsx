@@ -7,29 +7,41 @@ import React, {
   ReactNode,
 } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Alert} from 'react-native';
 
-type User = {
-  document: string;
-  type: 'CPF' | 'CNPJ';
+import api from '../services/api';
+import ServiceClient from '../services/client/client.service';
+
+type AuthLoginState = {
+  userId: number;
+  token: string;
+  isClient: boolean;
 };
 
-type AuthState = {
-  token: string;
-  user: User;
+type SignUpCredentials = {
+  username: string;
+  email: string;
+  password: string;
+  cpf?: string;
+  cnpj?: string;
 };
 
 type SignInCredentials = {
-  documentNumber: string;
-  documentType: 'CPF' | 'CNPJ';
+  username: string;
   password: string;
 };
 
 type AuthContextData = {
-  user: User;
+  userId: number;
+  isClient: boolean;
+  isLoginError: boolean;
+  isLoginLoading: boolean;
+  isSignUploading: boolean;
+  isSignUpError: boolean;
+  isSignUpSuccess: boolean;
+  signUp(creditials: SignUpCredentials): Promise<void>;
   signIn(creditials: SignInCredentials): Promise<void>;
-  updateUser(user: User): Promise<void>;
   signOut(): void;
-  loading: boolean;
 };
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -39,91 +51,133 @@ type AuthProviderProps = {
 };
 
 const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
-  const [data, setData] = useState<AuthState>({} as AuthState);
-  const [loading, setLoading] = useState(true);
+  const {
+    postSignUp,
+    isLoading: isSignUploading,
+    isError: isSignUpError,
+    isSuccess: isSignUpSuccess,
+  } = ServiceClient.usePostSignUp();
+
+  const [loginData, setLoginData] = useState<AuthLoginState>(
+    {} as AuthLoginState,
+  );
+  const [isLoginLoading, setIsLoginLoading] = useState(true);
+  const [isLoginError, setIsLoginError] = useState(false);
 
   // AsyncStorage
   useEffect(() => {
     async function loadStorageData(): Promise<void> {
-      const [token, user] = await AsyncStorage.multiGet([
+      setIsLoginLoading(true);
+      const [token, userId, isClient] = await AsyncStorage.multiGet([
         '@EntrepreneursClub:token',
-        '@EntrepreneursClub:user',
+        '@EntrepreneursClub:userId',
+        '@EntrepreneursClub:isClient',
       ]);
 
-      if (token[1] && user[1]) {
-        // api.defaults.headers.authorization = `Bearer ${token[1]}`;
+      if (token[1] && userId[1] && isClient[1]) {
+        api.defaults.headers.common['Authorization'] = `Token ${token[1]}`;
 
-        setData({token: token[1], user: JSON.parse(user[1])});
+        setLoginData({
+          token: token[1],
+          userId: JSON.parse(userId[1]),
+          isClient: JSON.parse(isClient[1]),
+        });
       }
 
-      setLoading(false);
+      setIsLoginLoading(false);
     }
 
     loadStorageData();
   }, []);
 
-  // Login
-  const signIn = useCallback(
-    async ({documentType, documentNumber, password}: SignInCredentials) => {
-      // Criando sessão de usuário no back-end
-      // const response = await api.post('sessions', {
-      //   email,
-      //   password,
-      // });
+  // Cadastro
+  const signUp = useCallback(
+    async ({username, email, password, cpf, cnpj}: SignUpCredentials) => {
+      if (cpf) {
+        const client = {
+          username,
+          email,
+          password,
+          cpf,
+        };
+        postSignUp(client);
+      }
 
-      // const { token, user } = response.data;
-      const token = 'c72b7c32037a4082062c1c6b566296c1';
-      const user = {
-        document: documentNumber,
-        type: documentType,
-      };
-
-      // Salvando no localStorage:
-      await AsyncStorage.multiSet([
-        ['@EntrepreneursClub:token', token],
-        ['@EntrepreneursClub:user', JSON.stringify(user)],
-      ]);
-
-      /* Definindo como padrão para todas as requisições da aplicação um cabeçalho com o nome
-       Authorization contendo o valor do token */
-      // api.defaults.headers.authorization = `Bearer ${token}`;
-
-      setData({token, user});
+      if (cnpj) {
+        // await api.post<AuthState>('/signup/loja', {
+        //   username,
+        //   email,
+        //   password,
+        //   cnpj,
+        // });
+      }
     },
     [],
   );
 
-  // Atualiza os dados do usuário (o token continua o mesmo)
-  const updateUser = useCallback(
-    async (user: User) => {
-      await AsyncStorage.setItem(
-        '@EntrepreneursClub:user',
-        JSON.stringify(user),
-      );
+  // Login
+  const signIn = useCallback(
+    async ({username, password}: SignInCredentials) => {
+      setIsLoginLoading(true);
 
-      setData({
-        token: data.token,
-        user,
-      });
+      await api
+        .post('/accounts/login', {
+          username,
+          password,
+        })
+        .then(response => {
+          Alert.alert(JSON.stringify(response.data));
+          const {token, user_id: userId, is_cliente: isClient} = response.data;
+
+          const saveTokenAndUserDataInLocalStorage = async () => {
+            await AsyncStorage.multiSet([
+              ['@EntrepreneursClub:token', token],
+              ['@EntrepreneursClub:userId', JSON.stringify(userId)],
+              ['@EntrepreneursClub:isClient', JSON.stringify(isClient)],
+            ]);
+          };
+
+          saveTokenAndUserDataInLocalStorage();
+
+          api.defaults.headers.common['Authorization'] = `Token ${token}`;
+
+          setLoginData({token, userId, isClient});
+        })
+        .catch((err: any) => {
+          setIsLoginError(!!err);
+        })
+        .finally(() => {
+          setIsLoginLoading(false);
+        });
     },
-    [setData, data.token],
+    [],
   );
 
   // Logout
   const signOut = useCallback(async () => {
-    // Removendo do localStorage:
     await AsyncStorage.multiRemove([
       '@EntrepreneursClub:token',
-      '@EntrepreneursClub:user',
+      '@EntrepreneursClub:userId',
+      '@EntrepreneursClub:isClient',
     ]);
 
-    // Removendo da variável:
-    setData({} as AuthState);
+    setLoginData({} as AuthLoginState);
   }, []);
 
   return (
     <AuthContext.Provider
-      value={{user: data.user, loading, signIn, updateUser, signOut}}>
+      value={{
+        userId: loginData.userId,
+        isClient: loginData.isClient,
+        isLoginLoading,
+        isLoginError,
+        isSignUploading,
+        isSignUpError,
+        isSignUpSuccess,
+        signUp,
+        signIn,
+        signOut,
+      }}>
       {children}
     </AuthContext.Provider>
   );

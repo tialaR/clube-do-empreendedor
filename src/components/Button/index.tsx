@@ -1,5 +1,6 @@
 import React, {useMemo} from 'react';
-import {TouchableOpacityProps} from 'react-native';
+import {ActivityIndicator, TouchableOpacityProps} from 'react-native';
+import {colors} from '../../styles/colors';
 import {ButtonText, Container, ContainerView} from './styles';
 
 interface Props extends TouchableOpacityProps {
@@ -8,6 +9,7 @@ interface Props extends TouchableOpacityProps {
   filledLight?: boolean;
   outlined?: boolean;
   outlinedLight?: boolean;
+  loading?: boolean;
 }
 
 const Button: React.FC<Props> = ({
@@ -16,6 +18,7 @@ const Button: React.FC<Props> = ({
   filledLight = false,
   outlined = false,
   outlinedLight = false,
+  loading = false,
   ...rest
 }) => {
   const buttontypes = useMemo(() => {
@@ -30,7 +33,11 @@ const Button: React.FC<Props> = ({
   return (
     <ContainerView buttontypes={buttontypes}>
       <Container {...rest} buttontypes={buttontypes}>
-        <ButtonText buttontypes={buttontypes}>{children}</ButtonText>
+        {loading ? (
+          <ActivityIndicator color={colors.white} size="small" />
+        ) : (
+          <ButtonText buttontypes={buttontypes}>{children}</ButtonText>
+        )}
       </Container>
     </ContainerView>
   );

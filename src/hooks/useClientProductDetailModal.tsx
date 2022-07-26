@@ -5,23 +5,12 @@ import ClientProductDetailModal, {
   ClientProductDetailModalHandlersToFather,
 } from '../components/ClientProductDetailModal';
 
-type Product = {
-  id: string;
-  name: string;
-  img: string;
-  price: string;
-  installment: string;
-  promotion: string;
-  soldBy: string;
-  qrCodeImg: string;
-};
-
 type ClientProductDetailContextData = {
   showClientProductDetailModal({
-    product,
+    productId,
     isEmphasisProduct,
   }: {
-    product: Product;
+    productId: number;
     isEmphasisProduct?: boolean;
   }): void;
   closeClientProductDetailModal(): void;
@@ -42,20 +31,20 @@ const ClientProductDetailModalProvider: React.FC<
   const productDetailModalRef =
     useRef<ClientProductDetailModalHandlersToFather>(null);
 
-  const [product, setProduct] = useState<Product | undefined>();
+  const [productId, setProductId] = useState<number | undefined>();
   const [isEmphasisProduct, setIsEmphasisProduct] = useState(false);
 
   const showClientProductDetailModal = useCallback(
     ({
-      product,
+      productId,
       isEmphasisProduct,
     }: {
-      product: Product;
+      productId: number;
       isEmphasisProduct: boolean;
     }) => {
       productDetailModalRef.current?.openModal();
 
-      setProduct(product);
+      setProductId(productId);
       setIsEmphasisProduct(isEmphasisProduct);
     },
     [productDetailModalRef],
@@ -69,14 +58,14 @@ const ClientProductDetailModalProvider: React.FC<
     return (
       <ClientProductDetailModal
         ref={productDetailModalRef}
-        product={product}
+        productId={productId}
         emphasisProduct={isEmphasisProduct}
         onClose={closeClientProductDetailModal}
       />
     );
   }, [
     productDetailModalRef,
-    product,
+    productId,
     isEmphasisProduct,
     closeClientProductDetailModal,
   ]);

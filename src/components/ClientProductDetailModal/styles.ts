@@ -85,6 +85,16 @@ export const Image = styled.Image.attrs(() => ({
   height: 160px;
 `;
 
+export const ImageNotFound = styled.View`
+  width: 160px;
+  height: 160px;
+
+  border-radius: 10px;
+
+  justify-content: center;
+  align-items: center;
+`;
+
 export const DescriptionContainer = styled.View`
   justify-content: center;
   align-items: center;
@@ -176,13 +186,6 @@ export const FeaturesTitle = styled.Text`
   color: ${colors.indigoA200};
 `;
 
-export const FeatureItem = styled.Text`
-  font-size: ${fonts.sizes.xSmall}px;
-  font-family: ${fonts.families.latoRegular};
-
-  color: ${colors.indigoA200};
-`;
-
 export const FooterContainer = styled.View`
   align-items: center;
   justify-content: center;
@@ -211,6 +214,18 @@ export const QRCodeImage = styled.Image`
 
   width: 80px;
   height: 80px;
+`;
+
+export const QRCodeImageNotFound = styled.View`
+  margin-top: 14px;
+
+  width: 80px;
+  height: 80px;
+
+  border-radius: 10px;
+
+  justify-content: center;
+  align-items: center;
 `;
 
 export const WhatsAppContainer = styled.View`

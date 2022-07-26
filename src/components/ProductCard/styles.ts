@@ -43,6 +43,18 @@ export const Image = styled.Image.attrs(() => ({
   align-self: center;
 `;
 
+export const ImageNotFound = styled.View`
+  width: 100px;
+  height: 100px;
+
+  background-color: ${colors.gray100};
+
+  border-radius: 10px;
+
+  align-items: center;
+  justify-content: center;
+`;
+
 export const DescriptionContainer = styled.View`
   padding-left: 12px;
 `;

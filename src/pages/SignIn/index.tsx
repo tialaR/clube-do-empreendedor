@@ -1,6 +1,7 @@
-import React, {ReactNode, useCallback, useMemo, useState} from 'react';
+import React, {ReactNode, useCallback, useMemo, useEffect} from 'react';
 import {RouteProp, useNavigation} from '@react-navigation/native';
 import {
+  Alert,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -16,7 +17,7 @@ import Input from '../../components/Input';
 
 import {useAuth} from '../../hooks/useAuth';
 
-import {isValidCNPJ, isValidCPF, maskCNPJ, maskCPF} from '../../utils/helpers';
+import {isValidUserName} from '../../utils/helpers';
 
 import {SpacingY} from '../../styles/globalStyles';
 import {
@@ -45,31 +46,20 @@ const LineButton: React.FC<LineButtonProps> = ({children, onPress}) => {
   );
 };
 
-const clientValidationSchema = yup
+const validationSchema = yup
   .object()
   .shape({
-    cpf: yup
+    username: yup
       .string()
-      .matches(isValidCPF, 'Formato incorreto')
+      .matches(
+        isValidUserName,
+        'Formato incorreto. Esse campo deve ter 150 caracteres ou menos. Letras, números e @/./+/-/_ apenas.',
+      )
       .required('Campo obrigatório'),
     password: yup
       .string()
       .required('Campo obrigatório')
-      .min(6, 'A senha deve conter no mínimo 6 caracteres'),
-  })
-  .required();
-
-const companyValidationSchema = yup
-  .object()
-  .shape({
-    cnpj: yup
-      .string()
-      .matches(isValidCNPJ, 'Formato incorreto')
-      .required('Campo obrigatório'),
-    password: yup
-      .string()
-      .required('Campo obrigatório')
-      .min(6, 'A senha deve conter no mínimo 6 caracteres'),
+      .min(3, 'A senha deve conter no mínimo 3 caracteres'),
   })
   .required();
 
@@ -79,20 +69,32 @@ type SiginProps = {
 
 const SignIn: React.FC<SiginProps> = ({route}) => {
   const navigation = useNavigation<any>();
-  const {signIn} = useAuth();
-
-  const [cpf, setCpf] = useState('');
-  const [cnpj, setCnpj] = useState('');
+  const {signIn, isLoginError, isLoginLoading} = useAuth();
 
   const isClient = useMemo(() => route.params?.isClient, [route]);
-  const validationSchema = useMemo(
-    () => (isClient ? clientValidationSchema : companyValidationSchema),
-    [isClient],
-  );
+
+  useEffect(() => {
+    isLoginError &&
+      Alert.alert(
+        'Ocorreu algum erro!',
+        'Tente novamente mais tarde.',
+        [
+          {
+            text: 'Ok',
+            onPress: () => false,
+            style: 'default',
+          },
+        ],
+        {
+          cancelable: true,
+          onDismiss: () => false,
+        },
+      );
+  }, [isLoginError]);
 
   const handleFirstAccessNavigation = useCallback(() => {
     if (isClient) {
-      navigation.navigate('RegisterClient');
+      navigation.navigate('SignUpClient');
     } else {
       navigation.navigate('RegisterCompany');
     }
@@ -108,25 +110,11 @@ const SignIn: React.FC<SiginProps> = ({route}) => {
   });
 
   const onSubmit = (data?: any) => {
-    if (isClient) {
-      signIn({
-        documentType: 'CPF',
-        documentNumber: data?.cpf,
-        password: data?.password,
-      });
-      setCnpj('');
-      setCpf('');
-      resetInputs();
-    } else {
-      signIn({
-        documentType: 'CNPJ',
-        documentNumber: data?.cnpj,
-        password: data?.password,
-      });
-      setCnpj('');
-      setCpf('');
-      resetInputs();
-    }
+    signIn({
+      username: data?.username,
+      password: data?.password,
+    });
+    resetInputs();
   };
 
   return (
@@ -147,56 +135,25 @@ const SignIn: React.FC<SiginProps> = ({route}) => {
               <SpacingY large />
 
               <InputsContainer>
-                {isClient ? (
-                  <Controller
-                    name="cpf"
-                    control={control}
-                    rules={{
-                      required: true,
-                    }}
-                    render={({field: {onChange, onBlur}}) => (
-                      <Input
-                        placeholder="Digite seu CPF"
-                        maxLength={14}
-                        keyboardType="number-pad"
-                        value={cpf}
-                        onBlur={onBlur}
-                        onChangeText={e => {
-                          setCpf(maskCPF(e));
-                          onChange(e);
-                        }}
-                        error={errors.cpf}
-                        errorText={errors.cpf?.message}
-                      />
-                    )}
-                  />
-                ) : (
-                  <Controller
-                    name="cnpj"
-                    control={control}
-                    rules={{
-                      required: true,
-                    }}
-                    render={({field: {onChange, onBlur}}) => (
-                      <Input
-                        placeholder="Digite seu CNPJ"
-                        maxLength={18}
-                        keyboardType="number-pad"
-                        value={cnpj}
-                        onBlur={onBlur}
-                        onChangeText={e => {
-                          setCnpj(maskCNPJ(e));
-                          onChange(e);
-                        }}
-                        error={errors.cnpj}
-                        errorText={errors.cnpj?.message}
-                      />
-                    )}
-                  />
-                )}
-
+                <Controller
+                  name="username"
+                  control={control}
+                  rules={{
+                    required: true,
+                  }}
+                  render={({field: {onChange, onBlur, value}}) => (
+                    <Input
+                      placeholder="Digite seu usuário"
+                      maxLength={150}
+                      value={value}
+                      onBlur={onBlur}
+                      onChangeText={onChange}
+                      error={errors.username}
+                      errorText={errors.username?.message}
+                    />
+                  )}
+                />
                 <SpacingY small />
-
                 <Controller
                   name="password"
                   control={control}
@@ -232,7 +189,10 @@ const SignIn: React.FC<SiginProps> = ({route}) => {
               <SpacingY large />
 
               <ButtonsContainer>
-                <Button filled onPress={handleSubmit(onSubmit)}>
+                <Button
+                  filled
+                  loading={isLoginLoading}
+                  onPress={handleSubmit(onSubmit)}>
                   Entrar
                 </Button>
               </ButtonsContainer>

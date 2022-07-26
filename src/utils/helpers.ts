@@ -1,8 +1,12 @@
+export const isValidName = /^[\w.@+-]+$/;
 export const isValidCPF = /^(([0-9]{3}.[0-9]{3}.[0-9]{3}-[0-9]{2}))$/;
 export const isValidCNPJ = /^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/;
+export const isValidUserName = /^[\w.@+-]+$/;
 export const isValidDate =
   /^(0?[1-9]|[12][0-9]|3[01])[\/](0?[1-9]|1[012])[\/\-]\d{4}$/;
 export const isValidPhone = /(\(?\d{2}\)?\s)?(\d{4,5}\-\d{4})/g; // FIX-ME - To validate (00) 0000-0000
+export const isValidCEP =
+  /^([\d]{2})([\d]{3})([\d]{3})|^[\d]{2}.[\d]{3}-[\d]{3}/;
 
 // 000.000.000-00
 export function maskCPF(cpf: string) {
@@ -44,5 +48,10 @@ export function maskPhone(phone: string) {
 
 // 00000-000
 export function maskCEP(cep: string) {
-  return cep.replace(/\D/g, '').replace(/^(\d{5})(\d{3})+?$/, '$1-$2');
+  return cep
+    .replace(/\D/g, '')
+    .replace(
+      /^([\d]{2})([\d]{3})([\d]{3})|^[\d]{2}.[\d]{3}-[\d]{3}/,
+      '$1.$2-$3',
+    );
 }

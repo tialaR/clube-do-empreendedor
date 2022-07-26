@@ -4,7 +4,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import SignIn from '../pages/SignIn';
 import Wellcome from '../pages/Wellcome';
-import RegisterClient from '../pages/RegisterClient';
+import SignUpClient from '../pages/SignUpClient';
 import RegisterCompany from '../pages/RegisterCompany';
 import RecoverPassword from '../pages/RecoverPassword';
 import RecoverPasswordConfirmation from '../pages/RecoverPasswordConfirmation';
@@ -24,7 +24,7 @@ export function AuthRoutes() {
       <Stack.Screen name="Wellcome" component={Wellcome} />
       <Stack.Screen name="SignIn" component={SignIn} />
 
-      <Stack.Screen name="RegisterClient" component={RegisterClient} />
+      <Stack.Screen name="SignUpClient" component={SignUpClient} />
       <Stack.Screen name="RegisterCompany" component={RegisterCompany} />
 
       <Stack.Screen name="RecoverPassword" component={RecoverPassword} />

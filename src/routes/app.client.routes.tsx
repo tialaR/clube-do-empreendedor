@@ -10,11 +10,12 @@ import ClientNotifications from '../pages/ClientNotifications';
 import ClientProfile from '../pages/ClientProfile';
 import QRCodeScanner from '../pages/QRCodeScanner';
 import QRCodeRegisterConfirmation from '../pages/QRCodeRegisterConfirmation';
+import SignUpClient from '../pages/SignUpClient';
+import ClientUpdate from '../pages/ClientUpdate';
 
 import {SvgIcon} from '../components/SvgIcon';
 
 import {colors} from '../styles/colors';
-import RegisterClient from '../pages/RegisterClient';
 
 enableScreens();
 const Stack = createNativeStackNavigator();
@@ -94,7 +95,8 @@ export const AppClientRoutes = () => {
         component={ClientDashboardTabs}
       />
 
-      <Stack.Screen name="RegisterClient" component={RegisterClient} />
+      <Stack.Screen name="SignUpClient" component={SignUpClient} />
+      <Stack.Screen name="ClientUpdate" component={ClientUpdate} />
 
       <Stack.Screen name="QRCodeScanner" component={QRCodeScanner} />
       <Stack.Screen

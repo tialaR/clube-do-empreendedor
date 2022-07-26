@@ -9,14 +9,14 @@ import {useAuth} from '../hooks/useAuth';
 import {SplasScreenAux} from '../styles/globalStyles';
 
 const AppRoutes: React.FC = () => {
-  const {user, loading} = useAuth();
+  const {isClient, userId, loading} = useAuth();
 
   if (loading) {
     return <SplasScreenAux />;
   }
 
-  if (user?.document) {
-    return user?.type === 'CPF' ? <AppClientRoutes /> : <AppCompanyRoutes />;
+  if (userId) {
+    return isClient ? <AppClientRoutes /> : <AppCompanyRoutes />;
   } else {
     return <AuthRoutes />;
   }

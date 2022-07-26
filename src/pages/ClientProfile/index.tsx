@@ -42,16 +42,8 @@ const ClientProfile: React.FC = () => {
         <SpacingY medium />
         <RoundButton
           fullWidth
-          onPress={() => navigation.navigate('RegisterClient')}>
+          onPress={() => navigation.navigate('ClientUpdate')}>
           Dados do Perfil
-        </RoundButton>
-        <SpacingY small />
-        <RoundButton fullWidth onPress={() => false}>
-          Meus Descontos
-        </RoundButton>
-        <SpacingY small />
-        <RoundButton fullWidth onPress={() => false}>
-          Configurações
         </RoundButton>
         <SpacingY small />
         <RoundButton onPress={signOut}>Sair da Conta</RoundButton>

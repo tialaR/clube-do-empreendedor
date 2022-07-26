@@ -1,10 +1,12 @@
-import React, {memo, useMemo} from 'react';
+import React, {memo, useCallback} from 'react';
+import {colors} from '../../styles/colors';
 
 import {
   BoxSkeletonLoading,
   SpacingY,
   TextsSkeletonLoading,
 } from '../../styles/globalStyles';
+import {SvgIcon} from '../SvgIcon';
 import {
   ColorfulContainer,
   Container,
@@ -17,6 +19,7 @@ import {
   PromotionContainer,
   PromotionText,
   SoldBy,
+  ImageNotFound,
 } from './styles';
 
 const renderImageLoading = () => (
@@ -38,9 +41,10 @@ const renderDescriptionsLoading = () => (
 const DewscriptionsLoading = () => renderDescriptionsLoading();
 
 type Props = {
+  loading?: boolean;
   name: string;
   img: string;
-  price: string;
+  price: number;
   installment: string;
   promotion: string;
   soldBy: string;
@@ -49,6 +53,7 @@ type Props = {
 };
 
 const ProductCard: React.FC<Props> = ({
+  loading = false,
   name,
   img,
   price,
@@ -58,18 +63,36 @@ const ProductCard: React.FC<Props> = ({
   emphasis,
   onPress,
 }) => {
-  const isDescriptionsLoaded = useMemo(
-    () => name || price || installment || promotion || soldBy,
-    [name, price, installment, promotion, soldBy],
+  const renderImage = useCallback(
+    () => (
+      <>
+        {loading ? (
+          <ImageLoading />
+        ) : (
+          <>
+            {img && img?.length > 0 ? (
+              <Image source={{uri: img}} />
+            ) : (
+              <ImageNotFound>
+                <SvgIcon name="image" color={colors.black} />
+              </ImageNotFound>
+            )}
+          </>
+        )}
+      </>
+    ),
+    [img, loading],
   );
 
   return (
     <ColorfulContainer emphasis={emphasis} onPress={onPress}>
       <Container>
-        {img ? <Image source={{uri: img}} /> : <ImageLoading />}
+        {renderImage()}
 
         <DescriptionContainer>
-          {isDescriptionsLoaded ? (
+          {loading ? (
+            <DewscriptionsLoading />
+          ) : (
             <>
               <NameContainer>
                 <Name numberOfLines={2} ellipsizeMode="tail">
@@ -83,8 +106,6 @@ const ProductCard: React.FC<Props> = ({
               </PromotionContainer>
               <SoldBy>Vendido por {soldBy}</SoldBy>
             </>
-          ) : (
-            <DewscriptionsLoading />
           )}
         </DescriptionContainer>
       </Container>

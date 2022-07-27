@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 
 import ProductCard from '../../components/ProductCard';
 import SearchHeader from '../../components/SearchHeader';
@@ -22,21 +22,10 @@ import {
 const ClientDashboard: React.FC = () => {
   const {showClientProductDetailModal} = useClientProductDetailModal();
 
-  const {
-    getMyDiscounts,
-    data: myDiscounts,
-    isLoading: isMyDiscountsLoading,
-  } = ServiceClient.useGetMyDiscounts();
-  const {
-    getFeaturedProducts,
-    data: featuredProducts,
-    isLoading: isFeaturedproductsLosding,
-  } = ServiceClient.useGetFeaturedProducts();
-
-  useEffect(() => {
-    getMyDiscounts();
-    getFeaturedProducts();
-  }, []);
+  const {response: myDiscountsList, isLoading: isMyDiscountsLoading} =
+    ServiceClient.useGetMyDiscounts();
+  const {response: featuredProductsList, isLoading: isFeaturedproductsLosding} =
+    ServiceClient.useGetFeaturedProducts();
 
   return (
     <Container>
@@ -52,7 +41,7 @@ const ClientDashboard: React.FC = () => {
           <SectionTitle>Meus Descontos</SectionTitle>
         </SectionTitleContainer>
         <ProducstList<React.ElementType>
-          data={myDiscounts}
+          data={myDiscountsList}
           keyExtractor={(product: Product) => product.id}
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -81,7 +70,7 @@ const ClientDashboard: React.FC = () => {
           <SectionTitle>Produtos em Destaque</SectionTitle>
         </SectionTitleContainer>
         <ProducstList<React.ElementType>
-          data={featuredProducts}
+          data={featuredProductsList}
           keyExtractor={(product: Product) => product.id}
           horizontal
           showsHorizontalScrollIndicator={false}

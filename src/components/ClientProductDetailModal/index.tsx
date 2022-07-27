@@ -147,7 +147,7 @@ const ClientProductDetailModal: React.ForwardRefRenderFunction<
 
   const {
     getProductDetail,
-    data: product,
+    response: product,
     isLoading,
   } = ServiceClient.useGetProductDetail();
 

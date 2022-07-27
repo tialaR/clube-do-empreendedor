@@ -74,16 +74,16 @@ export type ProductDetailResponse = {
 };
 
 export type ProductDetail = {
-  id: number;
-  name: string;
-  img: string;
-  price: string;
-  installment: string;
-  promotion: string;
-  cupomId: number;
-  soldBy: string;
-  qrCodeImg: string;
-  description: string;
+  id: number | undefined;
+  name: string | undefined;
+  img: string | undefined;
+  price: string | undefined;
+  installment: string | undefined;
+  promotion: string | undefined;
+  cupomId: number | undefined;
+  soldBy: string | undefined;
+  qrCodeImg: string | undefined;
+  description: string | undefined;
 };
 
 export type ScanQrCodeResponse = {

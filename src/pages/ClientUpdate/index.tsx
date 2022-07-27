@@ -178,7 +178,10 @@ const ClientUpdate: React.FC = () => {
       user: userId,
     };
 
-    patchUser(clientUpdated, userId);
+    patchUser({
+      client: clientUpdated,
+      clientId: userId,
+    });
   };
 
   return (

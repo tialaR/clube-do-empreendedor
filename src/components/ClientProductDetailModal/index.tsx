@@ -213,7 +213,10 @@ const ClientProductDetailModal: React.ForwardRefRenderFunction<
 
   const handleGuarantedProduct = () => {
     if (product?.id && product?.cupomId) {
-      postGuaranteeDiscount(product?.id, product?.cupomId);
+      postGuaranteeDiscount({
+        productId: product?.id,
+        cupomId: product?.cupomId,
+      });
     }
   };
 

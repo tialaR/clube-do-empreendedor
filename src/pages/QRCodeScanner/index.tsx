@@ -45,7 +45,7 @@ const QRCodeScanner: React.FC<Props> = ({route}) => {
   }, [isError]);
 
   const handleBarCodeScanned = () => {
-    postScanQrCode(productId, cupomId);
+    postScanQrCode({productId, cupomId});
   };
 
   const onClose = () => {

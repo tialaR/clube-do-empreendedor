@@ -1,4 +1,4 @@
-import {useQuery} from '@tanstack/react-query';
+import {useMutation, useQuery} from '@tanstack/react-query';
 import {useState} from 'react';
 import api from '../api';
 import {
@@ -37,31 +37,51 @@ const usePostSignUp = () => {
   };
 };
 
-const usePatchUser = () => {
-  const [data, setData] = useState<any>(undefined);
-  const [isLoading, setIsLosding] = useState(false);
-  const [isError, setIsError] = useState(false);
+const usePatchUser = (): {
+  patchUser: ({
+    client,
+    clientId,
+  }: {
+    client: UserClientRequest;
+    clientId: number;
+  }) => Promise<void>;
+  isLoading: boolean;
+  isError: boolean;
+  isSuccess: boolean;
+} => {
+  const mutation = useMutation(
+    async ({
+      client,
+      clientId,
+    }: {
+      client: UserClientRequest;
+      clientId: number;
+    }) => {
+      await api.patch<{message: string}>(`cliente/update/${clientId}`, client);
+    },
+  );
 
-  const patchUser = async (client: UserClientRequest, clientId: number) => {
-    setIsLosding(true);
-    try {
-      const response = await api.patch<{message: string}>(
-        `cliente/update/${clientId}`,
-        client,
-      );
-      setData(response.data);
-    } catch (err) {
-      setIsError(!!err);
-    } finally {
-      setIsLosding(false);
-    }
-  };
+  async function patchUser({
+    client,
+    clientId,
+    callback,
+  }: {
+    client: UserClientRequest;
+    clientId: number;
+    callback?: () => void;
+  }) {
+    await mutation.mutateAsync({client, clientId}).then(() => {
+      if (callback) {
+        callback();
+      }
+    });
+  }
 
   return {
     patchUser,
-    isSuccess: data,
-    isLoading,
-    isError,
+    isLoading: mutation.isLoading,
+    isError: mutation.isError,
+    isSuccess: mutation.isSuccess,
   };
 };
 
@@ -207,62 +227,93 @@ const useGetProductDetail = (): {
   };
 };
 
-const usePostGuaranteeDiscount = () => {
-  const [data, setData] = useState<any>(undefined);
-  const [isLoading, setIsLosding] = useState(false);
-  const [isError, setIsError] = useState(false);
-
-  const postGuaranteeDiscount = async (product: number, cupom: number) => {
-    setIsLosding(true);
-    try {
-      const response = await api.post('produto-cupom-cliente/', {
-        produto: product,
-        cupom,
+const usePostGuaranteeDiscount = (): {
+  postGuaranteeDiscount: ({
+    productId,
+    cupomId,
+  }: {
+    productId: number;
+    cupomId: number;
+  }) => Promise<void>;
+  isLoading: boolean;
+  isError: boolean;
+  isSuccess: boolean;
+} => {
+  const mutation = useMutation(
+    async ({productId, cupomId}: {productId: number; cupomId: number}) => {
+      await api.post('produto-cupom-cliente/', {
+        produto: productId,
+        cupom: cupomId,
       });
-      setData(response.data);
-    } catch (err) {
-      setIsError(!!err);
-    } finally {
-      setIsLosding(false);
-    }
-  };
+    },
+  );
+
+  async function postGuaranteeDiscount({
+    productId,
+    cupomId,
+    callback,
+  }: {
+    productId: number;
+    cupomId: number;
+    callback?: () => void;
+  }) {
+    await mutation.mutateAsync({productId, cupomId}).then(() => {
+      if (callback) {
+        callback();
+      }
+    });
+  }
 
   return {
     postGuaranteeDiscount,
-    isSuccess: !!data,
-    isLoading,
-    isError,
+    isLoading: mutation.isLoading,
+    isError: mutation.isError,
+    isSuccess: mutation.isSuccess,
   };
 };
 
-const usePostScanQrCode = () => {
-  const [data, setData] = useState<ScanQrCodeResponse | undefined>(undefined);
-  const [isLoading, setIsLosding] = useState(false);
-  const [isError, setIsError] = useState(false);
+const usePostScanQrCode = (): {
+  postScanQrCode: ({
+    productId,
+    cupomId,
+  }: {
+    productId: number;
+    cupomId: number;
+  }) => Promise<void>;
+  isLoading: boolean;
+  isError: boolean;
+  isSuccess: boolean;
+} => {
+  const mutation = useMutation(
+    async ({productId, cupomId}: {productId: number; cupomId: number}) => {
+      await api.post<ScanQrCodeResponse>('purchase/produto-cupom-cliente', {
+        produto: productId,
+        cupom: cupomId,
+      });
+    },
+  );
 
-  const postScanQrCode = async (product: number, cupom: number) => {
-    setIsLosding(true);
-    try {
-      const response = await api.post<ScanQrCodeResponse>(
-        'purchase/produto-cupom-cliente',
-        {
-          produto: product,
-          cupom,
-        },
-      );
-      setData(response.data);
-    } catch (err) {
-      setIsError(!!err);
-    } finally {
-      setIsLosding(false);
-    }
-  };
+  async function postScanQrCode({
+    productId,
+    cupomId,
+    callback,
+  }: {
+    productId: number;
+    cupomId: number;
+    callback?: () => void;
+  }) {
+    await mutation.mutateAsync({productId, cupomId}).then(() => {
+      if (callback) {
+        callback();
+      }
+    });
+  }
 
   return {
     postScanQrCode,
-    isSuccess: !!data,
-    isLoading,
-    isError,
+    isLoading: mutation.isLoading,
+    isError: mutation.isError,
+    isSuccess: mutation.isSuccess,
   };
 };
 

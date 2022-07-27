@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import * as yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {Controller, useForm} from 'react-hook-form';
 import {
+  Alert,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -22,6 +23,8 @@ import {
   BodyContainer,
   ButtonsContainer,
 } from './styles';
+import ServiceCompany from '../../services/company/company.service';
+import {useAuth} from '../../hooks/useAuth';
 
 const validationSchema = yup.object().shape({
   cupom: yup.string().required('Campo obrigatório'),
@@ -30,6 +33,10 @@ const validationSchema = yup.object().shape({
 const CompanyRegisterCupom: React.FC = () => {
   const navigation = useNavigation<any>();
 
+  const {userId} = useAuth();
+  const {postCupom, isLoading, isSuccess, isError} =
+    ServiceCompany.usePostCupom();
+
   const {
     control,
     handleSubmit,
@@ -37,13 +44,39 @@ const CompanyRegisterCupom: React.FC = () => {
     reset: resetInputs,
   } = useForm({resolver: yupResolver(validationSchema)});
 
+  useEffect(() => {
+    isSuccess && navigation.navigate('CompanyRegisterCupomConfirmation');
+  }, [isSuccess]);
+
+  useEffect(() => {
+    isError &&
+      Alert.alert(
+        'Ocorreu algum erro ao tentar cadastrar o cupom!',
+        'Tente novamente mais tarde.',
+        [
+          {
+            text: 'Ok',
+            onPress: () => false,
+            style: 'default',
+          },
+        ],
+        {
+          cancelable: true,
+          onDismiss: () => false,
+        },
+      );
+  }, [isError]);
+
   const handleBack = () => {
     navigation.goBack();
   };
 
   const onSubmit = (data: any) => {
-    resetInputs();
-    navigation.navigate('CompanyRegisterCupomConfirmation');
+    postCupom({
+      discount: data?.cupom,
+      storeId: userId,
+      callback: () => resetInputs(),
+    });
   };
 
   return (
@@ -88,7 +121,10 @@ const CompanyRegisterCupom: React.FC = () => {
           </BodyContainer>
 
           <ButtonsContainer>
-            <Button outlinedLight onPress={handleSubmit(onSubmit)}>
+            <Button
+              outlinedLight
+              loading={isLoading}
+              onPress={handleSubmit(onSubmit)}>
               Cadastrar
             </Button>
           </ButtonsContainer>

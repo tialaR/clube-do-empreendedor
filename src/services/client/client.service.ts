@@ -5,6 +5,7 @@ import {
   ProductDetail,
   ProductDetailResponse,
   ProductResponse,
+  ScanQrCodeResponse,
   SiginUp,
   SignUpResponse,
   UserClientRequest,
@@ -57,7 +58,7 @@ const usePatchUser = () => {
 
   return {
     patchUser,
-    isSuccess: !!data,
+    isSuccess: data,
     isLoading,
     isError,
   };
@@ -162,6 +163,7 @@ const useGetProductDetail = () => {
         price: `R$ ${response?.data?.price}`,
         installment: 'campo indefinido',
         promotion: String(response?.data?.cupom),
+        cupomId: response?.data?.cupom,
         soldBy: String(response?.data?.loja),
         qrCodeImg: '',
         description: response?.data?.description,
@@ -181,12 +183,73 @@ const useGetProductDetail = () => {
   };
 };
 
+const usePostGuaranteeDiscount = () => {
+  const [data, setData] = useState<any>(undefined);
+  const [isLoading, setIsLosding] = useState(false);
+  const [isError, setIsError] = useState(false);
+
+  const postGuaranteeDiscount = async (product: number, cupom: number) => {
+    setIsLosding(true);
+    try {
+      const response = await api.post('produto-cupom-cliente/', {
+        produto: product,
+        cupom,
+      });
+      setData(response.data);
+    } catch (err) {
+      setIsError(!!err);
+    } finally {
+      setIsLosding(false);
+    }
+  };
+
+  return {
+    postGuaranteeDiscount,
+    isSuccess: !!data,
+    isLoading,
+    isError,
+  };
+};
+
+const usePostScanQrCode = () => {
+  const [data, setData] = useState<ScanQrCodeResponse | undefined>(undefined);
+  const [isLoading, setIsLosding] = useState(false);
+  const [isError, setIsError] = useState(false);
+
+  const postScanQrCode = async (product: number, cupom: number) => {
+    setIsLosding(true);
+    try {
+      const response = await api.post<ScanQrCodeResponse>(
+        'purchase/produto-cupom-cliente',
+        {
+          produto: product,
+          cupom,
+        },
+      );
+      setData(response.data);
+    } catch (err) {
+      setIsError(!!err);
+    } finally {
+      setIsLosding(false);
+    }
+  };
+
+  return {
+    postScanQrCode,
+    isSuccess: !!data,
+    isLoading,
+    isError,
+  };
+};
+
 const ServiceClient = {
   usePostSignUp,
   usePatchUser,
   useGetFeaturedProducts,
   useGetMyDiscounts,
   useGetProductDetail,
+  usePostGuaranteeDiscount,
+  usePostScanQrCode,
 };
 
 export default ServiceClient;

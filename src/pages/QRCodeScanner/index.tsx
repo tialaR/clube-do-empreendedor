@@ -1,7 +1,9 @@
-import React, {useState} from 'react';
-import {StyleSheet} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import {BarCodeScanner, BarCodeScannerResult} from 'expo-barcode-scanner';
+import React, {useEffect, useMemo, useState} from 'react';
+import {ActivityIndicator, StyleSheet} from 'react-native';
+import {RouteProp, useNavigation} from '@react-navigation/native';
+import {BarCodeScanner} from 'expo-barcode-scanner';
+
+import ServiceClient from '../../services/client/client.service';
 
 import {
   Container,
@@ -12,20 +14,38 @@ import {
 import IconButton from '../../components/IconButton';
 import {colors} from '../../styles/colors';
 
-export default function QRCodeScanner() {
+type Props = {
+  route: RouteProp<{params: {productId: number; cupomId: number}}, 'params'>;
+};
+
+const QRCodeScanner: React.FC<Props> = ({route}) => {
   const navigation = useNavigation<any>();
 
+  const {productId, cupomId} = useMemo(() => route.params, [route]);
+
+  const {postScanQrCode, isLoading, isSuccess, isError} =
+    ServiceClient.usePostScanQrCode();
+
   const [scanned, setScanned] = useState(false);
+  const [error, setError] = useState<undefined | string>(undefined);
 
-  const handleBarCodeScanned = ({type, data}: BarCodeScannerResult) => {
-    // The barcode type.
-    console.log(type);
+  useEffect(() => {
+    if (isSuccess) {
+      setScanned(true);
+      navigation.navigate('QRCodeRegisterConfirmation');
+    }
+  }, [isSuccess, navigation]);
 
-    // The information encoded in the bar code.
-    console.log(data);
+  useEffect(() => {
+    if (isError) {
+      setError(
+        'Ocorreu algum erro ao tentar escanear o QRCode! Tente novamente.',
+      );
+    }
+  }, [isError]);
 
-    setScanned(true);
-    navigation.navigate('QRCodeRegisterConfirmation');
+  const handleBarCodeScanned = () => {
+    postScanQrCode(productId, cupomId);
   };
 
   const onClose = () => {
@@ -40,11 +60,16 @@ export default function QRCodeScanner() {
       />
 
       <Header>
+        {isLoading && <ActivityIndicator size="small" color={colors.white} />}
+
         <ScanAgainButton onPress={() => setScanned(false)}>
           {scanned && (
             <ScanAgainButtonText>Escanear novamente</ScanAgainButtonText>
           )}
         </ScanAgainButton>
+
+        {error && <ScanAgainButtonText>{error}</ScanAgainButtonText>}
+
         <IconButton
           name="close"
           color={colors.white}
@@ -55,4 +80,6 @@ export default function QRCodeScanner() {
       </Header>
     </Container>
   );
-}
+};
+
+export default QRCodeScanner;

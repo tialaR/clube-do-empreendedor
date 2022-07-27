@@ -6,7 +6,14 @@ import React, {
   useImperativeHandle,
   useState,
 } from 'react';
-import {Linking, Modal, Platform, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Alert,
+  Linking,
+  Modal,
+  Platform,
+  View,
+} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {BarCodeScanner, PermissionStatus} from 'expo-barcode-scanner';
 
@@ -144,6 +151,13 @@ const ClientProductDetailModal: React.ForwardRefRenderFunction<
     isLoading,
   } = ServiceClient.useGetProductDetail();
 
+  const {
+    postGuaranteeDiscount,
+    isSuccess: isGuaranteeDiscountSuccess,
+    isLoading: isGuaranteeDiscountLoading,
+    isError: isGuaranteeDiscountError,
+  } = ServiceClient.usePostGuaranteeDiscount();
+
   const [isVisibleModal, setIsVisibleModal] = useState(false);
   const [isGuaranteedProduct, setIsGuaranteedProduct] = useState(false);
 
@@ -174,8 +188,33 @@ const ClientProductDetailModal: React.ForwardRefRenderFunction<
     };
   });
 
+  useEffect(() => {
+    isGuaranteeDiscountSuccess && setIsGuaranteedProduct(true);
+  }, [isGuaranteeDiscountSuccess]);
+
+  useEffect(() => {
+    isGuaranteeDiscountError &&
+      Alert.alert(
+        'Ocorreu algum erro ao tentar garantir o desconto!',
+        'Tente novamente mais tarde.',
+        [
+          {
+            text: 'Ok',
+            onPress: () => false,
+            style: 'default',
+          },
+        ],
+        {
+          cancelable: true,
+          onDismiss: () => false,
+        },
+      );
+  }, [isGuaranteeDiscountError]);
+
   const handleGuarantedProduct = () => {
-    setIsGuaranteedProduct(true);
+    if (product?.id && product?.cupomId) {
+      postGuaranteeDiscount(product?.id, product?.cupomId);
+    }
   };
 
   useEffect(() => {
@@ -189,7 +228,10 @@ const ClientProductDetailModal: React.ForwardRefRenderFunction<
 
     if (hasCameraPermission === PermissionStatus.GRANTED) {
       onClose();
-      navigation.navigate('QRCodeScanner');
+      navigation.navigate('QRCodeScanner', {
+        productId: product?.id,
+        cupomId: product?.cupomId,
+      });
     }
   }, [hasCameraPermission, navigation, onClose]);
 
@@ -347,38 +389,47 @@ const ClientProductDetailModal: React.ForwardRefRenderFunction<
               <WhatsAppButtonText>ACESSE O WHATSAPP</WhatsAppButtonText>
             </WhatsAppButton>
 
-            {emphasisProduct && (
-              <>
-                <DiscountButton onPress={handleGuarantedProduct}>
-                  <SvgIcon
-                    name="circleCheck"
-                    width={15}
-                    height={15}
-                    color={colors.white}
-                  />
-                  <DiscountButtonText>GARANTIR DESCONTO</DiscountButtonText>
-                </DiscountButton>
+            <DiscountButton onPress={handleGuarantedProduct}>
+              <SvgIcon
+                name="circleCheck"
+                width={15}
+                height={15}
+                color={colors.white}
+              />
+              {isGuaranteeDiscountLoading ? (
+                <ActivityIndicator size="small" color={colors.white} />
+              ) : (
+                <DiscountButtonText>GARANTIR DESCONTO</DiscountButtonText>
+              )}
+            </DiscountButton>
 
-                <QrCodeScannerButton onPress={handleScannerQRCode}>
-                  <SvgIcon
-                    name="qrCode"
-                    width={15}
-                    height={15}
-                    color={colors.black}
-                  />
-                  <QrCodeScannerButtonText>
-                    ESCANEAR QR CODE
-                  </QrCodeScannerButtonText>
-                </QrCodeScannerButton>
-              </>
-            )}
+            <QrCodeScannerButton onPress={handleScannerQRCode}>
+              <SvgIcon
+                name="qrCode"
+                width={15}
+                height={15}
+                color={colors.black}
+              />
+              <QrCodeScannerButtonText>
+                ESCANEAR QR CODE
+              </QrCodeScannerButtonText>
+            </QrCodeScannerButton>
           </>
         ) : (
           <ButtonsLoading />
         )}
       </WhatsAppContainer>
     ),
-    [isLoading, emphasisProduct],
+    [isLoading],
+  );
+
+  const renderWhatsAppButton = () => (
+    <View style={{paddingTop: 30}}>
+      <WhatsAppButton onPress={() => false}>
+        <SvgIcon name="whatsapp" width={15} height={15} color={colors.white} />
+        <WhatsAppButtonText>ACESSE O WHATSAPP</WhatsAppButtonText>
+      </WhatsAppButton>
+    </View>
   );
 
   return (
@@ -411,8 +462,16 @@ const ClientProductDetailModal: React.ForwardRefRenderFunction<
                   {renderFeatures()}
 
                   <FooterContainer>
-                    {renderQrCode()}
-                    {renderButtons()}
+                    <>
+                      {emphasisProduct ? (
+                        <>
+                          {renderQrCode()}
+                          {renderButtons()}
+                        </>
+                      ) : (
+                        <>{renderWhatsAppButton()}</>
+                      )}
+                    </>
                   </FooterContainer>
                 </>
               )}

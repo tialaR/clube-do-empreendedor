@@ -80,7 +80,15 @@ export type ProductDetail = {
   price: string;
   installment: string;
   promotion: string;
+  cupomId: number;
   soldBy: string;
   qrCodeImg: string;
   description: string;
+};
+
+export type ScanQrCodeResponse = {
+  produto: number;
+  cupom: number;
+  cliente: number;
+  expirated_cupom_cliente: string;
 };

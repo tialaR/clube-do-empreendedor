@@ -47,6 +47,18 @@ export const Image = styled.Image.attrs(() => ({
   height: 160px;
 `;
 
+export const ImageNotFound = styled.View`
+  width: 160px;
+  height: 160px;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background-color: ${colors.gray100};
+`;
+
 export const DescriptionContainer = styled.View`
   justify-content: center;
   align-items: center;
@@ -136,4 +148,18 @@ export const QRCodeImage = styled.Image`
 
   width: 80px;
   height: 80px;
+`;
+
+export const QRCodeImageNotFound = styled.View`
+  margin-top: 14px;
+
+  width: 80px;
+  height: 80px;
+
+  background-color: ${colors.gray100};
+
+  border-radius: 10px;
+
+  align-items: center;
+  justify-content: center;
 `;

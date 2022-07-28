@@ -4,6 +4,9 @@ import {View} from 'react-native';
 
 import Button from '../../components/Button';
 import IconButton from '../../components/IconButton';
+import CompanyProductDetail from '../../components/CompanyProductDetail';
+
+import ServiceCompany from '../../services/company/company.service';
 
 import {colors} from '../../styles/colors';
 import {
@@ -12,27 +15,21 @@ import {
   BodyContainer,
   ButtonsContainer,
 } from './styles';
-import CompanyProductDetail from '../../components/CompanyProductDetail';
-
-type Product = {
-  id: string;
-  name: string;
-  img: string;
-  price: string;
-  installment: string;
-  promotion: string;
-  soldBy: string;
-  qrCodeImg: string;
-};
 
 type Props = {
-  route: RouteProp<{params: {product: Product}}, 'params'>;
+  route: RouteProp<{params: {productId: number}}, 'params'>;
 };
 
 const CompanyEditProductDetail: React.FC<Props> = ({route}) => {
   const navigation = useNavigation<any>();
 
-  const product = useMemo(() => route.params?.product, [route]);
+  const {productId} = useMemo(() => route.params, [route]);
+
+  const {
+    response: product,
+    isError,
+    isLoading,
+  } = ServiceCompany.useGetRegisteredProductDetail({productId});
 
   const handleBack = () => {
     navigation.goBack();
@@ -53,7 +50,13 @@ const CompanyEditProductDetail: React.FC<Props> = ({route}) => {
       </HeaderContainer>
 
       <BodyContainer>
-        <CompanyProductDetail product={product} />
+        {product && (
+          <CompanyProductDetail
+            product={product}
+            isLoading={isLoading}
+            error={isError}
+          />
+        )}
       </BodyContainer>
 
       <ButtonsContainer>

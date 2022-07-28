@@ -1,10 +1,16 @@
-import React, {useMemo} from 'react';
+import React, {useEffect} from 'react';
+import {Alert} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
+import {ProductDetail} from '../../services/company/types';
+
+import {colors} from '../../styles/colors';
 import {
   BoxSkeletonLoading,
   SpacingY,
   TextsSkeletonLoading,
 } from '../../styles/globalStyles';
+import {SvgIcon} from '../SvgIcon';
 import {
   Container,
   ProductContainer,
@@ -21,6 +27,8 @@ import {
   QRCodeImage,
   ProductContainerContents,
   FooterContainer,
+  ImageNotFound,
+  QRCodeImageNotFound,
 } from './styles';
 
 const renderTitleLoading = () => (
@@ -62,45 +70,62 @@ const renderQrCodeLoading = () => (
 );
 const QrCodeLoading = () => renderQrCodeLoading();
 
-export type Product = {
-  id: string;
-  name: string;
-  img: string;
-  price: string;
-  installment: string;
-  promotion: string;
-  soldBy: string;
-  qrCodeImg: string;
-};
-
 type Props = {
-  product: Product;
+  product: ProductDetail | undefined;
+  isLoading?: boolean;
+  isError?: boolean;
 };
 
-const CompanyProductDetail: React.FC<Props> = ({product}) => {
-  const isDescriptionLoaded = useMemo(
-    () =>
-      product?.price ||
-      product?.installment ||
-      product?.promotion ||
-      product?.soldBy,
-    [product],
-  );
+const CompanyProductDetail: React.FC<Props> = ({
+  product,
+  isLoading = false,
+  isError = false,
+}) => {
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    isError &&
+      Alert.alert(
+        'Ocorreu algum erro ao mostrar o detalhe do produto!',
+        'Tente novamente mais tarde.',
+        [
+          {
+            text: 'Ok',
+            onPress: () => navigation.goBack(),
+            style: 'default',
+          },
+        ],
+        {
+          cancelable: true,
+          onDismiss: () => navigation.goBack(),
+        },
+      );
+  }, [isError]);
 
   return (
     <Container>
       <ProductContainer>
         <ProductContainerContents>
-          {product?.name ? <Name>{product?.name}</Name> : <TitleLoading />}
+          {isLoading ? <TitleLoading /> : <Name>{product?.name}</Name>}
 
-          {product?.img ? (
-            <Image source={{uri: product?.img}} />
-          ) : (
+          {isLoading ? (
             <ImageLoading />
+          ) : (
+            <>
+              {product?.img && product.img.length > 0 ? (
+                <Image source={{uri: product?.img}} />
+              ) : (
+                <ImageNotFound>
+                  <SvgIcon name="image" color={colors.black} />
+                </ImageNotFound>
+              )}
+            </>
           )}
 
           <DescriptionContainer>
-            {isDescriptionLoaded ? (
+            {isLoading ? (
+              <DescriptionsLoading />
+            ) : (
               <>
                 <Price>{product?.price}</Price>
                 <Installment>{product?.installment}</Installment>
@@ -112,20 +137,26 @@ const CompanyProductDetail: React.FC<Props> = ({product}) => {
                   <SoldBy>{product?.soldBy}</SoldBy>
                 </SoldBy>
               </>
-            ) : (
-              <DescriptionsLoading />
             )}
           </DescriptionContainer>
 
           <FooterContainer>
             <QRCodeContainer>
-              {product?.qrCodeImg ? (
-                <>
-                  <QRCodeTitle>QR Code para desconto</QRCodeTitle>
-                  <QRCodeImage source={{uri: product?.qrCodeImg}} />
-                </>
-              ) : (
+              {isLoading ? (
                 <QrCodeLoading />
+              ) : (
+                <>
+                  {product?.qrCodeImg && product?.qrCodeImg?.length > 0 ? (
+                    <>
+                      <QRCodeTitle>QR Code para desconto</QRCodeTitle>
+                      <QRCodeImage source={{uri: product?.qrCodeImg}} />
+                    </>
+                  ) : (
+                    <QRCodeImageNotFound>
+                      <SvgIcon name="image" color={colors.black} />
+                    </QRCodeImageNotFound>
+                  )}
+                </>
               )}
             </QRCodeContainer>
           </FooterContainer>

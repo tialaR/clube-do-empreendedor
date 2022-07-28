@@ -16,6 +16,10 @@ import Button from '../../components/Button';
 import IconButton from '../../components/IconButton';
 import InputLine from '../../components/InputLine';
 
+import ServiceCompany from '../../services/company/company.service';
+
+import {useAuth} from '../../hooks/useAuth';
+
 import {colors} from '../../styles/colors';
 import {
   HeaderContainer,
@@ -23,8 +27,6 @@ import {
   BodyContainer,
   ButtonsContainer,
 } from './styles';
-import ServiceCompany from '../../services/company/company.service';
-import {useAuth} from '../../hooks/useAuth';
 
 const validationSchema = yup.object().shape({
   cupom: yup.string().required('Campo obrigatório'),

@@ -15,6 +15,20 @@ export type SignUpResponse = {
   message: string;
 };
 
+export type UserCompanyRequest = {
+  nome_fantasia?: string;
+  cnpj: string;
+  redes_sociais?: string;
+  endereco?: string;
+  cep?: string;
+  telefone_contato?: string;
+  horario_abertura?: string;
+  horario_fechamento?: string;
+  descricao_empresa?: string;
+  area_atuacao?: string;
+  user: number;
+};
+
 export type RegisterCupomRequest = {
   discount: string;
   storeId: number;

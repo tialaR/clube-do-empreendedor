@@ -105,7 +105,7 @@ const ClientUpdate: React.FC = () => {
   useEffect(() => {
     isSuccess &&
       Alert.alert(
-        'Usuário atualizado com sucesso!',
+        'Dados do usuário atualizados com sucesso!',
         '',
         [
           {
@@ -130,7 +130,7 @@ const ClientUpdate: React.FC = () => {
   useEffect(() => {
     isError &&
       Alert.alert(
-        'Ocorreu algum erro ao tentar atualizar o usuário!',
+        'Ocorreu algum erro ao tentar atualizar os dados do usuário!',
         'Tente novamente mais tarde.',
         [
           {
@@ -229,8 +229,8 @@ const ClientUpdate: React.FC = () => {
                       setName(e);
                       onChange(e);
                     }}
-                    error={errors.name}
-                    errorText={errors.name?.message}
+                    error={!!errors.name}
+                    errorText={String(errors.name?.message)}
                   />
                 )}
               />
@@ -255,8 +255,8 @@ const ClientUpdate: React.FC = () => {
                       setCpf(maskCPF(e));
                       onChange(e);
                     }}
-                    error={errors.cpf}
-                    errorText={errors.cpf?.message}
+                    error={!!errors.cpf}
+                    errorText={String(errors.cpf?.message)}
                   />
                 )}
               />
@@ -281,8 +281,8 @@ const ClientUpdate: React.FC = () => {
                       setBirthDate(maskDate(e));
                       onChange(e);
                     }}
-                    error={errors.birthDate}
-                    errorText={errors.birthDate?.message}
+                    error={!!errors.birthDate}
+                    errorText={String(errors.birthDate?.message)}
                   />
                 )}
               />
@@ -307,8 +307,8 @@ const ClientUpdate: React.FC = () => {
                       setAddress(e);
                       onChange(e);
                     }}
-                    error={errors.address}
-                    errorText={errors.address?.message}
+                    error={!!errors.address}
+                    errorText={String(errors.address?.message)}
                   />
                 )}
               />
@@ -334,8 +334,8 @@ const ClientUpdate: React.FC = () => {
                       setCep(maskCEP(e));
                       onChange(e);
                     }}
-                    error={errors.cep}
-                    errorText={errors.cep?.message}
+                    error={!!errors.cep}
+                    errorText={String(errors.cep?.message)}
                   />
                 )}
               />
@@ -359,8 +359,8 @@ const ClientUpdate: React.FC = () => {
                       setGenre(e.toUpperCase());
                       onChange(e.toUpperCase());
                     }}
-                    error={errors.genre}
-                    errorText={errors.genre?.message}
+                    error={!!errors.genre}
+                    errorText={String(errors.genre?.message)}
                   />
                 )}
               />
@@ -386,8 +386,8 @@ const ClientUpdate: React.FC = () => {
                       setEmail(e);
                       onChange(e);
                     }}
-                    error={errors.email}
-                    errorText={errors.email?.message}
+                    error={!!errors.email}
+                    errorText={String(errors.email?.message)}
                   />
                 )}
               />
@@ -412,8 +412,8 @@ const ClientUpdate: React.FC = () => {
                       setTelephone(maskPhone(e));
                       onChange(e);
                     }}
-                    error={errors.telephone}
-                    errorText={errors.telephone?.message}
+                    error={!!errors.telephone}
+                    errorText={String(errors.telephone?.message)}
                   />
                 )}
               />

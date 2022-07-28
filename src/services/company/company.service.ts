@@ -11,6 +11,7 @@ import {
   RegisterCupomRequest,
   SiginUp,
   SignUpResponse,
+  UserCompanyRequest,
 } from './types';
 
 const usePostSignUpCompany = () => {
@@ -38,6 +39,54 @@ const usePostSignUpCompany = () => {
     isSuccess: !!data?.token,
     isLoading,
     isError,
+  };
+};
+
+const usePatchCompany = (): {
+  patchCompany: ({
+    company,
+    companyId,
+  }: {
+    company: UserCompanyRequest;
+    companyId: number;
+  }) => Promise<void>;
+  isLoading: boolean;
+  isError: boolean;
+  isSuccess: boolean;
+} => {
+  const mutation = useMutation(
+    async ({
+      company,
+      companyId,
+    }: {
+      company: UserCompanyRequest;
+      companyId: number;
+    }) => {
+      await api.patch<{message: string}>(`loja/update/${companyId}`, company);
+    },
+  );
+
+  async function patchCompany({
+    company,
+    companyId,
+    callback,
+  }: {
+    company: UserCompanyRequest;
+    companyId: number;
+    callback?: () => void;
+  }) {
+    await mutation.mutateAsync({company, companyId}).then(() => {
+      if (callback) {
+        callback();
+      }
+    });
+  }
+
+  return {
+    patchCompany,
+    isLoading: mutation.isLoading,
+    isError: mutation.isError,
+    isSuccess: mutation.isSuccess,
   };
 };
 
@@ -172,6 +221,7 @@ const usePostCupom = (): {
 
 const ServiceCompany = {
   usePostSignUpCompany,
+  usePatchCompany,
   useGetRegisteredProducts,
   useGetRegisteredProductDetail,
   usePostCupom,

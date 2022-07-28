@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import * as yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup';
@@ -17,7 +17,16 @@ import IconButton from '../../components/IconButton';
 import InputLine from '../../components/InputLine';
 import ProgressBar from '../../components/ProgressBar';
 
-import {maskCNPJ, isValidCNPJ} from '../../utils/helpers';
+import {useAuth} from '../../hooks/useAuth';
+
+import {
+  maskCNPJ,
+  isValidCNPJ,
+  isValidCEP,
+  maskCEP,
+  isValidPhone,
+  maskPhone,
+} from '../../utils/helpers';
 
 import {colors} from '../../styles/colors';
 import {
@@ -26,38 +35,52 @@ import {
   BodyContainer,
   ButtonsContainer,
 } from './styles';
+import ServiceCompany from '../../services/company/company.service';
 
 enum PageTitles {
-  name = 'Nome Completo',
   fantasyName = 'Nome Fantasia',
   cnpj = 'CNPJ',
-  address = 'Endereço/CEP',
-  openingHours = 'Horário de funcionamento',
+  address = 'Endereço',
+  cep = 'CEP',
+  openingTime = 'Horário de abertura',
+  closingTime = 'Horário de fechamento',
   companyDescription = 'Descrição da empresa',
   email = 'E-mail',
   occupationArea = 'Área de atuação',
-  socialNetworks = 'Redes Sociais',
+  telephone = 'Telefone de contato',
+  whatsApp = 'WhatsApp',
+  instagram = 'Instagram',
+  facebook = 'Facebook',
 }
 
-const FORM_ELEMENTS_SIZE = 8;
+const FORM_ELEMENTS_SIZE = 12;
 
 const validationSchema = yup.object().shape({
-  name: yup.string().required('Campo obrigatório'),
-  fantasyName: yup.string().required('Campo obrigatório'),
+  fantasyName: yup.string().min(1, 'Insira um nome válido'),
   cnpj: yup
     .string()
     .matches(isValidCNPJ, 'Formato incorreto')
     .required('Campo obrigatório'),
-  address: yup.string().required('Campo obrigatório'),
-  openingHours: yup.string().required('Campo obrigatório'),
-  companyDescription: yup.string().required('Campo obrigatório'),
-  email: yup.string().email('E-mail inválido').required('Campo obrigatório'),
-  occupationArea: yup.string().required('Campo obrigatório'),
-  socialNetworks: yup.string().required('Campo obrigatório'),
+  address: yup.string().min(10, 'Insira um endereço válido'),
+  cep: yup.string().matches(isValidCEP, 'Formato incorreto'),
+  openingTime: yup.string(),
+  closingTime: yup.string(),
+  companyDescription: yup.string(),
+  email: yup.string().email('E-mail inválido'),
+  occupationArea: yup.string(),
+  telephone: yup.string().matches(isValidPhone, 'Formato incorreto'),
+  whatsApp: yup.string().matches(isValidPhone, 'Formato incorreto'),
+  instagram: yup.string(),
+  facebook: yup.string(),
 });
 
 const CompanyUpdate: React.FC = () => {
   const navigation = useNavigation<any>();
+
+  const {userId} = useAuth();
+
+  const {patchCompany, isLoading, isSuccess, isError} =
+    ServiceCompany.usePatchCompany();
 
   const {
     control,
@@ -68,21 +91,69 @@ const CompanyUpdate: React.FC = () => {
 
   const [progress, setProgress] = useState(0);
 
-  const [name, setName] = useState('');
   const [fantasyName, setFantasyName] = useState('');
   const [cnpj, setCnpj] = useState('');
   const [address, setAddress] = useState('');
-  const [openingHours, setOpeningHours] = useState('');
+  const [cep, setCep] = useState('');
+  const [openingTime, setOpeningTime] = useState('');
+  const [closingTime, setClosingTime] = useState('');
   const [companyDescription, setCompanyDescription] = useState('');
-  const [email, setEmail] = useState('tialarocha@gmail.com');
+  const [email, setEmail] = useState('');
   const [occupationArea, setOccupationArea] = useState('');
-  const [socialNetworks, setSocialNetworks] = useState('');
+  const [telephone, setTelephone] = useState('');
+  const [whatsApp, setWhatsApp] = useState('');
+  const [instagram, setInstagram] = useState('');
+  const [facebook, setFacebook] = useState('');
 
   const isProgressEnd = useMemo(
     () => progress === FORM_ELEMENTS_SIZE,
     [progress],
   );
   const isProgressStart = useMemo(() => progress === 0, [progress]);
+
+  useEffect(() => {
+    isSuccess &&
+      Alert.alert(
+        'Dados da empresa atualizados com sucesso!',
+        '',
+        [
+          {
+            text: 'Ok',
+            onPress: () => {
+              resetInputs();
+              navigation.goBack();
+            },
+            style: 'default',
+          },
+        ],
+        {
+          cancelable: true,
+          onDismiss: () => {
+            resetInputs();
+            navigation.goBack();
+          },
+        },
+      );
+  }, [isSuccess]);
+
+  useEffect(() => {
+    isError &&
+      Alert.alert(
+        'Ocorreu algum erro ao tentar atualizar os dados da empresa!',
+        'Tente novamente mais tarde.',
+        [
+          {
+            text: 'Ok',
+            onPress: () => false,
+            style: 'default',
+          },
+        ],
+        {
+          cancelable: true,
+          onDismiss: () => false,
+        },
+      );
+  }, [isError]);
 
   const handleContinue = () => {
     makeProgress();
@@ -105,27 +176,26 @@ const CompanyUpdate: React.FC = () => {
   };
 
   const onSubmit = (data: any) => {
-    Alert.alert(
-      'Empresa cadastrada com sucesso',
-      `${JSON.stringify(data)}`,
-      [
-        {
-          text: 'Ok',
-          onPress: () => {
-            resetInputs();
-            navigation.goBack();
-          },
-          style: 'default',
-        },
-      ],
-      {
-        cancelable: true,
-        onDismiss: () => {
-          resetInputs();
-          navigation.goBack();
-        },
-      },
-    );
+    const socialNetworks = `WhatsApp: ${data?.whatsApp}, Instagram: ${data?.instagram}, Facebook: ${data?.facebook}`;
+
+    const companyUpdated = {
+      nome_fantasia: data?.fantasyName,
+      cnpj: data?.cnpj,
+      redes_sociais: socialNetworks,
+      endereco: data?.address,
+      cep: data?.cep,
+      telefone_contato: data?.telephone,
+      horario_abertura: data?.openingTime,
+      horario_fechamento: data?.closingTime,
+      descricao_empresa: data?.companyDescription,
+      area_atuacao: data?.occupationArea,
+      user: userId,
+    };
+
+    patchCompany({
+      company: companyUpdated,
+      companyId: userId,
+    });
   };
 
   return (
@@ -156,32 +226,6 @@ const CompanyUpdate: React.FC = () => {
           <BodyContainer>
             {progress === 0 && (
               <Controller
-                name="name"
-                defaultValue={name}
-                control={control}
-                rules={{
-                  required: true,
-                }}
-                render={({field: {onChange, onBlur}}) => (
-                  <InputLine
-                    title={PageTitles.name}
-                    maxLength={100}
-                    autoCorrect={false}
-                    value={name}
-                    onBlur={onBlur}
-                    onChangeText={e => {
-                      setName(e);
-                      onChange(e);
-                    }}
-                    error={errors.name}
-                    errorText={errors.name?.message}
-                  />
-                )}
-              />
-            )}
-
-            {progress === 1 && (
-              <Controller
                 name="fantasyName"
                 defaultValue={fantasyName}
                 control={control}
@@ -191,7 +235,7 @@ const CompanyUpdate: React.FC = () => {
                 render={({field: {onChange, onBlur}}) => (
                   <InputLine
                     title={PageTitles.fantasyName}
-                    maxLength={100}
+                    maxLength={120}
                     autoCorrect={false}
                     value={fantasyName}
                     onBlur={onBlur}
@@ -199,14 +243,14 @@ const CompanyUpdate: React.FC = () => {
                       setFantasyName(e);
                       onChange(e);
                     }}
-                    error={errors.fantasyName}
-                    errorText={errors.fantasyName?.message}
+                    error={!!errors.fantasyName}
+                    errorText={String(errors.fantasyName?.message)}
                   />
                 )}
               />
             )}
 
-            {progress === 2 && (
+            {progress === 1 && (
               <Controller
                 name="cnpj"
                 defaultValue={cnpj}
@@ -225,14 +269,14 @@ const CompanyUpdate: React.FC = () => {
                       setCnpj(maskCNPJ(e));
                       onChange(e);
                     }}
-                    error={errors.cnpj}
-                    errorText={errors.cnpj?.message}
+                    error={!!errors.cnpj}
+                    errorText={String(errors.cnpj?.message)}
                   />
                 )}
               />
             )}
 
-            {progress === 3 && (
+            {progress === 2 && (
               <Controller
                 name="address"
                 defaultValue={address}
@@ -243,15 +287,42 @@ const CompanyUpdate: React.FC = () => {
                 render={({field: {onChange, onBlur}}) => (
                   <InputLine
                     title={PageTitles.address}
-                    maxLength={10}
+                    maxLength={120}
                     value={address}
                     onBlur={onBlur}
                     onChangeText={e => {
                       setAddress(e);
                       onChange(e);
                     }}
-                    error={errors.address}
-                    errorText={errors.address?.message}
+                    error={!!errors.address}
+                    errorText={String(errors.address?.message)}
+                  />
+                )}
+              />
+            )}
+
+            {progress === 3 && (
+              <Controller
+                name="cep"
+                defaultValue={cep}
+                control={control}
+                rules={{
+                  required: true,
+                }}
+                render={({field: {onChange, onBlur}}) => (
+                  <InputLine
+                    title={PageTitles.cep}
+                    value={cep}
+                    maxLength={10}
+                    keyboardType="number-pad"
+                    autoCorrect={false}
+                    onBlur={onBlur}
+                    onChangeText={e => {
+                      setCep(maskCEP(e));
+                      onChange(e);
+                    }}
+                    error={!!errors.cep}
+                    errorText={String(errors.cep?.message)}
                   />
                 )}
               />
@@ -259,31 +330,57 @@ const CompanyUpdate: React.FC = () => {
 
             {progress === 4 && (
               <Controller
-                name="openingHours"
-                defaultValue={openingHours}
+                name="openingTime"
+                defaultValue={openingTime}
                 control={control}
                 rules={{
                   required: true,
                 }}
                 render={({field: {onChange, onBlur}}) => (
                   <InputLine
-                    title={PageTitles.openingHours}
+                    title={PageTitles.openingTime}
                     maxLength={150}
                     autoCorrect={false}
-                    value={openingHours}
+                    value={openingTime}
                     onBlur={onBlur}
                     onChangeText={e => {
-                      setOpeningHours(e);
+                      setOpeningTime(e);
                       onChange(e);
                     }}
-                    error={errors.openingHours}
-                    errorText={errors.openingHours?.message}
+                    error={!!errors.openingTime}
+                    errorText={String(errors.openingTime?.message)}
                   />
                 )}
               />
             )}
 
             {progress === 5 && (
+              <Controller
+                name="closingTime"
+                defaultValue={closingTime}
+                control={control}
+                rules={{
+                  required: true,
+                }}
+                render={({field: {onChange, onBlur}}) => (
+                  <InputLine
+                    title={PageTitles.closingTime}
+                    maxLength={150}
+                    autoCorrect={false}
+                    value={closingTime}
+                    onBlur={onBlur}
+                    onChangeText={e => {
+                      setClosingTime(e);
+                      onChange(e);
+                    }}
+                    error={!!errors.closingTime}
+                    errorText={String(errors.closingTime?.message)}
+                  />
+                )}
+              />
+            )}
+
+            {progress === 6 && (
               <Controller
                 name="companyDescription"
                 defaultValue={companyDescription}
@@ -301,14 +398,14 @@ const CompanyUpdate: React.FC = () => {
                       setCompanyDescription(e);
                       onChange(e);
                     }}
-                    error={errors.companyDescription}
-                    errorText={errors.companyDescription?.message}
+                    error={!!errors.companyDescription}
+                    errorText={String(errors.companyDescription?.message)}
                   />
                 )}
               />
             )}
 
-            {progress === 6 && (
+            {progress === 7 && (
               <Controller
                 name="email"
                 defaultValue={email}
@@ -328,14 +425,14 @@ const CompanyUpdate: React.FC = () => {
                       setEmail(e);
                       onChange(e);
                     }}
-                    error={errors.email}
-                    errorText={errors.email?.message}
+                    error={!!errors.email}
+                    errorText={String(errors.email?.message)}
                   />
                 )}
               />
             )}
 
-            {progress === 7 && (
+            {progress === 8 && (
               <Controller
                 name="occupationArea"
                 defaultValue={occupationArea}
@@ -346,40 +443,117 @@ const CompanyUpdate: React.FC = () => {
                 render={({field: {onChange, onBlur}}) => (
                   <InputLine
                     title={PageTitles.occupationArea}
-                    maxLength={200}
+                    maxLength={255}
                     value={occupationArea}
                     onBlur={onBlur}
                     onChangeText={e => {
                       setOccupationArea(e);
                       onChange(e);
                     }}
-                    error={errors.occupationArea}
-                    errorText={errors.occupationArea?.message}
+                    error={!!errors.occupationArea}
+                    errorText={String(errors.occupationArea?.message)}
                   />
                 )}
               />
             )}
 
-            {progress === 8 && (
+            {progress === 9 && (
               <Controller
-                name="socialNetworks"
-                defaultValue={socialNetworks}
+                name="telephone"
+                defaultValue={telephone}
                 control={control}
                 rules={{
                   required: true,
                 }}
                 render={({field: {onChange, onBlur}}) => (
                   <InputLine
-                    title={PageTitles.socialNetworks}
-                    maxLength={300}
-                    value={socialNetworks}
+                    title={PageTitles.telephone}
+                    value={telephone}
+                    maxLength={15}
+                    keyboardType="phone-pad"
                     onBlur={onBlur}
                     onChangeText={e => {
-                      setSocialNetworks(e);
+                      setTelephone(maskPhone(e));
                       onChange(e);
                     }}
-                    error={errors.socialNetworks}
-                    errorText={errors.socialNetworks?.message}
+                    error={!!errors.telephone}
+                    errorText={String(errors.telephone?.message)}
+                  />
+                )}
+              />
+            )}
+
+            {progress === 10 && (
+              <Controller
+                name="whatsApp"
+                defaultValue={whatsApp}
+                control={control}
+                rules={{
+                  required: true,
+                }}
+                render={({field: {onChange, onBlur}}) => (
+                  <InputLine
+                    title={PageTitles.whatsApp}
+                    maxLength={15}
+                    keyboardType="phone-pad"
+                    value={whatsApp}
+                    onBlur={onBlur}
+                    onChangeText={e => {
+                      setWhatsApp(maskPhone(e));
+                      onChange(e);
+                    }}
+                    error={!!errors.whatsApp}
+                    errorText={String(errors.whatsApp?.message)}
+                  />
+                )}
+              />
+            )}
+
+            {progress === 11 && (
+              <Controller
+                name="instagram"
+                defaultValue={instagram}
+                control={control}
+                rules={{
+                  required: true,
+                }}
+                render={({field: {onChange, onBlur}}) => (
+                  <InputLine
+                    title={PageTitles.instagram}
+                    maxLength={200}
+                    value={instagram}
+                    onBlur={onBlur}
+                    onChangeText={e => {
+                      setInstagram(e);
+                      onChange(e);
+                    }}
+                    error={!!errors.instagram}
+                    errorText={String(errors.instagram?.message)}
+                  />
+                )}
+              />
+            )}
+
+            {progress === 12 && (
+              <Controller
+                name="facebook"
+                defaultValue={facebook}
+                control={control}
+                rules={{
+                  required: true,
+                }}
+                render={({field: {onChange, onBlur}}) => (
+                  <InputLine
+                    title={PageTitles.facebook}
+                    maxLength={200}
+                    value={facebook}
+                    onBlur={onBlur}
+                    onChangeText={e => {
+                      setFacebook(e);
+                      onChange(e);
+                    }}
+                    error={!!errors.facebook}
+                    errorText={String(errors.facebook?.message)}
                   />
                 )}
               />
@@ -388,8 +562,11 @@ const CompanyUpdate: React.FC = () => {
 
           <ButtonsContainer>
             {isProgressEnd ? (
-              <Button outlinedLight onPress={handleSubmit(onSubmit)}>
-                Continuar
+              <Button
+                outlinedLight
+                loading={isLoading}
+                onPress={handleSubmit(onSubmit)}>
+                Concluir
               </Button>
             ) : (
               <Button outlinedLight onPress={handleContinue}>

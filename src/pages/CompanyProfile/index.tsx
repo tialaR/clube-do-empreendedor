@@ -42,7 +42,7 @@ const CompanyProfile: React.FC = () => {
         <SpacingY medium />
         <RoundButton
           fullWidth
-          onPress={() => navigation.navigate('RegisterCompany')}>
+          onPress={() => navigation.navigate('CompanyUpdate')}>
           Dados do Perfil
         </RoundButton>
         <SpacingY small />

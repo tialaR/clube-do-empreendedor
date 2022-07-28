@@ -11,6 +11,7 @@ import {Alert} from 'react-native';
 
 import api from '../services/api';
 import ServiceClient from '../services/client/client.service';
+import ServiceCompany from '../services/company/company.service';
 
 type AuthLoginState = {
   userId: number;
@@ -36,9 +37,12 @@ type AuthContextData = {
   isClient: boolean;
   isLoginError: boolean;
   isLoginLoading: boolean;
-  isSignUploading: boolean;
-  isSignUpError: boolean;
-  isSignUpSuccess: boolean;
+  isSignUpClientLoading: boolean;
+  isSignUpClientError: boolean;
+  isSignUpClientSuccess: boolean;
+  isSignUpCompanyloading: boolean;
+  isSignUpCompanyError: boolean;
+  isSignUpCompanySuccess: boolean;
   signUp(creditials: SignUpCredentials): Promise<void>;
   signIn(creditials: SignInCredentials): Promise<void>;
   signOut(): void;
@@ -52,11 +56,18 @@ type AuthProviderProps = {
 
 const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
   const {
-    postSignUp,
-    isLoading: isSignUploading,
-    isError: isSignUpError,
-    isSuccess: isSignUpSuccess,
-  } = ServiceClient.usePostSignUp();
+    postSignUpClient,
+    isLoading: isSignUpClientLoading,
+    isError: isSignUpClientError,
+    isSuccess: isSignUpClientSuccess,
+  } = ServiceClient.usePostSignUpClient();
+
+  const {
+    postSignUpCompany,
+    isLoading: isSignUpCompanyloading,
+    isError: isSignUpCompanyError,
+    isSuccess: isSignUpCompanySuccess,
+  } = ServiceCompany.usePostSignUpCompany();
 
   const [loginData, setLoginData] = useState<AuthLoginState>(
     {} as AuthLoginState,
@@ -100,16 +111,18 @@ const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
           password,
           cpf,
         };
-        postSignUp(client);
+        postSignUpClient(client);
       }
 
       if (cnpj) {
-        // await api.post<AuthState>('/signup/loja', {
-        //   username,
-        //   email,
-        //   password,
-        //   cnpj,
-        // });
+        const clientStore = {
+          username,
+          email,
+          password,
+          cnpj,
+        };
+
+        postSignUpCompany(clientStore);
       }
     },
     [],
@@ -171,9 +184,12 @@ const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
         isClient: loginData.isClient,
         isLoginLoading,
         isLoginError,
-        isSignUploading,
-        isSignUpError,
-        isSignUpSuccess,
+        isSignUpClientLoading,
+        isSignUpClientError,
+        isSignUpClientSuccess,
+        isSignUpCompanyloading,
+        isSignUpCompanyError,
+        isSignUpCompanySuccess,
         signUp,
         signIn,
         signOut,

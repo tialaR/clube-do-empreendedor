@@ -12,12 +12,12 @@ import {
   UserClientRequest,
 } from './types';
 
-const usePostSignUp = () => {
+const usePostSignUpClient = () => {
   const [data, setData] = useState<SignUpResponse | undefined>(undefined);
   const [isLoading, setIsLosding] = useState(false);
   const [isError, setIsError] = useState(false);
 
-  const postSignUp = async (client: SiginUp) => {
+  const postSignUpClient = async (client: SiginUp) => {
     setIsLosding(true);
     try {
       const response = await api.post<SignUpResponse>('signup/cliente', client);
@@ -30,7 +30,7 @@ const usePostSignUp = () => {
   };
 
   return {
-    postSignUp,
+    postSignUpClient,
     isSuccess: !!data?.token,
     isLoading,
     isError,
@@ -318,7 +318,7 @@ const usePostScanQrCode = (): {
 };
 
 const ServiceClient = {
-  usePostSignUp,
+  usePostSignUpClient,
   usePatchUser,
   useGetFeaturedProducts,
   useGetMyDiscounts,

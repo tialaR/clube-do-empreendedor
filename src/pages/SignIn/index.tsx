@@ -96,7 +96,7 @@ const SignIn: React.FC<SiginProps> = ({route}) => {
     if (isClient) {
       navigation.navigate('SignUpClient');
     } else {
-      navigation.navigate('RegisterCompany');
+      navigation.navigate('SignUpCompany');
     }
   }, [navigation, isClient]);
 

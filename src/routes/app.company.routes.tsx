@@ -7,17 +7,17 @@ import CompanyDashboard from '../pages/CompanyDashboard';
 import CompanyNotifications from '../pages/CompanyNotifications';
 import CompanyProfile from '../pages/CompanyProfile';
 import CompanyRegisterCupom from '../pages/CompanyRegisterCupom';
-
-import {CompanyDiscountClientsModalProvider} from '../hooks/useCompanyDiscountClientsModal';
-
 import CompanyRegisterCupomConfirmation from '../pages/CompanyRegisterCupomConfirmation';
 import CompanyEditProductDetail from '../pages/CompanyEditProductDetail';
 import CompanyRegisterProduct from '../pages/CompanyRegisterProduct';
+import SignUpCompany from '../pages/SignUpCompany';
+import CompanyUpdate from '../pages/CompanyUpdate';
+
+import {CompanyDiscountClientsModalProvider} from '../hooks/useCompanyDiscountClientsModal';
 
 import {SvgIcon} from '../components/SvgIcon';
 
 import {colors} from '../styles/colors';
-import RegisterCompany from '../pages/RegisterCompany';
 
 enableScreens();
 const Stack = createNativeStackNavigator();
@@ -95,7 +95,9 @@ export const AppCompanyRoutes = () => {
       }}>
       <Stack.Screen name="CompanyDashboard" component={TabCompanyRoutes} />
 
-      <Stack.Screen name="RegisterCompany" component={RegisterCompany} />
+      <Stack.Screen name="SignUpCompany" component={SignUpCompany} />
+
+      <Stack.Screen name="CompanyUpdate" component={CompanyUpdate} />
 
       <Stack.Screen
         name="CompanyRegisterCupom"

@@ -6,11 +6,40 @@ import api from '../api';
 import {
   Product,
   ProductDetail,
-  ProductDetailRequest,
   ProductDetailResponse,
   ProductResponse,
   RegisterCupomRequest,
+  SiginUp,
+  SignUpResponse,
 } from './types';
+
+const usePostSignUpCompany = () => {
+  const [data, setData] = useState<SignUpResponse | undefined>(undefined);
+  const [isLoading, setIsLosding] = useState(false);
+  const [isError, setIsError] = useState(false);
+
+  const postSignUpCompany = async (clientStore: SiginUp) => {
+    setIsLosding(true);
+    try {
+      const response = await api.post<SignUpResponse>(
+        'signup/loja',
+        clientStore,
+      );
+      setData(response.data);
+    } catch (err) {
+      setIsError(!!err);
+    } finally {
+      setIsLosding(false);
+    }
+  };
+
+  return {
+    postSignUpCompany,
+    isSuccess: !!data?.token,
+    isLoading,
+    isError,
+  };
+};
 
 const useGetRegisteredProducts = (): {
   response: Product[] | undefined;
@@ -20,11 +49,7 @@ const useGetRegisteredProducts = (): {
   isError: boolean;
 } => {
   const query = useQuery(['REGISTER-PRODUCTS-LIST'], async () => {
-    const data = await api.get<ProductResponse[]>('produtos/', {
-      headers: {
-        Authorization: 'Token ea36c39c23c3a08c51143f111f4a749a33cf2113',
-      },
-    });
+    const data = await api.get<ProductResponse[]>('produtos/');
 
     return data;
   });
@@ -146,6 +171,7 @@ const usePostCupom = (): {
 };
 
 const ServiceCompany = {
+  usePostSignUpCompany,
   useGetRegisteredProducts,
   useGetRegisteredProductDetail,
   usePostCupom,

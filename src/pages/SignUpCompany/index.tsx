@@ -17,9 +17,9 @@ import IconButton from '../../components/IconButton';
 import InputLine from '../../components/InputLine';
 import ProgressBar from '../../components/ProgressBar';
 
-import {maskCPF, isValidCPF, isValidName} from '../../utils/helpers';
-
 import {useAuth} from '../../hooks/useAuth';
+
+import {maskCNPJ, isValidCNPJ, isValidName} from '../../utils/helpers';
 
 import {colors} from '../../styles/colors';
 import {
@@ -31,7 +31,7 @@ import {
 
 enum PageTitles {
   name = 'Nome do usuário',
-  cpf = 'CPF',
+  cnpj = 'CNPJ',
   email = 'E-mail',
   password = 'Senha',
 }
@@ -46,10 +46,10 @@ const validationSchema = yup.object().shape({
       '150 caracteres ou menos. Letras, números e @/./+/-/_ apenas.',
     )
     .required('Campo obrigatório.'),
-  email: yup.string().email('E-mail inválido').required('Campo obrigatório'),
-  cpf: yup
+  email: yup.string().email('E-mail inválido'),
+  cnpj: yup
     .string()
-    .matches(isValidCPF, 'Formato incorreto')
+    .matches(isValidCNPJ, 'Formato incorreto')
     .required('Campo obrigatório'),
   password: yup
     .string()
@@ -57,14 +57,14 @@ const validationSchema = yup.object().shape({
     .min(3, 'A senha deve conter no mínimo 3 caracteres'),
 });
 
-const SignUpClient: React.FC = () => {
+const SignUpCompany: React.FC = () => {
   const navigation = useNavigation<any>();
 
   const {
     signUp,
-    isSignUpClientError,
-    isSignUpClientLoading,
-    isSignUpClientSuccess,
+    isSignUpCompanyError,
+    isSignUpCompanyloading,
+    isSignUpCompanySuccess,
   } = useAuth();
 
   const {
@@ -77,7 +77,7 @@ const SignUpClient: React.FC = () => {
   const [progress, setProgress] = useState(0);
 
   const [name, setName] = useState('');
-  const [cpf, setCpf] = useState('');
+  const [cnpj, setCnpj] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -88,7 +88,7 @@ const SignUpClient: React.FC = () => {
   const isProgressStart = useMemo(() => progress === 0, [progress]);
 
   useEffect(() => {
-    isSignUpClientError &&
+    isSignUpCompanyError &&
       Alert.alert(
         'Ocorreu algum erro!',
         'Tente novamente mais tarde.',
@@ -110,12 +110,12 @@ const SignUpClient: React.FC = () => {
           },
         },
       );
-  }, [isSignUpClientError]);
+  }, [isSignUpCompanyError]);
 
   useEffect(() => {
-    isSignUpClientSuccess &&
+    isSignUpCompanySuccess &&
       Alert.alert(
-        'Usuário cadastrado com sucesso!',
+        'Empresa cadastrada com sucesso!',
         '',
         [
           {
@@ -135,7 +135,7 @@ const SignUpClient: React.FC = () => {
           },
         },
       );
-  }, [isSignUpClientSuccess]);
+  }, [isSignUpCompanySuccess]);
 
   const handleContinue = () => {
     makeProgress();
@@ -161,7 +161,7 @@ const SignUpClient: React.FC = () => {
     const client = {
       username: data?.name,
       email: data?.email,
-      cpf: data?.cpf,
+      cnpj: data?.cnpj,
       password: data?.password,
     };
 
@@ -205,9 +205,9 @@ const SignUpClient: React.FC = () => {
                 render={({field: {onChange, onBlur}}) => (
                   <InputLine
                     title={PageTitles.name}
-                    value={name}
                     maxLength={120}
                     autoCorrect={false}
+                    value={name}
                     onBlur={onBlur}
                     onChangeText={e => {
                       setName(e);
@@ -222,25 +222,25 @@ const SignUpClient: React.FC = () => {
 
             {progress === 1 && (
               <Controller
-                name="cpf"
-                defaultValue={cpf}
+                name="cnpj"
+                defaultValue={cnpj}
                 control={control}
                 rules={{
                   required: true,
                 }}
                 render={({field: {onBlur, onChange}}) => (
                   <InputLine
-                    title={PageTitles.cpf}
-                    value={cpf}
-                    maxLength={14}
+                    title={PageTitles.cnpj}
+                    maxLength={18}
                     keyboardType="number-pad"
+                    value={cnpj}
                     onBlur={onBlur}
                     onChangeText={e => {
-                      setCpf(maskCPF(e));
+                      setCnpj(maskCNPJ(e));
                       onChange(e);
                     }}
-                    error={errors.cpf}
-                    errorText={errors.cpf?.message}
+                    error={errors.cnpj}
+                    errorText={errors.cnpj?.message}
                   />
                 )}
               />
@@ -257,10 +257,10 @@ const SignUpClient: React.FC = () => {
                 render={({field: {onChange, onBlur}}) => (
                   <InputLine
                     title={PageTitles.email}
-                    value={email}
-                    maxLength={254}
+                    maxLength={245}
                     keyboardType="email-address"
                     autoCorrect={false}
+                    value={email}
                     onBlur={onBlur}
                     onChangeText={e => {
                       setEmail(e);
@@ -303,8 +303,8 @@ const SignUpClient: React.FC = () => {
           <ButtonsContainer>
             {isProgressEnd ? (
               <Button
+                loading={isSignUpCompanyloading}
                 outlinedLight
-                loading={isSignUpClientLoading}
                 onPress={handleSubmit(onSubmit)}>
                 Concluir
               </Button>
@@ -320,4 +320,4 @@ const SignUpClient: React.FC = () => {
   );
 };
 
-export default SignUpClient;
+export default SignUpCompany;

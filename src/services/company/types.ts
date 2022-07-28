@@ -1,3 +1,20 @@
+export type SiginUp = {
+  username: string;
+  email: string;
+  password: string;
+  cnpj: string;
+};
+
+export type SignUpResponse = {
+  user: {
+    username: string;
+    email: string;
+    is_cliente: boolean;
+  };
+  token: string;
+  message: string;
+};
+
 export type RegisterCupomRequest = {
   discount: string;
   storeId: number;
@@ -35,11 +52,6 @@ export type Product = {
   soldBy: string;
   qrCodeImg: string;
   isAvailable: boolean;
-};
-
-export type ProductDetailRequest = {
-  productId: number;
-  callback?: () => void;
 };
 
 export type ProductDetailResponse = {

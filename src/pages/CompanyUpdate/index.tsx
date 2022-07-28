@@ -56,7 +56,7 @@ const validationSchema = yup.object().shape({
   socialNetworks: yup.string().required('Campo obrigatório'),
 });
 
-const RegisterCompany: React.FC = () => {
+const CompanyUpdate: React.FC = () => {
   const navigation = useNavigation<any>();
 
   const {
@@ -403,4 +403,4 @@ const RegisterCompany: React.FC = () => {
   );
 };
 
-export default RegisterCompany;
+export default CompanyUpdate;

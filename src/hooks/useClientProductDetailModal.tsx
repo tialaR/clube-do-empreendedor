@@ -10,7 +10,7 @@ type ClientProductDetailContextData = {
     productId,
     isEmphasisProduct,
   }: {
-    productId: number;
+    productId: number | null;
     isEmphasisProduct?: boolean;
   }): void;
   closeClientProductDetailModal(): void;

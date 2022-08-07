@@ -15,7 +15,6 @@ import {
   Name,
   DescriptionContainer,
   Price,
-  Installment,
   PromotionContainer,
   PromotionText,
   SoldBy,
@@ -42,13 +41,12 @@ const DewscriptionsLoading = () => renderDescriptionsLoading();
 
 type Props = {
   loading?: boolean;
-  name: string;
-  img: string;
-  price: number;
-  installment: string;
-  promotion: string;
-  soldBy: string;
-  emphasis?: boolean;
+  name: string | null;
+  img: string | null;
+  price: string | null;
+  promotion: string | null;
+  soldBy: string | null;
+  emphasis?: boolean | null;
   onPress: () => void;
 };
 
@@ -57,7 +55,6 @@ const ProductCard: React.FC<Props> = ({
   name,
   img,
   price,
-  installment,
   promotion,
   soldBy,
   emphasis,
@@ -100,9 +97,8 @@ const ProductCard: React.FC<Props> = ({
                 </Name>
               </NameContainer>
               <Price>{price}</Price>
-              <Installment>{installment}</Installment>
               <PromotionContainer>
-                <PromotionText>{promotion}</PromotionText>
+                <PromotionText>{promotion}%OFF</PromotionText>
               </PromotionContainer>
               <SoldBy>Vendido por {soldBy}</SoldBy>
             </>

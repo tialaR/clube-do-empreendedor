@@ -55,3 +55,13 @@ export function maskCEP(cep: string) {
       '$1.$2-$3',
     );
 }
+
+export function formatCurrencyBRL(value: number | string | null) {
+  if (value) {
+    const formatedValue = String(value)?.replace('.', ',');
+
+    return `R$ ${formatedValue}`;
+  }
+
+  return '-';
+}

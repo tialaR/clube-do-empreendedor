@@ -1,11 +1,16 @@
-import {useMutation, useQuery} from '@tanstack/react-query';
 import {useState} from 'react';
+import {useMutation, useQuery} from '@tanstack/react-query';
+
+import {baseURL} from '../../utils/constants';
+import {formatCurrencyBRL} from '../../utils/helpers';
 import api from '../api';
 import {
-  Product,
+  FeaturedProduct,
+  FeaturedProductResponse,
+  MyDiscountProduct,
+  MyDiscountProductResponse,
   ProductDetail,
   ProductDetailResponse,
-  ProductResponse,
   ScanQrCodeResponse,
   SiginUp,
   SignUpResponse,
@@ -86,31 +91,31 @@ const usePatchUser = (): {
 };
 
 const useGetFeaturedProducts = (): {
-  response: Product[] | undefined;
+  response: FeaturedProduct[] | undefined | null;
   isSuccess: boolean;
   isLoading: boolean;
   isFetching: boolean;
   isError: boolean;
 } => {
   const query = useQuery(['FEATURED-PRODUCTS-LIST'], async () => {
-    const data = await api.get<ProductResponse[]>('produtos/');
+    const data = await api.get<{data: FeaturedProductResponse[]}>('produtos/');
 
     return data;
   });
 
   return {
-    response: query?.data?.data?.map((item: ProductResponse) => {
+    response: query?.data?.data?.data?.map((item: FeaturedProductResponse) => {
       return {
-        id: item.id,
-        name: item.nome,
-        // img: `http://10.0.2.2:8000/${item.image}`,
-        img: '',
-        price: item.price,
-        installment: 'verificar de/para',
-        promotion: `${item.cupom_id}%OFF`,
-        soldBy: `loja ${item.loja_id}`,
-        // qrCodeImg: `http://10.0.2.2:8000/${item.qr_code}`,
-        qrCodeImg: '',
+        id: item?.id,
+        name: item?.nome,
+        img: `${baseURL}/${item?.image}`,
+        price: formatCurrencyBRL(item?.price),
+        promotion: item?.cupom,
+        soldBy: item?.loja,
+        qrCodeImg: `${baseURL}/${item?.qr_code}`,
+        category: item?.categoria,
+        description: item?.description,
+        isAvailable: item?.is_available,
       };
     }),
     isSuccess: query.isSuccess,
@@ -121,31 +126,38 @@ const useGetFeaturedProducts = (): {
 };
 
 const useGetMyDiscounts = (): {
-  response: ProductResponse[] | undefined | null;
+  response: MyDiscountProduct[] | undefined;
   isSuccess: boolean;
   isLoading: boolean;
   isFetching: boolean;
   isError: boolean;
 } => {
   const query = useQuery(['GET-MY-DISCOUNTS-LIST'], async () => {
-    const data = await api.get('produto-cupom-cliente/');
+    const data = await api.get<{data: MyDiscountProductResponse[]}>(
+      'produto-cupom-cliente/',
+    );
 
     return data;
   });
 
   return {
-    response: query?.data?.data?.map((item: ProductResponse) => {
-      return {
-        id: item.id,
-        name: 'teste',
-        img: '',
-        price: 10,
-        installment: 'verificar de/para',
-        promotion: 'verificar de/para',
-        soldBy: 'verificar de/para',
-        qrCodeImg: '',
-      };
-    }),
+    response: query?.data?.data?.data?.map(
+      (item: MyDiscountProductResponse) => {
+        return {
+          id: item?.id,
+          name: item?.produto,
+          img: `${baseURL}/${item?.image}`,
+          price: formatCurrencyBRL(item?.price),
+          promotion: item?.desconto,
+          soldBy: item?.loja,
+          qrCodeImg: `${baseURL}/${item?.qr_code}`,
+          category: item?.categoria,
+          expiratedCupomCliente: item?.expirated_cupom_cliente,
+          isBought: item?.comprado,
+          isCupomValid: item?.cupom_valid,
+        };
+      },
+    ),
     isSuccess: query.isSuccess,
     isLoading: query.isLoading,
     isFetching: query.isFetching,

@@ -37,28 +37,63 @@ export type UserClientRequest = {
   user?: number;
 };
 
-export type ProductResponse = {
+export type FeaturedProductResponse = {
   id: number;
-  loja_id: number;
-  categoria_id: number;
-  cupom_id: number;
   nome: string;
   image: string;
   description: string;
-  price: number;
+  price: string;
   qr_code: string;
   is_available: boolean;
+  loja: string;
+  categoria: string;
+  cupom: string;
 };
 
-export type Product = {
+export type FeaturedProduct = {
   id: number;
   name: string;
   img: string;
-  price: number;
-  installment: string;
+  price: string;
   promotion: string;
   soldBy: string;
   qrCodeImg: string;
+  category: string;
+  description: string;
+  isAvailable: boolean;
+};
+
+export type MyDiscountProductResponse = {
+  id: number | null;
+  expirated_cupom_cliente: string | null;
+  comprado: boolean | null;
+  produto: string | null;
+  cliente: string | null;
+  cpf: string | null;
+  telefone_contato: string | null;
+  endereco: string | null;
+  email: string | null;
+  loja: string | null;
+  categoria: string | null;
+  desconto: string | null;
+  price: number | string | null;
+  image: string | null;
+  qr_code: string | null;
+  cupom_valid: boolean | null;
+};
+
+export type MyDiscountProduct = {
+  id: number | null;
+  name: string | null;
+  img: string | null;
+  price: string | null;
+  promotion: string | null;
+  soldBy: string | null;
+  qrCodeImg: string | null;
+  category: string | null;
+  expiratedCupomCliente: string | null;
+  isBought: boolean | null;
+  isCupomValid: boolean | null;
 };
 
 export type ProductDetailResponse = {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 
 import ProductCard from '../../components/ProductCard';
 import SearchHeader from '../../components/SearchHeader';
@@ -9,7 +9,7 @@ import {useClientProductDetailModal} from '../../hooks/useClientProductDetailMod
 import {MapModalProvider} from '../../hooks/useMapModal';
 
 import ServiceClient from '../../services/client/client.service';
-import {Product} from '../../services/client/types';
+import {MyDiscountProduct, FeaturedProduct} from '../../services/client/types';
 
 import {SpacingX} from '../../styles/globalStyles';
 import {
@@ -27,6 +27,16 @@ const ClientDashboard: React.FC = () => {
   const {response: featuredProductsList, isLoading: isFeaturedproductsLosding} =
     ServiceClient.useGetFeaturedProducts();
 
+  const filteredMyDiscountsList = useMemo(
+    () => myDiscountsList?.filter(item => item?.isCupomValid),
+    [myDiscountsList],
+  );
+
+  const filteredFeaturedProductsList = useMemo(
+    () => featuredProductsList?.filter(item => item?.isAvailable),
+    [featuredProductsList],
+  );
+
   return (
     <Container>
       <MapModalProvider>
@@ -41,11 +51,11 @@ const ClientDashboard: React.FC = () => {
           <SectionTitle>Meus Descontos</SectionTitle>
         </SectionTitleContainer>
         <ProducstList<React.ElementType>
-          data={myDiscountsList}
-          keyExtractor={(product: Product) => product.id}
+          data={filteredMyDiscountsList}
+          keyExtractor={(product: MyDiscountProduct) => product?.id}
           horizontal
           showsHorizontalScrollIndicator={false}
-          renderItem={({item: product}: {item: Product}) => (
+          renderItem={({item: product}: {item: MyDiscountProduct}) => (
             <ProductCard
               loading={isMyDiscountsLoading}
               name={product?.name}
@@ -53,7 +63,6 @@ const ClientDashboard: React.FC = () => {
               price={product?.price}
               promotion={product?.promotion}
               soldBy={product?.soldBy}
-              installment={product?.installment}
               onPress={() =>
                 showClientProductDetailModal({productId: product?.id})
               }
@@ -70,11 +79,11 @@ const ClientDashboard: React.FC = () => {
           <SectionTitle>Produtos em Destaque</SectionTitle>
         </SectionTitleContainer>
         <ProducstList<React.ElementType>
-          data={featuredProductsList}
-          keyExtractor={(product: Product) => product.id}
+          data={filteredFeaturedProductsList}
+          keyExtractor={(product: FeaturedProduct) => product?.id}
           horizontal
           showsHorizontalScrollIndicator={false}
-          renderItem={({item: product}: {item: Product}) => (
+          renderItem={({item: product}: {item: FeaturedProduct}) => (
             <ProductCard
               emphasis
               loading={isFeaturedproductsLosding}
@@ -83,7 +92,6 @@ const ClientDashboard: React.FC = () => {
               price={product?.price}
               promotion={product?.promotion}
               soldBy={product?.soldBy}
-              installment={product?.installment}
               onPress={() =>
                 showClientProductDetailModal({
                   productId: product?.id,

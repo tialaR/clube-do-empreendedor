@@ -25,9 +25,17 @@ const usePostSignUpCompany = () => {
   const postSignUpCompany = async (clientStore: SiginUp) => {
     setIsLosding(true);
     try {
+      const clientStoreAux = {
+        username: clientStore?.username,
+        nome_fantasia: clientStore?.fantasyName,
+        email: clientStore?.email,
+        password: clientStore?.password,
+        cnpj: clientStore?.cnpj,
+      };
+
       const response = await api.post<SignUpResponse>(
         'signup/loja',
-        clientStore,
+        clientStoreAux,
       );
       setData(response.data);
     } catch (err) {

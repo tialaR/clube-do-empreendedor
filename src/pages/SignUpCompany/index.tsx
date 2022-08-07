@@ -31,12 +31,13 @@ import {
 
 enum PageTitles {
   name = 'Nome do usuário',
+  fantasyName = 'Nome Fntasia',
   cnpj = 'CNPJ',
   email = 'E-mail',
   password = 'Senha',
 }
 
-const FORM_ELEMENTS_SIZE = 3;
+const FORM_ELEMENTS_SIZE = 4;
 
 const validationSchema = yup.object().shape({
   name: yup
@@ -46,7 +47,8 @@ const validationSchema = yup.object().shape({
       '150 caracteres ou menos. Letras, números e @/./+/-/_ apenas.',
     )
     .required('Campo obrigatório.'),
-  email: yup.string().email('E-mail inválido'),
+  fantasyName: yup.string().required('Campo obrigatório.'),
+  email: yup.string().required('Campo obrigatório.').email('E-mail inválido'),
   cnpj: yup
     .string()
     .matches(isValidCNPJ, 'Formato incorreto')
@@ -77,6 +79,7 @@ const SignUpCompany: React.FC = () => {
   const [progress, setProgress] = useState(0);
 
   const [name, setName] = useState('');
+  const [fantasyName, setFantasyName] = useState('');
   const [cnpj, setCnpj] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -160,6 +163,7 @@ const SignUpCompany: React.FC = () => {
   const onSubmit = (data: any) => {
     const client = {
       username: data?.name,
+      fantasyName: data?.fantasyName,
       email: data?.email,
       cnpj: data?.cnpj,
       password: data?.password,
@@ -213,14 +217,40 @@ const SignUpCompany: React.FC = () => {
                       setName(e);
                       onChange(e);
                     }}
-                    error={errors.name}
-                    errorText={errors.name?.message}
+                    error={!!errors.name}
+                    errorText={String(errors.name?.message)}
                   />
                 )}
               />
             )}
 
             {progress === 1 && (
+              <Controller
+                name="fantasyName"
+                defaultValue={fantasyName}
+                control={control}
+                rules={{
+                  required: true,
+                }}
+                render={({field: {onChange, onBlur}}) => (
+                  <InputLine
+                    title={PageTitles.fantasyName}
+                    maxLength={120}
+                    autoCorrect={false}
+                    value={fantasyName}
+                    onBlur={onBlur}
+                    onChangeText={e => {
+                      setFantasyName(e);
+                      onChange(e);
+                    }}
+                    error={!!errors.fantasyName}
+                    errorText={String(errors.fantasyName?.message)}
+                  />
+                )}
+              />
+            )}
+
+            {progress === 2 && (
               <Controller
                 name="cnpj"
                 defaultValue={cnpj}
@@ -239,14 +269,14 @@ const SignUpCompany: React.FC = () => {
                       setCnpj(maskCNPJ(e));
                       onChange(e);
                     }}
-                    error={errors.cnpj}
-                    errorText={errors.cnpj?.message}
+                    error={!!errors.cnpj}
+                    errorText={String(errors.cnpj?.message)}
                   />
                 )}
               />
             )}
 
-            {progress === 2 && (
+            {progress === 3 && (
               <Controller
                 name="email"
                 defaultValue={email}
@@ -266,14 +296,14 @@ const SignUpCompany: React.FC = () => {
                       setEmail(e);
                       onChange(e);
                     }}
-                    error={errors.email}
-                    errorText={errors.email?.message}
+                    error={!!errors.email}
+                    errorText={String(errors.email?.message)}
                   />
                 )}
               />
             )}
 
-            {progress === 3 && (
+            {progress === 4 && (
               <Controller
                 name="password"
                 defaultValue={password}
@@ -292,8 +322,8 @@ const SignUpCompany: React.FC = () => {
                       setPassword(e);
                       onChange(e);
                     }}
-                    error={errors.password}
-                    errorText={errors.password?.message}
+                    error={!!errors.password}
+                    errorText={String(errors.password?.message)}
                   />
                 )}
               />

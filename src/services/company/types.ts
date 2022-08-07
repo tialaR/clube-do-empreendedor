@@ -3,6 +3,7 @@ export type SiginUp = {
   email: string;
   password: string;
   cnpj: string;
+  fantasyName: string;
 };
 
 export type SignUpResponse = {

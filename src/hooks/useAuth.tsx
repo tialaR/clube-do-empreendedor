@@ -21,6 +21,7 @@ type AuthLoginState = {
 
 type SignUpCredentials = {
   username: string;
+  fantasyName?: string;
   email: string;
   password: string;
   cpf?: string;
@@ -103,7 +104,14 @@ const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
 
   // Cadastro
   const signUp = useCallback(
-    async ({username, email, password, cpf, cnpj}: SignUpCredentials) => {
+    async ({
+      username,
+      fantasyName,
+      email,
+      password,
+      cpf,
+      cnpj,
+    }: SignUpCredentials) => {
       if (cpf) {
         const client = {
           username,
@@ -114,9 +122,10 @@ const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
         postSignUpClient(client);
       }
 
-      if (cnpj) {
+      if (cnpj && fantasyName) {
         const clientStore = {
           username,
+          fantasyName,
           email,
           password,
           cnpj,

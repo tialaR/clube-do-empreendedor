@@ -26,6 +26,31 @@ export type AuthState = {
   token: string;
 };
 
+export type UserClient = {
+  id?: number | null | undefined;
+  name?: string | null | undefined;
+  cpf: string | null | undefined;
+  birthDate?: string | null | undefined;
+  address?: string | null | undefined;
+  cep?: string | null | undefined;
+  genre?: 'M' | 'F' | null | undefined;
+  email?: string | null | undefined;
+  telephone?: string | null | undefined;
+  user: number | null | undefined;
+};
+
+export type UserClientResponse = {
+  id: number | null | undefined;
+  nome_completo: string | null | undefined;
+  cpf: string | null | undefined;
+  endereco: string | null | undefined;
+  cep: string | null | undefined;
+  telefone_contato: string | null | undefined;
+  data_nascimento: string | null | undefined;
+  genero: 'M' | 'F' | null | undefined;
+  user: number | null | undefined;
+};
+
 export type UserClientRequest = {
   nome_completo?: string;
   cpf: string;

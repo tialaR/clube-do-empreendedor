@@ -14,7 +14,9 @@ import {
   ScanQrCodeResponse,
   SiginUp,
   SignUpResponse,
+  UserClientResponse,
   UserClientRequest,
+  UserClient,
 } from './types';
 import queryClient from '../query';
 import QueryConstants from '../queryConstants';
@@ -44,12 +46,55 @@ const usePostSignUpClient = () => {
   };
 };
 
+const useGetUser = ({
+  userId,
+}: {
+  userId: number;
+}): {
+  response: UserClient | undefined;
+  isSuccess: boolean;
+  isLoading: boolean;
+  isFetching: boolean;
+  isRefetching: boolean;
+  isError: boolean;
+} => {
+  const query = useQuery([QueryConstants.USER_DETAIL, userId], async () => {
+    if (userId) {
+      const data = await api.get<UserClientResponse>(`clientes/${userId}/`);
+
+      return {
+        id: data?.data?.id,
+        name: data?.data?.nome_completo,
+        cpf: data?.data?.cpf,
+        birthDate: data?.data?.data_nascimento,
+        address: data?.data?.endereco,
+        cep: data?.data?.cep,
+        genre: data?.data?.genero,
+        email: null,
+        telephone: data?.data?.telefone_contato,
+        user: data?.data?.user,
+      };
+    }
+
+    return undefined;
+  });
+
+  return {
+    response: query?.data,
+    isSuccess: query.isSuccess,
+    isLoading: query.isLoading,
+    isFetching: query.isRefetching,
+    isRefetching: query.isRefetching,
+    isError: query.isError,
+  };
+};
+
 const usePatchUser = (): {
   patchUser: ({
     client,
     clientId,
   }: {
-    client: UserClientRequest;
+    client: UserClient;
     clientId: number;
   }) => Promise<void>;
   isLoading: boolean;
@@ -57,35 +102,29 @@ const usePatchUser = (): {
   isSuccess: boolean;
 } => {
   const mutation = useMutation(
-    async ({
-      client,
-      clientId,
-    }: {
-      client: UserClientRequest;
-      clientId: number;
-    }) => {
+    async ({client, clientId}: {client: UserClient; clientId: number}) => {
       let clientAux: UserClientRequest = {
-        cpf: client.cpf,
-        user: client.user,
+        cpf: String(client.cpf),
+        user: Number(client.user),
       };
 
-      if (client?.nome_completo) {
-        clientAux = {...clientAux, nome_completo: client.nome_completo};
+      if (client?.name) {
+        clientAux = {...clientAux, nome_completo: client.name};
       }
-      if (client?.endereco) {
-        clientAux = {...clientAux, endereco: client.endereco};
+      if (client?.address) {
+        clientAux = {...clientAux, endereco: client.address};
       }
       if (client?.cep) {
         clientAux = {...clientAux, cep: client.cep};
       }
-      if (client?.telefone_contato) {
-        clientAux = {...clientAux, telefone_contato: client.telefone_contato};
+      if (client?.telephone) {
+        clientAux = {...clientAux, telefone_contato: client.telephone};
       }
-      if (client?.data_nascimento) {
-        clientAux = {...clientAux, data_nascimento: client.data_nascimento};
+      if (client?.birthDate) {
+        clientAux = {...clientAux, data_nascimento: client.birthDate};
       }
-      if (client?.genero) {
-        clientAux = {...clientAux, genero: client.genero};
+      if (client?.genre) {
+        clientAux = {...clientAux, genero: client.genre};
       }
 
       console.log(JSON.stringify(clientAux));
@@ -102,7 +141,7 @@ const usePatchUser = (): {
     clientId,
     callback,
   }: {
-    client: UserClientRequest;
+    client: UserClient;
     clientId: number;
     callback?: () => void;
   }) {
@@ -371,6 +410,7 @@ const usePostScanQrCode = (): {
 
 const ServiceClient = {
   usePostSignUpClient,
+  useGetUser,
   usePatchUser,
   useGetFeaturedProducts,
   useGetMyDiscounts,

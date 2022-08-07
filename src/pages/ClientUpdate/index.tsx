@@ -136,6 +136,9 @@ const ClientUpdate: React.FC = () => {
   const navigation = useNavigation<any>();
 
   const {userId} = useAuth();
+
+  const {response: user} = ServiceClient.useGetUser({userId: userId});
+
   const {patchUser, isLoading, isError, isSuccess} =
     ServiceClient.usePatchUser();
 
@@ -148,14 +151,14 @@ const ClientUpdate: React.FC = () => {
 
   const [progress, setProgress] = useState(0);
 
-  const [name, setName] = useState('');
-  const [cpf, setCpf] = useState('');
-  const [birthDate, setBirthDate] = useState('');
-  const [address, setAddress] = useState('');
-  const [cep, setCep] = useState('');
-  const [genre, setGenre] = useState('');
-  const [email, setEmail] = useState('');
-  const [telephone, setTelephone] = useState('');
+  const [name, setName] = useState(user?.name ?? '');
+  const [cpf, setCpf] = useState(user?.cpf ?? '');
+  const [birthDate, setBirthDate] = useState(user?.birthDate ?? '');
+  const [address, setAddress] = useState(user?.address ?? '');
+  const [cep, setCep] = useState(user?.cep ?? '');
+  const [genre, setGenre] = useState(user?.genre ?? '');
+  const [email, setEmail] = useState(user?.email ?? '');
+  const [telephone, setTelephone] = useState(user?.telephone ?? '');
 
   const isProgressEnd = useMemo(
     () => progress === FORM_ELEMENTS_SIZE,
@@ -229,13 +232,13 @@ const ClientUpdate: React.FC = () => {
 
   const onSubmit = (data: any) => {
     const clientUpdated = {
-      nome_completo: data?.name,
+      name: data?.name,
       cpf: data?.cpf,
-      endereco: data?.address,
+      address: data?.address,
       cep: data?.cep,
-      telefone_contato: removeMaskToNumbers(data?.telephone),
-      data_nascimento: formatDateToSendToApi(data?.birthDate),
-      genero: data?.genre,
+      telephone: removeMaskToNumbers(data?.telephone),
+      birthDate: formatDateToSendToApi(data?.birthDate),
+      genre: data?.genre,
       user: userId,
     };
 

@@ -46,7 +46,7 @@ export function maskPhone(phone: string) {
     .replace(/(\d{4,5})(\d{4}$)/, '$1-$2');
 }
 
-// 00000-000
+// 00.000-000
 export function maskCEP(cep: string) {
   return cep
     .replace(/\D/g, '')
@@ -54,6 +54,21 @@ export function maskCEP(cep: string) {
       /^([\d]{2})([\d]{3})([\d]{3})|^[\d]{2}.[\d]{3}-[\d]{3}/,
       '$1.$2-$3',
     );
+}
+
+export function removeMaskToNumbers(value: string) {
+  return value?.replace(/[^0-9]+/g, '');
+}
+
+export function formatDateToSendToApi(value: string) {
+  if (value) {
+    const [day, month, year] = value?.split('/');
+    const result = [year, month, day]?.join('-');
+
+    return result;
+  }
+
+  return '';
 }
 
 export function formatCurrencyBRL(value: number | string | null | undefined) {

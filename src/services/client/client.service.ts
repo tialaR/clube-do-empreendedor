@@ -64,7 +64,36 @@ const usePatchUser = (): {
       client: UserClientRequest;
       clientId: number;
     }) => {
-      await api.patch<{message: string}>(`cliente/update/${clientId}`, client);
+      let clientAux: UserClientRequest = {
+        cpf: client.cpf,
+        user: client.user,
+      };
+
+      if (client?.nome_completo) {
+        clientAux = {...clientAux, nome_completo: client.nome_completo};
+      }
+      if (client?.endereco) {
+        clientAux = {...clientAux, endereco: client.endereco};
+      }
+      if (client?.cep) {
+        clientAux = {...clientAux, cep: client.cep};
+      }
+      if (client?.telefone_contato) {
+        clientAux = {...clientAux, telefone_contato: client.telefone_contato};
+      }
+      if (client?.data_nascimento) {
+        clientAux = {...clientAux, data_nascimento: client.data_nascimento};
+      }
+      if (client?.genero) {
+        clientAux = {...clientAux, genero: client.genero};
+      }
+
+      console.log(JSON.stringify(clientAux));
+
+      await api.patch<{message: string}>(
+        `cliente/update/${clientId}`,
+        clientAux,
+      );
     },
   );
 
@@ -173,7 +202,7 @@ const useGetMyDiscounts = (): {
 
 const useGetProductDetail = (): {
   getProductDetail: (productId: number, callback?: () => void) => Promise<void>;
-  response: any | undefined;
+  response: ProductDetail | undefined;
   isSuccess: boolean;
   isLoading: boolean;
   isFetching: boolean;

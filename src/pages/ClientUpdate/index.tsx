@@ -26,6 +26,8 @@ import {
   isValidPhone,
   maskCEP,
   isValidCEP,
+  removeMaskToNumbers,
+  formatDateToSendToApi,
 } from '../../utils/helpers';
 
 import {colors} from '../../styles/colors';
@@ -44,32 +46,91 @@ enum PageTitles {
   birthDate = 'Data de Nascimento',
   address = 'Endereço',
   cep = 'CEP',
-  genre = 'Gênero',
+  genre = 'Gênero (F/M)',
   email = 'E-mail',
   telephone = 'Telefone',
 }
 
 const FORM_ELEMENTS_SIZE = 7;
 
-const validationSchema = yup.object().shape({
-  name: yup.string().min(10, 'Insira um nome válido'),
-  email: yup.string().email('E-mail inválido'),
-  cpf: yup
-    .string()
-    .matches(isValidCPF, 'Formato incorreto')
-    .required('Campo obrigatório'),
-  birthDate: yup.string().matches(isValidDate, 'Formato incorreto'),
-  address: yup.string().min(10, 'Insira um endereço válido'),
-  cep: yup.string().matches(isValidCEP, 'Formato incorreto'),
-  genre: yup
-    .string()
-    .test(
-      'genre',
-      'Formato inválido. Gêneros válidos: F ou M',
-      value => value === 'F' || value === 'M',
-    ),
-  telephone: yup.string().matches(isValidPhone, 'Formato incorreto'),
-});
+const validationSchema = yup.object().shape(
+  {
+    name: yup
+      .string()
+      .nullable()
+      .notRequired()
+      .when('name', {
+        is: (value: string) => value?.length,
+        then: rule => rule.min(4, 'Insira um nome válido'),
+      }),
+    email: yup
+      .string()
+      .nullable()
+      .notRequired()
+      .when('email', {
+        is: (value: string) => value?.length,
+        then: rule => rule.email('E-mail inválido'),
+      }),
+    cpf: yup
+      .string()
+      .required('Campo obrigatório')
+      .matches(isValidCPF, 'Formato incorreto'),
+    birthDate: yup
+      .string()
+      .nullable()
+      .notRequired()
+      .when('birthDate', {
+        is: (value: string) => value?.length,
+        then: rule => rule.matches(isValidDate, 'Formato incorreto'),
+      }),
+    address: yup
+      .string()
+      .nullable()
+      .notRequired()
+      .when('address', {
+        is: (value: string) => value?.length,
+        then: rule => rule.min(8, 'Insira um endereço válido'),
+      }),
+    cep: yup
+      .string()
+      .nullable()
+      .notRequired()
+      .when('cep', {
+        is: (value: string) => value?.length,
+        then: rule => rule.matches(isValidCEP, 'Formato incorreto'),
+      }),
+    genre: yup
+      .string()
+      .nullable()
+      .notRequired()
+      .when('genre', {
+        is: (value: string) => value?.length,
+        then: rule =>
+          rule.test(
+            'genre',
+            'Formato inválido. Gêneros válidos: F ou M',
+            value => value === 'F' || value === 'M',
+          ),
+      }),
+    telephone: yup
+      .string()
+      .nullable()
+      .notRequired()
+      .when('telephone', {
+        is: (value: string) => value?.length,
+        then: rule => rule.matches(isValidPhone, 'Formato incorreto'),
+      }),
+  },
+  [
+    ['name', 'name'],
+    ['email', 'email'],
+    ['birthDate', 'birthDate'],
+    ['address', 'address'],
+    ['cep', 'cep'],
+    ['genre', 'genre'],
+    ['telephone', 'telephone'],
+  ],
+);
 
 const ClientUpdate: React.FC = () => {
   const navigation = useNavigation<any>();
@@ -172,8 +233,8 @@ const ClientUpdate: React.FC = () => {
       cpf: data?.cpf,
       endereco: data?.address,
       cep: data?.cep,
-      telefone_contato: data?.telephone,
-      data_nascimento: data?.birthDate,
+      telefone_contato: removeMaskToNumbers(data?.telephone),
+      data_nascimento: formatDateToSendToApi(data?.birthDate),
       genero: data?.genre,
       user: userId,
     };

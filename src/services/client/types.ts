@@ -34,7 +34,7 @@ export type UserClientRequest = {
   telefone_contato?: string;
   data_nascimento?: string;
   genero?: 'M' | 'F';
-  user?: number;
+  user: number;
 };
 
 export type FeaturedProductResponse = {

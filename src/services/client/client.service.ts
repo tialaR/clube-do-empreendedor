@@ -173,7 +173,7 @@ const useGetMyDiscounts = (): {
 
 const useGetProductDetail = (): {
   getProductDetail: (productId: number, callback?: () => void) => Promise<void>;
-  response: ProductDetail | undefined;
+  response: any | undefined;
   isSuccess: boolean;
   isLoading: boolean;
   isFetching: boolean;
@@ -190,7 +190,17 @@ const useGetProductDetail = (): {
           `produtos/${productId}/`,
         );
 
-        return data;
+        return {
+          id: data?.data?.id,
+          name: data?.data?.nome,
+          img: `${baseURL}/${data?.data?.image}`,
+          price: formatCurrencyBRL(data?.data?.price),
+          promotion: String(data?.data?.cupom),
+          cupom: data?.data?.cupom,
+          store: data?.data?.loja,
+          qrCodeImg: `${baseURL}/${data?.data?.qr_code}`,
+          description: data?.data?.description,
+        };
       }
 
       return undefined;
@@ -222,17 +232,7 @@ const useGetProductDetail = (): {
   }
 
   return {
-    response: {
-      id: query.data?.data?.id,
-      name: query.data?.data?.nome,
-      img: `${baseURL}/${query.data?.data?.image}`,
-      price: formatCurrencyBRL(query.data?.data?.price),
-      promotion: String(query.data?.data?.cupom),
-      cupom: query.data?.data?.cupom,
-      store: query.data?.data?.loja,
-      qrCodeImg: `${baseURL}/${query.data?.data?.qr_code}`,
-      description: query.data?.data?.description,
-    },
+    response: query?.data,
     getProductDetail: simulateAsyncRequest,
     isSuccess: query.isSuccess,
     isLoading: query.isLoading,

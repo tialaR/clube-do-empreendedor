@@ -64,7 +64,6 @@ import {
 } from '../../styles/globalStyles';
 
 import {SvgIcon} from '../SvgIcon';
-import queryClient from '../../services/query';
 
 const renderTitleLoading = () => (
   <>
@@ -135,21 +134,16 @@ export type ClientProductDetailModalHandlersToFather = {
 
 type Props = {
   onClose: () => void;
-  productId: number | undefined;
+  product: any | undefined;
+  isLoading: boolean;
   emphasisProduct?: boolean;
 };
 
 const ClientProductDetailModal: React.ForwardRefRenderFunction<
   ClientProductDetailModalHandlersToFather,
   Props
-> = ({onClose, productId, emphasisProduct}: Props, ref) => {
+> = ({onClose, product, isLoading, emphasisProduct}: Props, ref) => {
   const navigation = useNavigation<any>();
-
-  const {
-    getProductDetail,
-    response: product,
-    isLoading,
-  } = ServiceClient.useGetProductDetail();
 
   const {
     postGuaranteeDiscount,
@@ -166,10 +160,6 @@ const ClientProductDetailModal: React.ForwardRefRenderFunction<
     | PermissionStatus.GRANTED
     | PermissionStatus.DENIED
   >(PermissionStatus.UNDETERMINED);
-
-  useEffect(() => {
-    productId && getProductDetail(productId);
-  }, [productId]);
 
   const openModal = useCallback(() => {
     setIsVisibleModal(true);

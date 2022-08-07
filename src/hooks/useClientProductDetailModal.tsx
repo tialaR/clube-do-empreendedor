@@ -1,9 +1,18 @@
-import React, {ReactNode, useCallback, useRef, useState} from 'react';
+import React, {
+  ReactNode,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import {createContext, useContextSelector} from 'use-context-selector';
+
+import ServiceClient from '../services/client/client.service';
 
 import ClientProductDetailModal, {
   ClientProductDetailModalHandlersToFather,
 } from '../components/ClientProductDetailModal';
+import {Alert} from 'react-native';
 
 type ClientProductDetailContextData = {
   showClientProductDetailModal({
@@ -28,11 +37,41 @@ type ClientProductDetailModalProviderProps = {
 const ClientProductDetailModalProvider: React.FC<
   ClientProductDetailModalProviderProps
 > = ({children}) => {
+  const {
+    getProductDetail,
+    response: product,
+    isLoading,
+    isSuccess,
+    isError,
+  } = ServiceClient.useGetProductDetail();
+
   const productDetailModalRef =
     useRef<ClientProductDetailModalHandlersToFather>(null);
 
-  const [productId, setProductId] = useState<number | undefined>();
   const [isEmphasisProduct, setIsEmphasisProduct] = useState(false);
+
+  useEffect(() => {
+    isError &&
+      Alert.alert(
+        'Ocorreu algum erro ao tentar exibir o detalhe desse produto!',
+        'Tente novamente mais tarde.',
+        [
+          {
+            text: 'Ok',
+            onPress: () => false,
+            style: 'default',
+          },
+        ],
+        {
+          cancelable: true,
+          onDismiss: () => false,
+        },
+      );
+  }, [isError]);
+
+  useEffect(() => {
+    isSuccess && productDetailModalRef.current?.openModal();
+  }, [productDetailModalRef, isSuccess]);
 
   const showClientProductDetailModal = useCallback(
     ({
@@ -42,12 +81,10 @@ const ClientProductDetailModalProvider: React.FC<
       productId: number;
       isEmphasisProduct: boolean;
     }) => {
-      productDetailModalRef.current?.openModal();
-
-      setProductId(productId);
+      getProductDetail(productId);
       setIsEmphasisProduct(isEmphasisProduct);
     },
-    [productDetailModalRef],
+    [],
   );
 
   const closeClientProductDetailModal = useCallback(() => {
@@ -58,15 +95,17 @@ const ClientProductDetailModalProvider: React.FC<
     return (
       <ClientProductDetailModal
         ref={productDetailModalRef}
-        productId={productId}
+        product={product}
+        isLoading={isLoading}
         emphasisProduct={isEmphasisProduct}
         onClose={closeClientProductDetailModal}
       />
     );
   }, [
-    productDetailModalRef,
-    productId,
+    isLoading,
     isEmphasisProduct,
+    productDetailModalRef,
+    product,
     closeClientProductDetailModal,
   ]);
 

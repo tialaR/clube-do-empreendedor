@@ -36,4 +36,6 @@ export const ListLoadingContainer = styled.View`
   justify-content: center;
 
   width: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
 `;

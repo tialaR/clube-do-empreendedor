@@ -1,5 +1,8 @@
-import {useMutation, useQuery} from '@tanstack/react-query';
 import {useState} from 'react';
+import {useMutation, useQuery} from '@tanstack/react-query';
+
+import {baseURL} from '../../utils/constants';
+import {formatCurrencyBRL} from '../../utils/helpers';
 
 import api from '../api';
 import QueryConstants from '../queryConstants';
@@ -7,14 +10,14 @@ import QueryConstants from '../queryConstants';
 import {
   CompanyInformations,
   CompanyInformationsResponse,
-  Product,
   ProductDetail,
   ProductDetailResponse,
-  ProductResponse,
+  RegisteredProductResponse,
   RegisterCupomRequest,
   SiginUp,
   SignUpResponse,
   UserCompanyRequest,
+  RegisteredProduct,
 } from './types';
 
 const usePostSignUpCompany = () => {
@@ -102,34 +105,37 @@ const usePatchCompany = (): {
 };
 
 const useGetRegisteredProducts = (): {
-  response: Product[] | undefined;
+  response: RegisteredProduct[] | undefined;
   isSuccess: boolean;
   isLoading: boolean;
   isFetching: boolean;
   isError: boolean;
 } => {
-  const query = useQuery(['REGISTER-PRODUCTS-LIST'], async () => {
-    const data = await api.get<ProductResponse[]>('produtos/');
+  const query = useQuery([QueryConstants.REGISTER_PRODUCTS_LIST], async () => {
+    const data = await api.get<{data: RegisteredProductResponse[]}>(
+      'produtos/',
+    );
 
     return data;
   });
 
   return {
-    response: query?.data?.data?.map((item: ProductResponse) => {
-      return {
-        id: item.id,
-        name: item.nome,
-        // img: `http://10.0.2.2:8000/${item.image}`,
-        img: '',
-        price: item.price,
-        installment: 'verificar de/para',
-        promotion: `${item.cupom_id}%OFF`,
-        soldBy: `loja ${item.loja_id}`,
-        // qrCodeImg: `http://10.0.2.2:8000/${item.qr_code}`,
-        qrCodeImg: '',
-        isAvailable: item.is_available,
-      };
-    }),
+    response: query?.data?.data?.data?.map(
+      (item: RegisteredProductResponse) => {
+        return {
+          id: item?.id,
+          name: item?.nome,
+          img: `${baseURL}/${item?.image}`,
+          price: formatCurrencyBRL(item?.price),
+          promotion: item?.cupom,
+          store: item?.loja,
+          qrCodeImg: `${baseURL}/${item?.qr_code}`,
+          category: item?.categoria,
+          description: item?.description,
+          isAvailable: item?.is_available,
+        };
+      },
+    ),
     isSuccess: query.isSuccess,
     isLoading: query.isLoading,
     isFetching: query.isFetching,

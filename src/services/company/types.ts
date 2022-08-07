@@ -42,31 +42,30 @@ export type RegisterCupomResponse = {
   loja: number;
 };
 
-export type ProductResponse = {
-  id: number;
-  created: string;
-  modified: string;
-  loja_id: number;
-  categoria_id: number;
-  cupom_id: number;
-  nome: string;
-  image: string;
-  description: string;
-  price: number;
-  qr_code: string;
-  is_available: boolean;
+export type RegisteredProductResponse = {
+  id: number | null | undefined;
+  nome: string | null | undefined;
+  image: string | null | undefined;
+  description: string | null | undefined;
+  price: string | number | null | undefined;
+  qr_code: string | null | undefined;
+  is_available: boolean | null | undefined;
+  loja: string | null | undefined;
+  categoria: string | null | undefined;
+  cupom: string | null | undefined;
 };
 
-export type Product = {
-  id: number;
-  name: string;
-  img: string;
-  price: number;
-  installment: string;
-  promotion: string;
-  soldBy: string;
-  qrCodeImg: string;
-  isAvailable: boolean;
+export type RegisteredProduct = {
+  id: number | null | undefined;
+  name: string | null | undefined;
+  img: string | null | undefined;
+  price: string | null | undefined;
+  promotion: string | null | undefined;
+  store: string | null | undefined;
+  qrCodeImg: string | null | undefined;
+  category: string | null | undefined;
+  description: string | null | undefined;
+  isAvailable: boolean | null | undefined;
 };
 
 export type ProductDetailResponse = {

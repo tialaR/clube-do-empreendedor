@@ -10,7 +10,7 @@ import DividerContainerWithText from '../../components/DividerContainerWithText'
 import {MapModalProvider} from '../../hooks/useMapModal';
 
 import ServiceCompany from '../../services/company/company.service';
-import {Product} from '../../services/company/types';
+import {RegisteredProduct} from '../../services/company/types';
 
 import {SpacingX, SpacingY} from '../../styles/globalStyles';
 import {
@@ -114,18 +114,17 @@ const CompanyDashboard: React.FC = () => {
         </SectionTitleContainer>
         <ProducstList<React.ElementType>
           data={registeredProductsList}
-          keyExtractor={(product: Product) => product.id}
+          keyExtractor={(product: RegisteredProduct) => product?.id}
           horizontal
           showsHorizontalScrollIndicator={false}
-          renderItem={({item: product}: {item: Product}) => (
+          renderItem={({item: product}: {item: RegisteredProduct}) => (
             <ProductCard
               loading={isLoading}
               name={product?.name}
               img={product?.img}
               price={product?.price}
               promotion={product?.promotion}
-              soldBy={product?.soldBy}
-              installment={product?.installment}
+              store={product?.store}
               onPress={() =>
                 navigation.navigate('CompanyEditProductDetail', {
                   productId: product?.id,

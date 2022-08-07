@@ -4,7 +4,7 @@ import {FlatList} from 'react-native';
 import {colors} from '../../styles/colors';
 import {fonts} from '../../styles/fonts';
 
-import {Product} from './index';
+import {RegisteredProduct} from '../../services/company/types';
 
 export const Container = styled.ScrollView`
   background-color: ${colors.gray50};
@@ -12,7 +12,7 @@ export const Container = styled.ScrollView`
 `;
 
 export const ProducstList = styled(
-  FlatList as new () => FlatList<Product>,
+  FlatList as new () => FlatList<RegisteredProduct>,
 ).attrs({
   contentContainerStyle: {
     paddingRight: 32,

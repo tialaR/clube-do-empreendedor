@@ -16,6 +16,8 @@ import {
   SignUpResponse,
   UserClientRequest,
 } from './types';
+import queryClient from '../query';
+import QueryConstants from '../queryConstants';
 
 const usePostSignUpClient = () => {
   const [data, setData] = useState<SignUpResponse | undefined>(undefined);
@@ -95,9 +97,10 @@ const useGetFeaturedProducts = (): {
   isSuccess: boolean;
   isLoading: boolean;
   isFetching: boolean;
+  isRefetching: boolean;
   isError: boolean;
 } => {
-  const query = useQuery(['FEATURED-PRODUCTS-LIST'], async () => {
+  const query = useQuery([QueryConstants.FEATURED_PRODUCTS_LIST], async () => {
     const data = await api.get<{data: FeaturedProductResponse[]}>('produtos/');
 
     return data;
@@ -111,7 +114,7 @@ const useGetFeaturedProducts = (): {
         img: `${baseURL}/${item?.image}`,
         price: formatCurrencyBRL(item?.price),
         promotion: item?.cupom,
-        soldBy: item?.loja,
+        store: item?.loja,
         qrCodeImg: `${baseURL}/${item?.qr_code}`,
         category: item?.categoria,
         description: item?.description,
@@ -121,18 +124,20 @@ const useGetFeaturedProducts = (): {
     isSuccess: query.isSuccess,
     isLoading: query.isLoading,
     isFetching: query.isFetching,
+    isRefetching: query.isRefetching,
     isError: query.isError,
   };
 };
 
 const useGetMyDiscounts = (): {
-  response: MyDiscountProduct[] | undefined;
+  response: MyDiscountProduct[] | undefined | null;
   isSuccess: boolean;
   isLoading: boolean;
   isFetching: boolean;
+  isRefetching: boolean;
   isError: boolean;
 } => {
-  const query = useQuery(['GET-MY-DISCOUNTS-LIST'], async () => {
+  const query = useQuery([QueryConstants.MY_DISCOUNTS_LIST], async () => {
     const data = await api.get<{data: MyDiscountProductResponse[]}>(
       'produto-cupom-cliente/',
     );
@@ -149,7 +154,7 @@ const useGetMyDiscounts = (): {
           img: `${baseURL}/${item?.image}`,
           price: formatCurrencyBRL(item?.price),
           promotion: item?.desconto,
-          soldBy: item?.loja,
+          store: item?.loja,
           qrCodeImg: `${baseURL}/${item?.qr_code}`,
           category: item?.categoria,
           expiratedCupomCliente: item?.expirated_cupom_cliente,
@@ -161,6 +166,7 @@ const useGetMyDiscounts = (): {
     isSuccess: query.isSuccess,
     isLoading: query.isLoading,
     isFetching: query.isFetching,
+    isRefetching: query.isRefetching,
     isError: query.isError,
   };
 };
@@ -177,7 +183,7 @@ const useGetProductDetail = (): {
   const [productId, setProductId] = useState<number | undefined>(undefined);
 
   const query = useQuery(
-    ['PRODUCT-DETAIL', productId],
+    [QueryConstants.PRODUCT_DETAIL, productId],
     async () => {
       if (productId) {
         const data = await api.get<ProductDetailResponse>(
@@ -216,18 +222,15 @@ const useGetProductDetail = (): {
   }
 
   return {
-    // response: query.data?.data?.data,
     response: {
       id: query.data?.data?.id,
       name: query.data?.data?.nome,
-      // img: query.data?.data?.image,
-      img: '',
-      price: `R$ ${query.data?.data?.price}`,
-      installment: 'campo indefinido',
+      img: `${baseURL}/${query.data?.data?.image}`,
+      price: formatCurrencyBRL(query.data?.data?.price),
       promotion: String(query.data?.data?.cupom),
-      cupomId: query.data?.data?.cupom,
-      soldBy: String(query.data?.data?.loja),
-      qrCodeImg: '',
+      cupom: query.data?.data?.cupom,
+      store: query.data?.data?.loja,
+      qrCodeImg: `${baseURL}/${query.data?.data?.qr_code}`,
       description: query.data?.data?.description,
     },
     getProductDetail: simulateAsyncRequest,
@@ -242,34 +245,42 @@ const useGetProductDetail = (): {
 const usePostGuaranteeDiscount = (): {
   postGuaranteeDiscount: ({
     productId,
-    cupomId,
+    cupom,
+    callback,
   }: {
     productId: number;
-    cupomId: number;
+    cupom: number | string;
+    callback?: () => void;
   }) => Promise<void>;
   isLoading: boolean;
   isError: boolean;
   isSuccess: boolean;
 } => {
   const mutation = useMutation(
-    async ({productId, cupomId}: {productId: number; cupomId: number}) => {
+    async ({productId, cupom}: {productId: number; cupom: number | string}) => {
       await api.post('produto-cupom-cliente/', {
         produto: productId,
-        cupom: cupomId,
+        cupom: cupom,
       });
+    },
+    {
+      onSettled: () => {
+        queryClient.refetchQueries([QueryConstants.MY_DISCOUNTS_LIST]);
+        queryClient.refetchQueries([QueryConstants.FEATURED_PRODUCTS_LIST]);
+      },
     },
   );
 
   async function postGuaranteeDiscount({
     productId,
-    cupomId,
+    cupom,
     callback,
   }: {
     productId: number;
-    cupomId: number;
+    cupom: number | string;
     callback?: () => void;
   }) {
-    await mutation.mutateAsync({productId, cupomId}).then(() => {
+    await mutation.mutateAsync({productId, cupom}).then(() => {
       if (callback) {
         callback();
       }

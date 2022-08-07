@@ -56,7 +56,7 @@ export function maskCEP(cep: string) {
     );
 }
 
-export function formatCurrencyBRL(value: number | string | null) {
+export function formatCurrencyBRL(value: number | string | null | undefined) {
   if (value) {
     const formatedValue = String(value)?.replace('.', ',');
 

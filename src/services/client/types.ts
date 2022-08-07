@@ -38,87 +38,87 @@ export type UserClientRequest = {
 };
 
 export type FeaturedProductResponse = {
-  id: number;
-  nome: string;
-  image: string;
-  description: string;
-  price: string;
-  qr_code: string;
-  is_available: boolean;
-  loja: string;
-  categoria: string;
-  cupom: string;
+  id: number | null | undefined;
+  nome: string | null | undefined;
+  image: string | null | undefined;
+  description: string | null | undefined;
+  price: string | null | undefined;
+  qr_code: string | null | undefined;
+  is_available: boolean | null | undefined;
+  loja: string | null | undefined;
+  categoria: string | null | undefined;
+  cupom: string | null | undefined;
 };
 
 export type FeaturedProduct = {
-  id: number;
-  name: string;
-  img: string;
-  price: string;
-  promotion: string;
-  soldBy: string;
-  qrCodeImg: string;
-  category: string;
-  description: string;
-  isAvailable: boolean;
+  id: number | null | undefined;
+  name: string | null | undefined;
+  img: string | null | undefined;
+  price: string | null | undefined;
+  promotion: string | null | undefined;
+  store: string | null | undefined;
+  qrCodeImg: string | null | undefined;
+  category: string | null | undefined;
+  description: string | null | undefined;
+  isAvailable: boolean | null | undefined;
 };
 
 export type MyDiscountProductResponse = {
-  id: number | null;
-  expirated_cupom_cliente: string | null;
-  comprado: boolean | null;
-  produto: string | null;
-  cliente: string | null;
-  cpf: string | null;
-  telefone_contato: string | null;
-  endereco: string | null;
-  email: string | null;
-  loja: string | null;
-  categoria: string | null;
-  desconto: string | null;
-  price: number | string | null;
-  image: string | null;
-  qr_code: string | null;
-  cupom_valid: boolean | null;
+  id: number | null | undefined;
+  expirated_cupom_cliente: string | null | undefined;
+  comprado: boolean | null | undefined;
+  produto: string | null | undefined;
+  cliente: string | null | undefined;
+  cpf: string | null | undefined;
+  telefone_contato: string | null | undefined;
+  endereco: string | null | undefined;
+  email: string | null | undefined;
+  loja: string | null | undefined;
+  categoria: string | null | undefined;
+  desconto: string | null | undefined;
+  price: number | string | null | undefined;
+  image: string | null | undefined;
+  qr_code: string | null | undefined;
+  cupom_valid: boolean | null | undefined;
 };
 
 export type MyDiscountProduct = {
-  id: number | null;
-  name: string | null;
-  img: string | null;
-  price: string | null;
-  promotion: string | null;
-  soldBy: string | null;
-  qrCodeImg: string | null;
-  category: string | null;
-  expiratedCupomCliente: string | null;
-  isBought: boolean | null;
-  isCupomValid: boolean | null;
+  id: number | null | undefined;
+  name: string | null | undefined;
+  img: string | null | undefined;
+  price: string | null | undefined;
+  promotion: string | null | undefined;
+  store: string | null | undefined;
+  qrCodeImg: string | null | undefined;
+  category: string | null | undefined;
+  expiratedCupomCliente: string | null | undefined;
+  isBought: boolean | null | undefined;
+  isCupomValid: boolean | null | undefined;
 };
 
 export type ProductDetailResponse = {
-  id: number;
-  loja: number;
-  categoria: number;
-  nome: string;
-  image: string;
-  description: string;
-  price: string;
-  cupom: number;
-  is_available: boolean;
+  id: number | null | undefined;
+  nome: string | null | undefined;
+  image: string | null | undefined;
+  description: string | null | undefined;
+  price: string | number | null | undefined;
+  qr_code: string | null | undefined;
+  is_available: boolean | null | undefined;
+  loja: string | null | undefined;
+  categoria: string | null | undefined;
+  cupom: string | null | undefined;
 };
 
 export type ProductDetail = {
-  id: number | undefined;
-  name: string | undefined;
-  img: string | undefined;
-  price: string | undefined;
-  installment: string | undefined;
-  promotion: string | undefined;
-  cupomId: number | undefined;
-  soldBy: string | undefined;
-  qrCodeImg: string | undefined;
-  description: string | undefined;
+  id: number | null | undefined;
+  name: string | null | undefined;
+  img: string | null | undefined;
+  price: string | null | undefined;
+  promotion: string | null | undefined;
+  store: string | null | undefined;
+  cupom: string | null | undefined;
+  qrCodeImg: string | null | undefined;
+  description: string | null | undefined;
 };
 
 export type ScanQrCodeResponse = {

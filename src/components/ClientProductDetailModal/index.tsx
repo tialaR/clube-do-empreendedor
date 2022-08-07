@@ -30,7 +30,6 @@ import {
   Image,
   DescriptionContainer,
   Price,
-  Installment,
   PromotionContainer,
   PromotionText,
   SoldBy,
@@ -65,6 +64,7 @@ import {
 } from '../../styles/globalStyles';
 
 import {SvgIcon} from '../SvgIcon';
+import queryClient from '../../services/query';
 
 const renderTitleLoading = () => (
   <>
@@ -211,14 +211,14 @@ const ClientProductDetailModal: React.ForwardRefRenderFunction<
       );
   }, [isGuaranteeDiscountError]);
 
-  const handleGuarantedProduct = () => {
-    if (product?.id && product?.cupomId) {
+  const handleGuarantedProduct = useCallback(() => {
+    if (product?.id && product?.cupom) {
       postGuaranteeDiscount({
         productId: product?.id,
-        cupomId: product?.cupomId,
+        cupom: product?.cupom,
       });
     }
-  };
+  }, [product?.id, product?.cupom]);
 
   useEffect(() => {
     if (hasCameraPermission === PermissionStatus.DENIED) {
@@ -233,7 +233,7 @@ const ClientProductDetailModal: React.ForwardRefRenderFunction<
       onClose();
       navigation.navigate('QRCodeScanner', {
         productId: product?.id,
-        cupomId: product?.cupomId,
+        cupomId: product?.cupom,
       });
     }
   }, [hasCameraPermission, navigation, onClose]);
@@ -286,12 +286,11 @@ const ClientProductDetailModal: React.ForwardRefRenderFunction<
         {!isLoading ? (
           <>
             <Price>{product?.price}</Price>
-            <Installment>{product?.installment}</Installment>
             <PromotionContainer>
-              <PromotionText>{product?.promotion}</PromotionText>
+              <PromotionText>{product?.promotion}%OFF</PromotionText>
             </PromotionContainer>
             <SoldBy>
-              Vendido por <SoldBy colorful>{product?.soldBy}</SoldBy>
+              Vendido por <SoldBy colorful>{product?.store}</SoldBy>
             </SoldBy>
           </>
         ) : (
@@ -299,13 +298,7 @@ const ClientProductDetailModal: React.ForwardRefRenderFunction<
         )}
       </DescriptionContainer>
     ),
-    [
-      isLoading,
-      product?.price,
-      product?.installment,
-      product?.promotion,
-      product?.soldBy,
-    ],
+    [isLoading, product?.price, product?.promotion, product?.store],
   );
 
   const renderFeatures = useCallback(

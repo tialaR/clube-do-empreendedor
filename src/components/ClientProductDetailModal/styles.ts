@@ -109,15 +109,6 @@ export const Price = styled.Text`
   color: ${colors.black};
 `;
 
-export const Installment = styled.Text`
-  font-size: ${fonts.sizes.small}px;
-  font-family: ${fonts.families.latoBold};
-
-  color: ${colors.black};
-
-  margin-top: 10px;
-`;
-
 export const PromotionContainer = styled.View`
   background: ${colors.indigoA200};
   border-radius: 50px;

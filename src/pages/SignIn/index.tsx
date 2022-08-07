@@ -113,8 +113,9 @@ const SignIn: React.FC<SiginProps> = ({route}) => {
     signIn({
       username: data?.username,
       password: data?.password,
+    }).then(() => {
+      resetInputs();
     });
-    resetInputs();
   };
 
   return (

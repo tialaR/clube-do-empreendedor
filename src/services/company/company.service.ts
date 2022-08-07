@@ -148,7 +148,6 @@ const useGetRegisteredProductDetail = ({
 }: {
   productId: number;
 }): {
-  responseAux: any;
   response: ProductDetail | undefined;
   isSuccess: boolean;
   isLoading: boolean;
@@ -157,7 +156,7 @@ const useGetRegisteredProductDetail = ({
   isError: boolean;
 } => {
   const query = useQuery(
-    ['REGISTERED-PRODUCT-DETAIL', productId],
+    [QueryConstants.REGISTERED_PRODUCT_DETAIL, productId],
     async () => {
       if (productId) {
         const data = await api.get<ProductDetailResponse>(
@@ -166,7 +165,17 @@ const useGetRegisteredProductDetail = ({
 
         console.log(JSON.stringify(data.data));
 
-        return data;
+        return {
+          id: data?.data?.id,
+          name: data?.data?.nome,
+          img: `${baseURL}/${data?.data?.image}`,
+          price: formatCurrencyBRL(data?.data?.price),
+          promotion: String(data?.data?.cupom),
+          cupom: data?.data?.cupom,
+          store: data?.data?.loja,
+          qrCodeImg: `${baseURL}/${data?.data?.qr_code}`,
+          description: data?.data?.description,
+        };
       }
 
       return undefined;
@@ -179,20 +188,7 @@ const useGetRegisteredProductDetail = ({
   );
 
   return {
-    responseAux: query.data?.data,
-    response: {
-      id: query.data?.data?.id,
-      name: query.data?.data?.nome,
-      // img: query.data?.data?.image,
-      img: '',
-      price: `R$ ${query.data?.data?.price}`,
-      installment: 'campo indefinido',
-      promotion: String(query.data?.data?.cupom),
-      cupomId: query.data?.data?.cupom,
-      soldBy: String(query.data?.data?.loja),
-      qrCodeImg: '',
-      description: query.data?.data?.description,
-    },
+    response: query?.data,
     isSuccess: query.isSuccess,
     isLoading: query.isLoading,
     isFetching: query.isRefetching,

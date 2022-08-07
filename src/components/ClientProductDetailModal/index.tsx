@@ -277,7 +277,7 @@ const ClientProductDetailModal: React.ForwardRefRenderFunction<
           <>
             <Price>{product?.price}</Price>
             <PromotionContainer>
-              <PromotionText>{product?.promotion}%OFF</PromotionText>
+              <PromotionText>{product?.promotion}% OFF</PromotionText>
             </PromotionContainer>
             <SoldBy>
               Vendido por <SoldBy colorful>{product?.store}</SoldBy>

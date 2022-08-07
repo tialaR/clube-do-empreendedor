@@ -43,13 +43,13 @@ export const Name = styled.Text`
 export const Image = styled.Image.attrs(() => ({
   resizeMode: 'contain',
 }))`
-  width: 160px;
-  height: 160px;
+  width: 180px;
+  height: 180px;
 `;
 
 export const ImageNotFound = styled.View`
-  width: 160px;
-  height: 160px;
+  width: 180px;
+  height: 180px;
 
   align-items: center;
   justify-content: center;
@@ -71,15 +71,6 @@ export const Price = styled.Text`
   font-family: ${fonts.families.latoBold};
 
   color: ${colors.black};
-`;
-
-export const Installment = styled.Text`
-  font-size: ${fonts.sizes.small}px;
-  font-family: ${fonts.families.latoBold};
-
-  color: ${colors.black};
-
-  margin-top: 10px;
 `;
 
 export const PromotionContainer = styled.View`
@@ -146,15 +137,15 @@ export const QRCodeTitle = styled.Text`
 export const QRCodeImage = styled.Image`
   margin-top: 14px;
 
-  width: 80px;
-  height: 80px;
+  width: 90px;
+  height: 90px;
 `;
 
 export const QRCodeImageNotFound = styled.View`
   margin-top: 14px;
 
-  width: 80px;
-  height: 80px;
+  width: 90px;
+  height: 90px;
 
   background-color: ${colors.gray100};
 

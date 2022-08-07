@@ -38,7 +38,7 @@ const CompanyEditProductDetail: React.FC<Props> = ({route}) => {
   return (
     <Container>
       <HeaderContainer>
-        <View style={{marginLeft: 20, paddingBottom: 30}}>
+        <View style={{marginLeft: 20}}>
           <IconButton
             name="back"
             color={colors.white}
@@ -54,7 +54,7 @@ const CompanyEditProductDetail: React.FC<Props> = ({route}) => {
           <CompanyProductDetail
             product={product}
             isLoading={isLoading}
-            error={isError}
+            isError={isError}
           />
         )}
       </BodyContainer>

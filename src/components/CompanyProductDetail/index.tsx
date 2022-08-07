@@ -18,7 +18,6 @@ import {
   Image,
   DescriptionContainer,
   Price,
-  Installment,
   PromotionContainer,
   PromotionText,
   SoldBy,
@@ -128,13 +127,12 @@ const CompanyProductDetail: React.FC<Props> = ({
             ) : (
               <>
                 <Price>{product?.price}</Price>
-                <Installment>{product?.installment}</Installment>
                 <PromotionContainer>
-                  <PromotionText>{product?.promotion}</PromotionText>
+                  <PromotionText>{product?.promotion}% OFF</PromotionText>
                 </PromotionContainer>
                 <SoldBy>
                   {'Vendido por\n'}
-                  <SoldBy>{product?.soldBy}</SoldBy>
+                  <SoldBy>{product?.store}</SoldBy>
                 </SoldBy>
               </>
             )}

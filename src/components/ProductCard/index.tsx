@@ -98,7 +98,7 @@ const ProductCard: React.FC<Props> = ({
               </NameContainer>
               <Price>{price}</Price>
               <PromotionContainer>
-                <PromotionText>{promotion}%OFF</PromotionText>
+                <PromotionText>{promotion}% OFF</PromotionText>
               </PromotionContainer>
               <SoldBy>Vendido por {store}</SoldBy>
             </>

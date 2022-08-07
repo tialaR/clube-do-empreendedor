@@ -69,28 +69,28 @@ export type RegisteredProduct = {
 };
 
 export type ProductDetailResponse = {
-  id: number;
-  loja: number;
-  categoria: number;
-  nome: string;
-  image: string;
-  description: string;
-  price: string;
-  cupom: number;
-  is_available: boolean;
+  id: number | null | undefined;
+  nome: string | null | undefined;
+  image: string | null | undefined;
+  description: string | null | undefined;
+  price: string | number | null | undefined;
+  qr_code: string | null | undefined;
+  is_available: boolean | null | undefined;
+  loja: string | null | undefined;
+  categoria: string | null | undefined;
+  cupom: string | null | undefined;
 };
 
 export type ProductDetail = {
-  id: number | undefined;
-  name: string | undefined;
-  img: string | undefined;
-  price: string | undefined;
-  installment: string | undefined;
-  promotion: string | undefined;
-  cupomId: number | undefined;
-  soldBy: string | undefined;
-  qrCodeImg: string | undefined;
-  description: string | undefined;
+  id: number | null | undefined;
+  name: string | null | undefined;
+  img: string | null | undefined;
+  price: string | null | undefined;
+  promotion: string | null | undefined;
+  store: string | null | undefined;
+  cupom: string | null | undefined;
+  qrCodeImg: string | null | undefined;
+  description: string | null | undefined;
 };
 
 export type CompanyInformationsResponse = {

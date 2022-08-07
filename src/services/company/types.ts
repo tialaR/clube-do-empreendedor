@@ -92,3 +92,21 @@ export type ProductDetail = {
   qrCodeImg: string | undefined;
   description: string | undefined;
 };
+
+export type CompanyInformationsResponse = {
+  latitude: number;
+  longitude: number;
+  loja: string;
+  facebook: string | null;
+  instagram: string | null;
+  whatsapp: string | null;
+};
+
+export type CompanyInformations = {
+  latitude: number;
+  longitude: number;
+  store: string;
+  facebook: string | null;
+  instagram: string | null;
+  whatsapp: string | null;
+};

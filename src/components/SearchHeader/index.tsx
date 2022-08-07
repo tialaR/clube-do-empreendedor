@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useMapModal} from '../../hooks/useMapModal';
 import {SpacingY} from '../../styles/globalStyles';
 
@@ -8,15 +8,13 @@ import SearchBar from '../SearchBar';
 import {Container, SearchBarContainer} from './styles';
 
 type Props = {
-  onSearchPress?: () => void;
   placeholder: string;
 };
 
-const SearchHeader: React.FC<Props> = ({
-  onSearchPress = () => false,
-  placeholder,
-}) => {
-  const {showMapModal} = useMapModal();
+const SearchHeader: React.FC<Props> = ({placeholder}) => {
+  const [searchedCompanyText, setSearchedCompanyText] = useState('');
+
+  const {showMapModal, isMapModalLoading} = useMapModal();
 
   return (
     <Container>
@@ -24,7 +22,13 @@ const SearchHeader: React.FC<Props> = ({
 
       <SpacingY tiny />
       <SearchBarContainer>
-        <SearchBar placeholder={placeholder} onPress={showMapModal} />
+        <SearchBar
+          value={searchedCompanyText}
+          onChangeText={setSearchedCompanyText}
+          placeholder={placeholder}
+          isSearchLoading={isMapModalLoading}
+          onPress={() => showMapModal(searchedCompanyText)}
+        />
       </SearchBarContainer>
     </Container>
   );

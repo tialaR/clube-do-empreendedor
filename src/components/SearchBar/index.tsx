@@ -4,13 +4,21 @@ import {TextInputProps} from 'react-native';
 import {SvgIcon} from '../SvgIcon';
 
 import {colors} from '../../styles/colors';
-import {Container, TextInputContainer, TextInput, IconButton} from './styles';
+import {
+  Container,
+  TextInputContainer,
+  TextInput,
+  IconButton,
+  LoadingContainer,
+} from './styles';
+import {LoadingWhite} from '../../styles/globalStyles';
 
 interface Props extends TextInputProps {
-  onPress: () => void;
+  onPress: (searchedText: string) => void;
+  isSearchLoading: boolean;
 }
 
-const SearchBar: React.FC<Props> = ({onPress, ...rest}) => {
+const SearchBar: React.FC<Props> = ({onPress, isSearchLoading, ...rest}) => {
   return (
     <Container>
       <TextInputContainer>
@@ -20,9 +28,15 @@ const SearchBar: React.FC<Props> = ({onPress, ...rest}) => {
           placeholderTextColor={colors.white}
         />
       </TextInputContainer>
-      <IconButton onPress={onPress}>
-        <SvgIcon name="search" width={24} height={24} color={colors.white} />
-      </IconButton>
+      {isSearchLoading ? (
+        <LoadingContainer>
+          <LoadingWhite />
+        </LoadingContainer>
+      ) : (
+        <IconButton onPress={onPress}>
+          <SvgIcon name="search" width={24} height={24} color={colors.white} />
+        </IconButton>
+      )}
     </Container>
   );
 };

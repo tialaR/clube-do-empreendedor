@@ -48,3 +48,18 @@ export const IconButton = styled.TouchableOpacity`
   height: 100%;
   width: 20%;
 `;
+
+export const LoadingContainer = styled.TouchableOpacity`
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+
+  justify-content: center;
+  align-items: flex-end;
+
+  padding-right: 16px;
+
+  height: 100%;
+  width: 20%;
+`;

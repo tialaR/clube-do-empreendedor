@@ -2,8 +2,11 @@ import {useMutation, useQuery} from '@tanstack/react-query';
 import {useState} from 'react';
 
 import api from '../api';
+import QueryConstants from '../queryConstants';
 
 import {
+  CompanyInformations,
+  CompanyInformationsResponse,
   Product,
   ProductDetail,
   ProductDetailResponse,
@@ -219,12 +222,87 @@ const usePostCupom = (): {
   };
 };
 
+const useGetCompanyLocation = (): {
+  getCompanyLocation: (
+    companyFantasyName: string,
+    callback?: () => void,
+  ) => Promise<void>;
+  response: CompanyInformations | undefined;
+  isSuccess: boolean;
+  isFetching: boolean;
+  isError: boolean;
+} => {
+  const [companyFantasyName, setCompanyFantasyName] = useState<
+    string | undefined
+  >(undefined);
+
+  const query = useQuery(
+    [QueryConstants.COMPANY_LOCATION, companyFantasyName],
+    async () => {
+      if (companyFantasyName) {
+        const data = await api.get<CompanyInformationsResponse>(
+          'search/loja-endereco',
+          {
+            params: {
+              nome_fantasia: companyFantasyName,
+            },
+          },
+        );
+
+        return {
+          latitude: data?.data?.latitude,
+          longitude: data?.data?.longitude,
+          store: data?.data?.loja,
+          facebook: data?.data?.facebook,
+          instagram: data?.data?.instagram,
+          whatsapp: data?.data?.whatsapp,
+        };
+      }
+
+      return undefined;
+    },
+    {
+      refetchOnWindowFocus: false,
+      enabled: !!companyFantasyName,
+      retry: false,
+    },
+  );
+
+  async function simulateAsyncRequest(
+    companyFantasyName: string,
+    callback?: () => void,
+  ): Promise<void> {
+    return new Promise(resolve => {
+      if (companyFantasyName) {
+        resolve(setCompanyFantasyName(companyFantasyName));
+      }
+    })
+      .then(() => {
+        query.refetch().then(() => {
+          callback && callback();
+        });
+      })
+      .finally(() => {
+        query.remove();
+      });
+  }
+
+  return {
+    response: query?.data,
+    getCompanyLocation: simulateAsyncRequest,
+    isSuccess: query.isSuccess,
+    isFetching: query.isFetching,
+    isError: query.isError,
+  };
+};
+
 const ServiceCompany = {
   usePostSignUpCompany,
   usePatchCompany,
   useGetRegisteredProducts,
   useGetRegisteredProductDetail,
   usePostCupom,
+  useGetCompanyLocation,
 };
 
 export default ServiceCompany;

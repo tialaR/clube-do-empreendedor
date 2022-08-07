@@ -105,10 +105,7 @@ const CompanyDashboard: React.FC = () => {
   return (
     <Container>
       <MapModalProvider>
-        <SearchHeader
-          placeholder="Encontre Produtos"
-          onSearchPress={() => false}
-        />
+        <SearchHeader placeholder="Encontre Produtos" />
       </MapModalProvider>
 
       <SectionListContainer>

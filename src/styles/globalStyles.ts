@@ -113,7 +113,12 @@ export const TextsSkeletonLoading = styled(LinearGradient).attrs({
   border-radius: 5px;
 `;
 
-export const Loading = styled.ActivityIndicator.attrs({
+export const LoadingPrimary = styled.ActivityIndicator.attrs({
   size: 'small',
   color: colors.indigoA200,
+})``;
+
+export const LoadingWhite = styled.ActivityIndicator.attrs({
+  size: 'small',
+  color: colors.white,
 })``;

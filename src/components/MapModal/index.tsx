@@ -13,6 +13,8 @@ import IconButton from '../IconButton';
 import RoundIconButton from '../RoundIconButton';
 import PinMarker from './PinMarker';
 
+import {CompanyInformations} from '../../services/company/types';
+
 import {openFacebook, openInstagram, openWhatsapp} from '../../utils/deepLinks';
 
 import {
@@ -31,6 +33,7 @@ export type MapModalHandlersToFather = {
 };
 
 type Props = {
+  companyInformations: CompanyInformations;
   onClose: () => void;
 };
 
@@ -45,77 +48,43 @@ type PinProps = {
   };
 };
 
-const markersMock: PinProps[] = [
-  {
-    id: '1',
-    name: 'Engage eletro',
-    description:
-      'Av. Luís Viana Filho, 8544 Paralela, Salvador - BA, 41730-101',
-    openingHours: 'Segunda a Sábado das 8h às 22h',
-    coords: {
-      latitude: -12.9528,
-      longitude: -38.378,
-    },
-  },
-  {
-    id: '2',
-    name: 'Engage eletro',
-    description:
-      'Av. Luís Viana Filho, 8544 Paralela, Salvador - BA, 41730-101',
-    openingHours: 'Segunda a Sábado das 8h às 22h',
-    coords: {
-      latitude: -12.9511,
-      longitude: -38.3821,
-    },
-  },
-  {
-    id: '3',
-    name: 'Engage eletro',
-    description:
-      'Av. Luís Viana Filho, 8544 Paralela, Salvador - BA, 41730-101',
-    openingHours: 'Segunda a Sábado das 8h às 22h',
-    coords: {
-      latitude: -12.95,
-      longitude: -38.3752,
-    },
-  },
-  {
-    id: '4',
-    name: 'Engage eletro',
-    description:
-      'Av. Luís Viana Filho, 8544 Paralela, Salvador - BA, 41730-101',
-    openingHours: 'Segunda a Sábado das 8h às 22h',
-    coords: {
-      latitude: -12.9491,
-      longitude: -38.3771,
-    },
-  },
-];
+type Region = {
+  latitude: number;
+  longitude: number;
+  latitudeDelta: number;
+  longitudeDelta: number;
+};
 
 const MapModal: React.ForwardRefRenderFunction<
   MapModalHandlersToFather,
   Props
-> = ({onClose}: Props, ref) => {
+> = ({onClose, companyInformations}: Props, ref) => {
   const [isVisibleModal, setIsVisibleModal] = useState(false);
-  /* Hook que será utilizado para atualizar a localização da empresa/produto
-  buscada na search bar */
-  const [region, setRegion] = useState<any>(undefined);
-  const [markers] = useState<PinProps[]>(markersMock); //Lista de marcadores no mapa (virá do back)
 
-  /* Hook que será utilizado para carregar a localização da empresa/produto
-  buscada na search bar */
+  const [region, setRegion] = useState<Region | undefined>(undefined);
+  const [marker] = useState<PinProps>({
+    id: companyInformations?.store,
+    name: companyInformations?.store,
+    coords: {
+      latitude: companyInformations?.latitude,
+      longitude: companyInformations?.longitude,
+    },
+    description: 'Descrição ???',
+    openingHours: 'Horário de funcionamento ???',
+  });
+
   useEffect(() => {
     findCompany();
   }, []);
 
-  const findCompany = () => {
+  const findCompany = useCallback(() => {
     setRegion({
-      latitude: -12.9528,
-      longitude: -38.3787,
+      latitude: companyInformations?.latitude,
+      longitude: companyInformations?.longitude,
       latitudeDelta: 0.0922,
       longitudeDelta: 0.0421,
     });
-  };
+  }, [companyInformations]);
 
   const openModal = useCallback(() => {
     setIsVisibleModal(true);
@@ -153,21 +122,19 @@ const MapModal: React.ForwardRefRenderFunction<
 
           <MapView
             provider={PROVIDER_GOOGLE}
-            onMapReady={() => false} // Ação realizada assim que o mapa é carregado (Nesse caso a ação deve ser localizar a empresa ou produto inserido na search bar)
+            onMapReady={() => false}
             style={{flex: 1}}
             region={region}
             zoomEnabled
             minZoomLevel={17}>
-            {markers?.map((marker: PinProps) => (
-              <PinMarker
-                key={marker?.id}
-                id={marker?.id}
-                name={marker?.name}
-                coords={marker?.coords}
-                description={marker?.description}
-                openingHours={marker?.openingHours}
-              />
-            ))}
+            <PinMarker
+              key={marker?.id}
+              id={marker?.id}
+              name={marker?.name}
+              coords={marker?.coords}
+              description={marker?.description}
+              openingHours={marker?.openingHours}
+            />
           </MapView>
 
           <FooterButtonsContainer>

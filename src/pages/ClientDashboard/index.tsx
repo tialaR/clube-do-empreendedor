@@ -11,7 +11,7 @@ import {MapModalProvider} from '../../hooks/useMapModal';
 import ServiceClient from '../../services/client/client.service';
 import {MyDiscountProduct, FeaturedProduct} from '../../services/client/types';
 
-import {Loading, SpacingX} from '../../styles/globalStyles';
+import {LoadingPrimary, SpacingX} from '../../styles/globalStyles';
 import {
   Container,
   MyDiscountsProducstList,
@@ -67,17 +67,14 @@ const ClientDashboard: React.FC = () => {
 
   const renderLoading = () => (
     <ListLoadingContainer>
-      <Loading />
+      <LoadingPrimary />
     </ListLoadingContainer>
   );
 
   return (
     <Container>
       <MapModalProvider>
-        <SearchHeader
-          placeholder="Encontre empresas ou produtos"
-          onSearchPress={() => false}
-        />
+        <SearchHeader placeholder="Encontre empresas ou produtos" />
       </MapModalProvider>
 
       <SectionListContainer>

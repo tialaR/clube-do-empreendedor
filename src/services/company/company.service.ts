@@ -18,6 +18,8 @@ import {
   SignUpResponse,
   UserCompanyRequest,
   RegisteredProduct,
+  DiscountClient,
+  DiscountClientResponse,
 } from './types';
 
 const usePostSignUpCompany = () => {
@@ -234,6 +236,50 @@ const usePostCupom = (): {
   };
 };
 
+const useGetDiscountClients = (): {
+  response: DiscountClient[] | undefined;
+  isSuccess: boolean;
+  isLoading: boolean;
+  isFetching: boolean;
+  isRefetching: boolean;
+  isError: boolean;
+} => {
+  const query = useQuery([QueryConstants.DISCOUNT_CLIENTS_LIST], async () => {
+    const data = await api.get<{data: DiscountClientResponse[]}>(
+      'produto-cupom-cliente/',
+      {
+        headers: {
+          Authorization: 'Token ea36c39c23c3a08c51143f111f4a749a33cf2113',
+        },
+      },
+    );
+
+    return data;
+  });
+
+  return {
+    response: query?.data?.data?.data?.map((item: DiscountClientResponse) => {
+      return {
+        id: item?.id,
+        name: item?.cliente,
+        product: item?.produto,
+        bought: item?.comprado,
+        address: item?.endereco,
+        cpf: item?.cpf,
+        email: item?.email,
+        expiratedCupomCliente: item?.expirated_cupom_cliente,
+        telephone: item?.telefone_contato,
+        isCupomValid: item?.cupom_valid,
+      };
+    }),
+    isSuccess: query.isSuccess,
+    isLoading: query.isLoading,
+    isFetching: query.isFetching,
+    isRefetching: query.isRefetching,
+    isError: query.isError,
+  };
+};
+
 const useGetCompanyLocation = (): {
   getCompanyLocation: (
     companyFantasyName: string,
@@ -314,6 +360,7 @@ const ServiceCompany = {
   useGetRegisteredProducts,
   useGetRegisteredProductDetail,
   usePostCupom,
+  useGetDiscountClients,
   useGetCompanyLocation,
 };
 

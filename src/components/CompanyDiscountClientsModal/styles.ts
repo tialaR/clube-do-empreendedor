@@ -1,5 +1,7 @@
-import styled from 'styled-components/native';
+import styled, {css} from 'styled-components/native';
 import {Dimensions, FlatList} from 'react-native';
+
+import {DiscountClient} from '../../services/company/types';
 
 import {colors} from '../../styles/colors';
 import {fonts} from '../../styles/fonts';
@@ -25,6 +27,14 @@ export const Container = styled.View`
 
   align-items: center;
   justify-content: center;
+`;
+
+export const DiscountClientsTitleContainer = styled.View`
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+
+  padding-right: 16px;
 `;
 
 export const ProductContainer = styled.View`
@@ -64,7 +74,7 @@ export const DiscountClientsListTitle = styled.Text`
 `;
 
 export const DiscountClientsList = styled(
-  FlatList as new () => FlatList<any>,
+  FlatList as new () => FlatList<DiscountClient>,
 ).attrs({
   contentContainerStyle: {
     paddingTop: 40,
@@ -83,7 +93,6 @@ export const ClientItemButton = styled.TouchableOpacity.attrs(() => ({
 
 export const ClientItemNameContainer = styled.View`
   flex-shrink: 1;
-  flex-direction: row;
 `;
 
 export const ClientItemName = styled.Text`
@@ -99,11 +108,31 @@ export const SeeMoreInformationsContainer = styled.View`
   padding-left: 24px;
 `;
 
-export const SeeMoreInformations = styled.Text`
+type SeeMoreInformationsProps = {
+  disabled?: boolean;
+};
+export const SeeMoreInformations = styled.Text<SeeMoreInformationsProps>`
   font-size: ${fonts.sizes.xSmall}px;
   font-family: ${fonts.families.latoRegular};
 
   text-decoration: underline;
+
+  color: ${colors.indigoA200};
+
+  ${props =>
+    props.disabled &&
+    css`
+      opacity: 0.5;
+    `};
+`;
+
+export const CupomSituation = styled.Text`
+  flex-shrink: 1;
+
+  margin-top: 4px;
+
+  font-size: ${fonts.sizes.regular}px;
+  font-family: ${fonts.families.latoRegular};
 
   color: ${colors.indigoA200};
 `;

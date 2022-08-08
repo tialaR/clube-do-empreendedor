@@ -110,3 +110,29 @@ export type CompanyInformations = {
   instagram: string | null;
   whatsapp: string | null;
 };
+
+export type DiscountClientResponse = {
+  id: number | null | undefined;
+  cliente: string | null | undefined;
+  produto: string | null | undefined;
+  comprado: boolean | null | undefined;
+  cpf: string | null | undefined;
+  email: string | null | undefined;
+  endereco: string | null | undefined;
+  telefone_contato: string | null | undefined;
+  expirated_cupom_cliente: string | null | undefined;
+  cupom_valid: boolean | null | undefined;
+};
+
+export type DiscountClient = {
+  id: number | null | undefined;
+  name: string | null | undefined;
+  product: string | null | undefined;
+  bought: boolean | null | undefined;
+  cpf: string | null | undefined;
+  email: string | null | undefined;
+  address: string | null | undefined;
+  telephone: string | null | undefined;
+  expiratedCupomCliente: string | null | undefined;
+  isCupomValid: boolean | null | undefined;
+};

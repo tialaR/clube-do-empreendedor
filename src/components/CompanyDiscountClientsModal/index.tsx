@@ -10,8 +10,14 @@ import {Modal, View} from 'react-native';
 import IconButton from '../IconButton';
 import ClientItem from './ClientItem';
 
+import {DiscountClient} from '../../services/company/types';
+
 import {colors} from '../../styles/colors';
-import {SpacingY, TextsSkeletonLoading} from '../../styles/globalStyles';
+import {
+  LoadingPrimary,
+  SpacingY,
+  TextsSkeletonLoading,
+} from '../../styles/globalStyles';
 import {
   Overlay,
   Container,
@@ -24,6 +30,7 @@ import {
   Title,
   Description,
   DiscountClientsListTitle,
+  DiscountClientsTitleContainer,
 } from './styles';
 
 const listLoadingNumbersAux = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -49,27 +56,19 @@ export type DiscountClientsModalHandlersToFather = {
 
 type Props = {
   onClose: () => void;
-  discountClients: any;
-};
-
-type Client = {
-  id: string;
-  name: string;
-  product: string;
-  telephone: string;
-  email: string;
-  address: string;
+  discountClients: DiscountClient[];
+  isLoading?: boolean;
 };
 
 const CompanyDiscountClientsModal: React.ForwardRefRenderFunction<
   DiscountClientsModalHandlersToFather,
   Props
-> = ({onClose, discountClients}: Props, ref) => {
+> = ({onClose, discountClients, isLoading = false}: Props, ref) => {
   const [isVisibleModal, setIsVisibleModal] = useState(false);
   const [showClientMoreInformation, setShowClientMoreInformation] =
     useState(false);
   const [currentClientSelected, setCurrentClientSelected] = useState<
-    Client | undefined
+    DiscountClient | undefined
   >();
 
   const openModal = useCallback(() => {
@@ -87,7 +86,7 @@ const CompanyDiscountClientsModal: React.ForwardRefRenderFunction<
     };
   });
 
-  const handleSelectClient = (client: Client) => {
+  const handleSelectClient = (client: DiscountClient) => {
     setShowClientMoreInformation(true);
 
     setCurrentClientSelected(client);
@@ -124,16 +123,22 @@ const CompanyDiscountClientsModal: React.ForwardRefRenderFunction<
               <>
                 {discountClients ? (
                   <>
-                    <DiscountClientsListTitle>
-                      CLIENTES COM DESCONTO
-                    </DiscountClientsListTitle>
+                    <DiscountClientsTitleContainer>
+                      <DiscountClientsListTitle>
+                        CLIENTES COM DESCONTO
+                      </DiscountClientsListTitle>
+                      {isLoading && <LoadingPrimary />}
+                    </DiscountClientsTitleContainer>
+
                     <DiscountClientsList<React.ElementType>
                       data={discountClients}
                       showsVerticalScrollIndicator={false}
-                      keyExtractor={(client: Client) => client.id}
-                      renderItem={({item}: {item: Client}) => (
+                      keyExtractor={(client: DiscountClient) => client?.id}
+                      renderItem={({item}: {item: DiscountClient}) => (
                         <ClientItem
-                          name={item.name}
+                          name={item?.name}
+                          isCupomValid={Boolean(item?.isCupomValid)}
+                          isCupomBought={Boolean(item?.bought)}
                           onPress={() => handleSelectClient(item)}
                         />
                       )}

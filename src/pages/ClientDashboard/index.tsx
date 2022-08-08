@@ -11,14 +11,13 @@ import {MapModalProvider} from '../../hooks/useMapModal';
 import ServiceClient from '../../services/client/client.service';
 import {MyDiscountProduct, FeaturedProduct} from '../../services/client/types';
 
-import {LoadingPrimary, SpacingX} from '../../styles/globalStyles';
+import {SpacingX} from '../../styles/globalStyles';
 import {
   Container,
   MyDiscountsProducstList,
   FeaturedProducstList,
   SectionListContainer,
   SectionTitleContainer,
-  ListLoadingContainer,
 } from './styles';
 
 const ClientDashboard: React.FC = () => {
@@ -29,12 +28,14 @@ const ClientDashboard: React.FC = () => {
     isLoading: isMyDiscountsLoading,
     isFetching: isMyDiscountsFetching,
     isRefetching: isMyDiscountsRefetching,
+    // isError: isMyDiscountsError
   } = ServiceClient.useGetMyDiscounts();
   const {
     response: featuredProductsList,
     isLoading: isFeaturedproductsLosding,
     isFetching: isFeaturedproductsFetching,
     isRefetching: isFeaturedproductsRefetching,
+    // isError: isFeaturedproductsError,
   } = ServiceClient.useGetFeaturedProducts();
 
   const isMyDiscountsGeneralLoading = useMemo(
@@ -65,12 +66,6 @@ const ClientDashboard: React.FC = () => {
     [featuredProductsList, isFeaturedproductsGeneralLoading],
   );
 
-  const renderLoading = () => (
-    <ListLoadingContainer>
-      <LoadingPrimary />
-    </ListLoadingContainer>
-  );
-
   return (
     <Container>
       <MapModalProvider>
@@ -79,68 +74,66 @@ const ClientDashboard: React.FC = () => {
 
       <SectionListContainer>
         <SectionTitleContainer>
-          <SectionTitle>Meus Descontos</SectionTitle>
+          <SectionTitle isLoading={isMyDiscountsGeneralLoading}>
+            Meus Descontos
+          </SectionTitle>
         </SectionTitleContainer>
-        {isMyDiscountsGeneralLoading ? (
-          <>{renderLoading()}</>
-        ) : (
-          <MyDiscountsProducstList<React.ElementType>
-            data={filteredMyDiscountsList}
-            keyExtractor={(product: MyDiscountProduct) => product?.id}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            renderItem={({item: product}: {item: MyDiscountProduct}) => (
-              <ProductCard
-                loading={isMyDiscountsLoading}
-                name={product?.name}
-                img={product?.img}
-                price={product?.price}
-                promotion={product?.promotion}
-                store={product?.store}
-                onPress={() =>
-                  showClientProductDetailModal({productId: Number(product?.id)})
-                }
-              />
-            )}
-            ItemSeparatorComponent={() => <SpacingX medium />}
-          />
-        )}
+
+        <MyDiscountsProducstList<React.ElementType>
+          data={filteredMyDiscountsList}
+          keyExtractor={(product: MyDiscountProduct) => product?.id}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          renderItem={({item: product}: {item: MyDiscountProduct}) => (
+            <ProductCard
+              loading={isMyDiscountsLoading}
+              name={product?.name}
+              img={product?.img}
+              price={product?.price}
+              promotion={product?.promotion}
+              store={product?.store}
+              onPress={() =>
+                showClientProductDetailModal({productId: Number(product?.id)})
+              }
+            />
+          )}
+          ItemSeparatorComponent={() => <SpacingX medium />}
+        />
       </SectionListContainer>
 
       <DividerContainerWithText text="Anúncio" />
 
       <SectionListContainer>
         <SectionTitleContainer>
-          <SectionTitle>Produtos em Destaque</SectionTitle>
+          <SectionTitle isLoading={isFeaturedproductsGeneralLoading}>
+            Produtos em Destaque
+          </SectionTitle>
         </SectionTitleContainer>
-        {isFeaturedproductsGeneralLoading ? (
-          <>{renderLoading()}</>
-        ) : (
-          <FeaturedProducstList<React.ElementType>
-            data={filteredFeaturedProductsList}
-            keyExtractor={(product: FeaturedProduct) => product?.id}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            renderItem={({item: product}: {item: FeaturedProduct}) => (
-              <ProductCard
-                emphasis
-                loading={isFeaturedproductsLosding}
-                name={product?.name}
-                img={product?.img}
-                price={product?.price}
-                promotion={product?.promotion}
-                store={product?.store}
-                onPress={() =>
-                  showClientProductDetailModal({
-                    productId: Number(product?.id),
-                    isEmphasisProduct: true,
-                  })
-                }
-              />
-            )}
-            ItemSeparatorComponent={() => <SpacingX medium />}
-          />
-        )}
+
+        <FeaturedProducstList<React.ElementType>
+          data={filteredFeaturedProductsList}
+          keyExtractor={(product: FeaturedProduct) => product?.id}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          renderItem={({item: product}: {item: FeaturedProduct}) => (
+            <ProductCard
+              emphasis
+              loading={isFeaturedproductsLosding}
+              name={product?.name}
+              img={product?.img}
+              price={product?.price}
+              promotion={product?.promotion}
+              store={product?.store}
+              onPress={() =>
+                showClientProductDetailModal({
+                  productId: Number(product?.id),
+                  isEmphasisProduct: true,
+                })
+              }
+            />
+          )}
+          ItemSeparatorComponent={() => <SpacingX medium />}
+        />
       </SectionListContainer>
     </Container>
   );

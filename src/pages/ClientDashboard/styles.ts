@@ -29,13 +29,3 @@ export const SectionTitleContainer = styled.View`
 
   padding: 16px 0;
 `;
-
-export const ListLoadingContainer = styled.View`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 100%;
-  margin-top: 20px;
-  margin-bottom: 20px;
-`;

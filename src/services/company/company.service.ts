@@ -109,6 +109,7 @@ const useGetRegisteredProducts = (): {
   isSuccess: boolean;
   isLoading: boolean;
   isFetching: boolean;
+  isRefetching: boolean;
   isError: boolean;
 } => {
   const query = useQuery([QueryConstants.REGISTER_PRODUCTS_LIST], async () => {
@@ -139,6 +140,7 @@ const useGetRegisteredProducts = (): {
     isSuccess: query.isSuccess,
     isLoading: query.isLoading,
     isFetching: query.isFetching,
+    isRefetching: query.isRefetching,
     isError: query.isError,
   };
 };

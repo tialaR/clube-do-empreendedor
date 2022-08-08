@@ -95,12 +95,26 @@ const CompanyDashboard: React.FC = () => {
   const navigation = useNavigation<any>();
 
   const {
-    response: registeredProductsList,
-    isLoading,
-    // isError,
+    response: registeredProducts,
+    isLoading: isRegisteredProductsLoading,
+    isFetching: isRegisteredProductsFetching,
+    isRefetching: isRegisteredProductsRefetching,
+    // isError: isRegisteredProductsError,
   } = ServiceCompany.useGetRegisteredProducts();
 
   const {showDiscountClientModal} = useCompanyDiscountClientsModal();
+
+  const isRegisteredProductsGeneralLoading = useMemo(
+    () =>
+      isRegisteredProductsLoading ||
+      isRegisteredProductsFetching ||
+      isRegisteredProductsRefetching,
+    [
+      isRegisteredProductsLoading,
+      isRegisteredProductsFetching,
+      isRegisteredProductsRefetching,
+    ],
+  );
 
   return (
     <Container>
@@ -110,16 +124,18 @@ const CompanyDashboard: React.FC = () => {
 
       <SectionListContainer>
         <SectionTitleContainer>
-          <SectionTitle>Produtos Cadastrados</SectionTitle>
+          <SectionTitle isLoading={isRegisteredProductsGeneralLoading}>
+            Produtos Cadastrados
+          </SectionTitle>
         </SectionTitleContainer>
         <ProducstList<React.ElementType>
-          data={registeredProductsList}
+          data={registeredProducts}
           keyExtractor={(product: RegisteredProduct) => product?.id}
           horizontal
           showsHorizontalScrollIndicator={false}
           renderItem={({item: product}: {item: RegisteredProduct}) => (
             <ProductCard
-              loading={isLoading}
+              loading={isRegisteredProductsLoading}
               name={product?.name}
               img={product?.img}
               price={product?.price}

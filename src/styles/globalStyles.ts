@@ -122,3 +122,13 @@ export const LoadingWhite = styled.ActivityIndicator.attrs({
   size: 'small',
   color: colors.white,
 })``;
+
+export const ListLoadingContainer = styled.View`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+`;

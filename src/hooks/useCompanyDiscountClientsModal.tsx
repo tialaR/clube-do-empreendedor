@@ -1,9 +1,9 @@
-import React, {ReactNode, useCallback, useMemo, useRef} from 'react';
+import React, {ReactNode, useCallback, useRef} from 'react';
 import {createContext, useContextSelector} from 'use-context-selector';
+
 import DiscountClientsModal, {
   DiscountClientsModalHandlersToFather,
 } from '../components/CompanyDiscountClientsModal';
-import ServiceCompany from '../services/company/company.service';
 
 type DiscountClientsModalContextData = {
   showDiscountClientModal(): void;
@@ -25,18 +25,6 @@ const CompanyDiscountClientsModalProvider: React.FC<
   const discountClientsModalRef =
     useRef<DiscountClientsModalHandlersToFather>(null);
 
-  const {
-    response: discountClients,
-    isLoading,
-    isFetching,
-    isRefetching,
-  } = ServiceCompany.useGetDiscountClients();
-
-  const generalLoading = useMemo(
-    () => isLoading || isFetching || isRefetching,
-    [isLoading, isFetching, isRefetching],
-  );
-
   const showDiscountClientModal = useCallback(() => {
     discountClientsModalRef.current?.openModal();
   }, [discountClientsModalRef]);
@@ -45,24 +33,6 @@ const CompanyDiscountClientsModalProvider: React.FC<
     discountClientsModalRef.current?.closeModal();
   }, [discountClientsModalRef]);
 
-  const renderDiscountClientModal = useCallback(() => {
-    if (discountClients) {
-      return (
-        <DiscountClientsModal
-          ref={discountClientsModalRef}
-          isLoading={generalLoading}
-          discountClients={discountClients}
-          onClose={closeDiscountClientModal}
-        />
-      );
-    }
-  }, [
-    discountClients,
-    discountClientsModalRef,
-    generalLoading,
-    closeDiscountClientModal,
-  ]);
-
   return (
     <DiscountClientsModalContext.Provider
       value={{
@@ -70,7 +40,10 @@ const CompanyDiscountClientsModalProvider: React.FC<
         closeDiscountClientModal,
       }}>
       {children}
-      {renderDiscountClientModal()}
+      <DiscountClientsModal
+        ref={discountClientsModalRef}
+        onClose={closeDiscountClientModal}
+      />
     </DiscountClientsModalContext.Provider>
   );
 };

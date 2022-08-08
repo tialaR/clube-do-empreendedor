@@ -247,11 +247,6 @@ const useGetDiscountClients = (): {
   const query = useQuery([QueryConstants.DISCOUNT_CLIENTS_LIST], async () => {
     const data = await api.get<{data: DiscountClientResponse[]}>(
       'produto-cupom-cliente/',
-      {
-        headers: {
-          Authorization: 'Token ea36c39c23c3a08c51143f111f4a749a33cf2113',
-        },
-      },
     );
 
     return data;
@@ -277,6 +272,62 @@ const useGetDiscountClients = (): {
     isFetching: query.isFetching,
     isRefetching: query.isRefetching,
     isError: query.isError,
+  };
+};
+
+const usePatchDiscountClientConfirmBuy = (): {
+  patchDiscountClientConfirmBuy: ({
+    discountClientId,
+    isBought,
+    callback,
+  }: {
+    discountClientId: number;
+    isBought: boolean;
+    callback?: () => void;
+  }) => Promise<void>;
+  isLoading: boolean;
+  isError: boolean;
+  isSuccess: boolean;
+} => {
+  const mutation = useMutation(
+    async ({
+      discountClientId,
+      isBought,
+    }: {
+      discountClientId: number;
+      isBought: boolean;
+    }) => {
+      await api.patch<DiscountClientResponse>(
+        `produto-cupom-cliente/${discountClientId}/`,
+        {
+          id: discountClientId,
+          comprado: isBought,
+        },
+      );
+    },
+  );
+
+  async function patchDiscountClientConfirmBuy({
+    discountClientId,
+    isBought,
+    callback,
+  }: {
+    discountClientId: number;
+    isBought: boolean;
+    callback?: () => void;
+  }) {
+    await mutation.mutateAsync({discountClientId, isBought}).then(() => {
+      if (callback) {
+        callback();
+      }
+    });
+  }
+
+  return {
+    patchDiscountClientConfirmBuy,
+    isLoading: mutation.isLoading,
+    isError: mutation.isError,
+    isSuccess: mutation.isSuccess,
   };
 };
 
@@ -361,6 +412,7 @@ const ServiceCompany = {
   useGetRegisteredProductDetail,
   usePostCupom,
   useGetDiscountClients,
+  usePatchDiscountClientConfirmBuy,
   useGetCompanyLocation,
 };
 

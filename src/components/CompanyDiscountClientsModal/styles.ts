@@ -31,10 +31,8 @@ export const Container = styled.View`
 
 export const DiscountClientsTitleContainer = styled.View`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   flex-direction: row;
-
-  padding-right: 16px;
 `;
 
 export const ProductContainer = styled.View`
@@ -69,6 +67,7 @@ export const DiscountClientsListTitle = styled.Text`
   font-family: ${fonts.families.latoBlack};
 
   padding-bottom: 30px;
+  padding-right: 8px;
 
   color: ${colors.indigoA200};
 `;

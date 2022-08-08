@@ -132,3 +132,10 @@ export const ListLoadingContainer = styled.View`
   margin-top: 20px;
   margin-bottom: 20px;
 `;
+
+export const ErrorMessage = styled.Text`
+  font-size: ${fonts.sizes.small}px;
+  font-family: ${fonts.families.latoRegular};
+
+  color: ${colors.red};
+`;

@@ -77,6 +77,16 @@ export type RegisterCupomResponse = {
   loja: number;
 };
 
+export type RegisterProductRequest = {
+  nome: string | null | undefined;
+  description: string | null | undefined;
+  price: string | number | null | undefined;
+  categoria: string | null | undefined;
+  cupom: string | null | undefined;
+  image: string | null | undefined;
+  loja: string | null | undefined;
+};
+
 export type RegisteredProductResponse = {
   id: number | null | undefined;
   nome: string | null | undefined;

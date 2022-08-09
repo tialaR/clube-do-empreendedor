@@ -22,6 +22,7 @@ import {
   DiscountClientResponse,
   UserCompanyResponse,
   UserCompany,
+  RegisterProductRequest,
 } from './types';
 
 const usePostSignUpCompany = () => {
@@ -292,6 +293,53 @@ const useGetRegisteredProductDetail = ({
   };
 };
 
+const usePostProduct = (): {
+  postProduct: ({
+    product,
+    callback,
+  }: {
+    product: RegisterProductRequest;
+    callback?: () => void;
+  }) => Promise<void>;
+  isLoading: boolean;
+  isError: boolean;
+  isSuccess: boolean;
+} => {
+  const mutation = useMutation(async (product: RegisterProductRequest) => {
+    const formData = new FormData();
+    formData.append('file', product);
+
+    const config = {
+      headers: {
+        'content-type': 'multipart/form-data',
+      },
+    };
+
+    await api.post('produtos/', formData, config);
+  });
+
+  async function postProduct({
+    product,
+    callback,
+  }: {
+    product: RegisterProductRequest;
+    callback?: () => void;
+  }) {
+    await mutation.mutateAsync(product).then(() => {
+      if (callback) {
+        callback();
+      }
+    });
+  }
+
+  return {
+    postProduct,
+    isLoading: mutation.isLoading,
+    isError: mutation.isError,
+    isSuccess: mutation.isSuccess,
+  };
+};
+
 const usePostCupom = (): {
   postCupom: ({discount, storeId}: RegisterCupomRequest) => Promise<void>;
   isLoading: boolean;
@@ -502,6 +550,7 @@ const ServiceCompany = {
   usePatchCompany,
   useGetRegisteredProducts,
   useGetRegisteredProductDetail,
+  usePostProduct,
   usePostCupom,
   useGetDiscountClients,
   usePatchDiscountClientConfirmBuy,

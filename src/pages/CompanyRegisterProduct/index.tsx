@@ -8,6 +8,7 @@ import * as yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {Controller, useForm} from 'react-hook-form';
 import {
+  Alert,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -37,6 +38,7 @@ import {
   ProductPhotoImage,
   ErrorMessage,
 } from './styles';
+import RadioButton from '../../components/RadioButton';
 
 export type Product = {
   id: string;
@@ -54,7 +56,10 @@ enum PageTitles {
   productPhotos = 'Fotos do Produto',
   productDescription = 'Descrição do Produto',
   discount = 'Desconto',
-  productValue = 'Valor À vista e Valor Parcelado',
+  price = 'Preço',
+  availability = 'Disponibilidade',
+  store = 'Loja',
+  category = 'Categoria',
   productRegister = 'Produto Cadastrado!',
 }
 
@@ -63,12 +68,14 @@ type Code = {
   value: string | undefined;
 };
 
-const FORM_ELEMENTS_SIZE = 4;
+const FORM_ELEMENTS_SIZE = 7;
 
 const validationSchema = yup.object().shape({
   productName: yup.string().required('Campo obrigatório'),
-  productDescription: yup.string().required('Campo obrigatório'),
-  productValue: yup.string().required('Campo obrigatório'),
+  productDescription: yup.string(),
+  price: yup.string().required('Campo obrigatório'),
+  store: yup.string().required('Campo obrigatório'),
+  category: yup.string().required('Campo obrigatório'),
 });
 
 const productPhotosValidationSchema = yup
@@ -129,11 +136,14 @@ const CompanyRegisterProduct: React.FC = () => {
   const [productName, setProductName] = useState('');
   const [photos, setPhotos] = useState<Photo[]>([] as Photo[]);
   const [productDescription, setProductDescription] = useState('');
+  const [price, setPrice] = useState('');
+  const [availability, setAvailability] = useState(false);
+  const [store, setStore] = useState('');
+  const [category, setCategory] = useState('');
   const [selectedDiscountCode, setSelectedDiscountCode] = useState<Code>({
     label: 'Selecione um códido',
     value: undefined,
   });
-  const [productValue, setProductValue] = useState('');
 
   const [productResgistered, setProductResgistered] = useState<
     Product | undefined
@@ -247,6 +257,14 @@ const CompanyRegisterProduct: React.FC = () => {
     );
   };
 
+  const handleAvailability = (value: string) => {
+    if (value === 'Disponível') {
+      setAvailability(true);
+    } else {
+      setAvailability(false);
+    }
+  };
+
   if (isProductRegistered) {
     return (
       <Container>
@@ -336,8 +354,8 @@ const CompanyRegisterProduct: React.FC = () => {
                           setProductName(e);
                           onChange(e);
                         }}
-                        error={errors.productName}
-                        errorText={errors.productName?.message}
+                        error={!!errors.productName}
+                        errorText={String(errors.productName?.message)}
                       />
                     )}
                   />
@@ -475,51 +493,112 @@ const CompanyRegisterProduct: React.FC = () => {
                           setProductDescription(e);
                           onChange(e);
                         }}
-                        error={errors.productDescription}
-                        errorText={errors.productDescription?.message}
+                        error={!!errors.productDescription}
+                        errorText={String(errors.productDescription?.message)}
                       />
                     )}
                   />
                 )}
 
                 {progress === 3 && (
-                  <>
-                    <Title withPadding>{PageTitles.discount}</Title>
-                    <SpacingY medium />
-                    <ExpandableListPanel
-                      title={selectedDiscountCode?.label}
-                      list={discountCodes}
-                      onItemSelect={setSelectedDiscountCode}
-                      error={true}
-                      errorText={discountCodeError}
-                    />
-                  </>
-                )}
-
-                {progress === 4 && (
                   <Controller
-                    name="productValue"
-                    defaultValue={productValue}
+                    name="price"
+                    defaultValue={price}
                     control={control}
                     rules={{
                       required: true,
                     }}
                     render={({field: {onChange, onBlur}}) => (
                       <InputLine
-                        title={PageTitles.productValue}
-                        value={productValue}
+                        title={PageTitles.price}
+                        value={price}
                         maxLength={200}
                         onBlur={onBlur}
                         onChangeText={e => {
-                          setProductValue(e);
+                          setPrice(e);
                           onChange(e);
                         }}
-                        error={errors.productValue}
-                        errorText={errors.productValue?.message}
+                        error={!!errors.price}
+                        errorText={String(errors.price?.message)}
                       />
                     )}
                   />
                 )}
+
+                {progress === 4 && (
+                  <>
+                    <Title withPadding>{PageTitles.availability}</Title>
+                    <SpacingY medium />
+                    <RadioButton
+                      data={[{value: 'Disponível'}, {value: 'Indisponível'}]}
+                      onSelect={(value: string) => handleAvailability(value)}
+                    />
+                  </>
+                )}
+
+                {progress === 5 && (
+                  <Controller
+                    name="category"
+                    defaultValue={category}
+                    control={control}
+                    rules={{
+                      required: true,
+                    }}
+                    render={({field: {onChange, onBlur}}) => (
+                      <InputLine
+                        title={PageTitles.category}
+                        value={category}
+                        maxLength={200}
+                        onBlur={onBlur}
+                        onChangeText={e => {
+                          setCategory(e);
+                          onChange(e);
+                        }}
+                        error={!!errors.category}
+                        errorText={String(errors.category?.message)}
+                      />
+                    )}
+                  />
+                )}
+
+                {progress === 6 && (
+                  <Controller
+                    name="store"
+                    defaultValue={store}
+                    control={control}
+                    rules={{
+                      required: true,
+                    }}
+                    render={({field: {onChange, onBlur}}) => (
+                      <InputLine
+                        title={PageTitles.store}
+                        value={store}
+                        maxLength={200}
+                        onBlur={onBlur}
+                        onChangeText={e => {
+                          setStore(e);
+                          onChange(e);
+                        }}
+                        error={!!errors.store}
+                        errorText={String(errors.store?.message)}
+                      />
+                    )}
+                  />
+                )}
+              </>
+            )}
+
+            {progress === 7 && (
+              <>
+                <Title withPadding>{PageTitles.discount}</Title>
+                <SpacingY medium />
+                <ExpandableListPanel
+                  title={selectedDiscountCode?.label}
+                  list={discountCodes}
+                  onItemSelect={setSelectedDiscountCode}
+                  error={true}
+                  errorText={discountCodeError}
+                />
               </>
             )}
           </BodyContainer>

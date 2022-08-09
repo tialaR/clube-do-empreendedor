@@ -23,6 +23,11 @@ import CompanyProductDetail from '../../components/CompanyProductDetail';
 import ExpandableListPanel from '../../components/ExpandableListPanel';
 import ProgressBar from '../../components/ProgressBar';
 import {SvgIcon} from '../../components/SvgIcon';
+import RadioButton from '../../components/RadioButton';
+
+import ServiceCompany from '../../services/company/company.service';
+
+import {formatCurrencyBRL} from '../../utils/helpers';
 
 import {colors} from '../../styles/colors';
 import {SpacingX, SpacingY} from '../../styles/globalStyles';
@@ -38,18 +43,7 @@ import {
   ProductPhotoImage,
   ErrorMessage,
 } from './styles';
-import RadioButton from '../../components/RadioButton';
-
-export type Product = {
-  id: string;
-  name: string;
-  img: string;
-  price: string;
-  installment: string;
-  promotion: string;
-  soldBy: string;
-  qrCodeImg: string;
-};
+import {RegisteredProduct} from '../../services/company/types';
 
 enum PageTitles {
   productName = 'Nome do Produto',
@@ -113,22 +107,27 @@ const CompanyRegisterProduct: React.FC = () => {
     reset: resetInputs,
   } = useForm({resolver: yupResolver(validationSchema)});
 
+  const {
+    postProduct,
+    isLoading: isLoadingPostProduct,
+    response: productRegistered,
+  } = ServiceCompany.usePostProduct();
+
   const discountCodes = [
-    {label: 'CÓDIGO 01', value: 'CÓDIGO 01'},
-    {label: 'CÓDIGO 02', value: 'CÓDIGO 02'},
-    {label: 'CÓDIGO 03', value: 'CÓDIGO 03'},
-    {label: 'CÓDIGO 04', value: 'CÓDIGO 04'},
-    {label: 'CÓDIGO 05', value: 'CÓDIGO 05'},
-    {label: 'CÓDIGO 06', value: 'CÓDIGO 06'},
-    {label: 'CÓDIGO 07', value: 'CÓDIGO 07'},
-    {label: 'CÓDIGO 08', value: 'CÓDIGO 08'},
-    {label: 'CÓDIGO 09', value: 'CÓDIGO 09'},
-    {label: 'CÓDIGO 10', value: 'CÓDIGO 10'},
-    {label: 'CÓDIGO 11', value: 'CÓDIGO 10'},
-    {label: 'CÓDIGO 12', value: 'CÓDIGO 10'},
-    {label: 'CÓDIGO 13', value: 'CÓDIGO 10'},
-    {label: 'CÓDIGO 14', value: 'CÓDIGO 10'},
-    {label: 'CÓDIGO 15', value: 'CÓDIGO 10'},
+    {label: 'CÓDIGO 01', value: '01'},
+    {label: 'CÓDIGO 02', value: '02'},
+    {label: 'CÓDIGO 03', value: '03'},
+    {label: 'CÓDIGO 04', value: '04'},
+    {label: 'CÓDIGO 05', value: '05'},
+    {label: 'CÓDIGO 06', value: '06'},
+    {label: 'CÓDIGO 07', value: '07'},
+    {label: 'CÓDIGO 08', value: '08'},
+    {label: 'CÓDIGO 09', value: '09'},
+    {label: 'CÓDIGO 10', value: '10'},
+    {label: 'CÓDIGO 11', value: '10'},
+    {label: 'CÓDIGO 12', value: '10'},
+    {label: 'CÓDIGO 13', value: '10'},
+    {label: 'CÓDIGO 14', value: '10'},
   ];
 
   const [progress, setProgress] = useState(0);
@@ -146,7 +145,7 @@ const CompanyRegisterProduct: React.FC = () => {
   });
 
   const [productResgistered, setProductResgistered] = useState<
-    Product | undefined
+    RegisteredProduct | undefined
   >();
 
   const [discountCodeError, setDiscountCodeError] = useState<
@@ -178,7 +177,7 @@ const CompanyRegisterProduct: React.FC = () => {
       });
     }
 
-    if (progress === 4) {
+    if (progress === 6) {
       discountCodeValidationSchema.validate(selectedDiscountCode).catch(err => {
         setDiscountCodeError(err.errors[0]);
       });
@@ -214,25 +213,51 @@ const CompanyRegisterProduct: React.FC = () => {
   };
 
   const onSubmit = (data: any) => {
+    const productUpdated = {
+      name: data?.productName,
+      description: data?.productDescription,
+      price: data?.price,
+      availability: availability,
+      category: data?.category,
+      cupom: selectedDiscountCode.value,
+      image: photos[0],
+      store: data?.store,
+    };
+
+    postProduct({
+      product: productUpdated,
+    });
+  };
+
+  useEffect(() => {
     const showRegisterProductPage =
-      isProgressEnd && isSelectedDiscountCode && isSelectedPhoto;
+      isProgressEnd &&
+      isSelectedDiscountCode &&
+      isSelectedPhoto &&
+      productRegistered;
 
     if (showRegisterProductPage) {
       setProductResgistered({
-        id: '0',
-        name: 'Mac Monitor',
-        img: 'https://www.uniir.com.br/wp-content/uploads/2021/03/uniir-aluguel-de-celular-aparelho-iphone-12.png',
-        price: 'R$ 1234.89',
-        promotion: '16% OFF',
-        soldBy: 'Eletro Magazine',
-        installment: 'em 12x de R$ 28.90',
-        qrCodeImg:
-          'https://www.gov.br/inss/pt-br/centrais-de-conteudo/imagens/qr-code-novo-fw-300x300-png',
+        id: productRegistered?.id,
+        name: productRegistered?.name,
+        img: productRegistered?.img,
+        price: formatCurrencyBRL(productRegistered?.price),
+        promotion: productRegistered?.promotion,
+        store: productRegistered?.store,
+        qrCodeImg: productRegistered?.qrCodeImg,
+        isAvailable: productRegistered?.isAvailable,
+        description: productRegistered?.description,
+        category: productRegistered?.description,
       });
 
       resetInputs();
     }
-  };
+  }, [
+    productRegistered,
+    isProgressEnd,
+    isSelectedDiscountCode,
+    isSelectedPhoto,
+  ]);
 
   const handleSelectPhoto = (selectedPhotoIndex: number) => {
     launchImageLibrary(
@@ -289,6 +314,8 @@ const CompanyRegisterProduct: React.FC = () => {
         <CompanyProductDetailBodyContainer>
           <SpacingY large />
           <Title>{PageTitles.productRegister}</Title>
+          <SpacingY small />
+
           {productResgistered && (
             <CompanyProductDetail product={productResgistered} />
           )}
@@ -512,6 +539,7 @@ const CompanyRegisterProduct: React.FC = () => {
                       <InputLine
                         title={PageTitles.price}
                         value={price}
+                        keyboardType="number-pad"
                         maxLength={200}
                         onBlur={onBlur}
                         onChangeText={e => {
@@ -530,6 +558,11 @@ const CompanyRegisterProduct: React.FC = () => {
                     <Title withPadding>{PageTitles.availability}</Title>
                     <SpacingY medium />
                     <RadioButton
+                      firstSelectedValue={
+                        availability
+                          ? {value: 'Disponível'}
+                          : {value: 'Indisponível'}
+                      }
                       data={[{value: 'Disponível'}, {value: 'Indisponível'}]}
                       onSelect={(value: string) => handleAvailability(value)}
                     />
@@ -537,6 +570,20 @@ const CompanyRegisterProduct: React.FC = () => {
                 )}
 
                 {progress === 5 && (
+                  <>
+                    <Title withPadding>{PageTitles.discount}</Title>
+                    <SpacingY medium />
+                    <ExpandableListPanel
+                      title={selectedDiscountCode?.label}
+                      list={discountCodes}
+                      onItemSelect={setSelectedDiscountCode}
+                      error={true}
+                      errorText={discountCodeError}
+                    />
+                  </>
+                )}
+
+                {progress === 6 && (
                   <Controller
                     name="category"
                     defaultValue={category}
@@ -548,6 +595,7 @@ const CompanyRegisterProduct: React.FC = () => {
                       <InputLine
                         title={PageTitles.category}
                         value={category}
+                        keyboardType="number-pad"
                         maxLength={200}
                         onBlur={onBlur}
                         onChangeText={e => {
@@ -561,7 +609,7 @@ const CompanyRegisterProduct: React.FC = () => {
                   />
                 )}
 
-                {progress === 6 && (
+                {progress === 7 && (
                   <Controller
                     name="store"
                     defaultValue={store}
@@ -573,6 +621,7 @@ const CompanyRegisterProduct: React.FC = () => {
                       <InputLine
                         title={PageTitles.store}
                         value={store}
+                        keyboardType="number-pad"
                         maxLength={200}
                         onBlur={onBlur}
                         onChangeText={e => {
@@ -587,25 +636,14 @@ const CompanyRegisterProduct: React.FC = () => {
                 )}
               </>
             )}
-
-            {progress === 7 && (
-              <>
-                <Title withPadding>{PageTitles.discount}</Title>
-                <SpacingY medium />
-                <ExpandableListPanel
-                  title={selectedDiscountCode?.label}
-                  list={discountCodes}
-                  onItemSelect={setSelectedDiscountCode}
-                  error={true}
-                  errorText={discountCodeError}
-                />
-              </>
-            )}
           </BodyContainer>
 
           <ButtonsContainer>
             {isProgressEnd ? (
-              <Button outlinedLight onPress={handleSubmit(onSubmit)}>
+              <Button
+                outlinedLight
+                loading={isLoadingPostProduct}
+                onPress={handleSubmit(onSubmit)}>
                 Concluir
               </Button>
             ) : (

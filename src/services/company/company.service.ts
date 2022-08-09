@@ -1,5 +1,6 @@
 import {useState} from 'react';
 import {useMutation, useQuery} from '@tanstack/react-query';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {baseURL} from '../../utils/constants';
 import {formatCurrencyBRL} from '../../utils/helpers';
@@ -22,8 +23,11 @@ import {
   DiscountClientResponse,
   UserCompanyResponse,
   UserCompany,
-  RegisterProductRequest,
+  RegisterProduct,
 } from './types';
+
+import {useAuth} from '../../hooks/useAuth';
+import queryClient from '../query';
 
 const usePostSignUpCompany = () => {
   const [data, setData] = useState<SignUpResponse | undefined>(undefined);
@@ -293,50 +297,90 @@ const useGetRegisteredProductDetail = ({
   };
 };
 
-const usePostProduct = (): {
-  postProduct: ({
-    product,
-    callback,
-  }: {
-    product: RegisterProductRequest;
-    callback?: () => void;
-  }) => Promise<void>;
-  isLoading: boolean;
-  isError: boolean;
-  isSuccess: boolean;
-} => {
-  const mutation = useMutation(async (product: RegisterProductRequest) => {
-    const formData = new FormData();
-    formData.append('file', product);
+const usePostProduct = () => {
+  const [data, setData] = useState<RegisteredProduct | undefined>(undefined);
+  const [isLoading, setIsLosding] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [token, setToken] = useState('');
 
-    const config = {
-      headers: {
-        'content-type': 'multipart/form-data',
-      },
-    };
+  async function getToken(): Promise<void> {
+    const [token] = await AsyncStorage.multiGet(['@EntrepreneursClub:token']);
 
-    await api.post('produtos/', formData, config);
-  });
-
-  async function postProduct({
-    product,
-    callback,
-  }: {
-    product: RegisterProductRequest;
-    callback?: () => void;
-  }) {
-    await mutation.mutateAsync(product).then(() => {
-      if (callback) {
-        callback();
-      }
-    });
+    if (token[1]) {
+      setToken(token[1]);
+    }
   }
+
+  getToken();
+
+  const postProduct = ({product}: {product: RegisterProduct}) => {
+    setIsLosding(true);
+
+    const formData = new FormData();
+    formData.append('nome', product?.name);
+    formData.append('price', product?.price);
+    formData.append('loja', product?.store);
+    formData.append('categoria', product?.category);
+    formData.append('image', {
+      uri: product?.image?.uri,
+      type: product?.image?.type,
+      name: product?.image?.name,
+    });
+    formData.append('is_available', product?.availability);
+
+    if (product?.description) {
+      formData.append('description', product?.description);
+    }
+    if (product?.cupom) {
+      formData.append('cupom', product?.cupom);
+    }
+
+    fetch(`${baseURL}produtos/`, {
+      method: 'post',
+      body: formData,
+      headers: {
+        'Content-Type': 'multipart/form-data; ',
+        Authorization: `Token ${token}`,
+      },
+    })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error('Algo deu errado!');
+      })
+      .then(responseJson => {
+        let data = responseJson;
+
+        const dataAux: RegisteredProduct = {
+          id: data?.id,
+          name: data?.nome,
+          img: `${baseURL}/${data?.image}`,
+          price: formatCurrencyBRL(data?.price),
+          promotion: String(data?.cupom),
+          store: data?.loja,
+          qrCodeImg: `${baseURL}/${data?.qr_code}`,
+          description: data?.description,
+          category: data?.categoria,
+          isAvailable: data?.is_available,
+        };
+
+        setData(dataAux);
+        queryClient.refetchQueries([QueryConstants.REGISTER_PRODUCTS_LIST]);
+      })
+      .catch(err => {
+        setIsError(!!err);
+      })
+      .finally(() => {
+        setIsLosding(false);
+      });
+  };
 
   return {
     postProduct,
-    isLoading: mutation.isLoading,
-    isError: mutation.isError,
-    isSuccess: mutation.isSuccess,
+    response: data,
+    isLoading,
+    isError,
   };
 };
 

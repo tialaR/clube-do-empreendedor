@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {Alert} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
-import {ProductDetail} from '../../services/company/types';
+import {RegisteredProduct} from '../../services/company/types';
 
 import {colors} from '../../styles/colors';
 import {
@@ -70,7 +70,7 @@ const renderQrCodeLoading = () => (
 const QrCodeLoading = () => renderQrCodeLoading();
 
 type Props = {
-  product: ProductDetail | undefined;
+  product: RegisteredProduct | undefined;
   isLoading?: boolean;
   isError?: boolean;
 };

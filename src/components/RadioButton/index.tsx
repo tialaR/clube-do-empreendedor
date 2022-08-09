@@ -9,12 +9,15 @@ import {
 } from './styles';
 
 type Props = {
+  firstSelectedValue?: {value: string};
   data: {value: string}[];
   onSelect: (value: string) => void;
 };
 
-const RadioButton: React.FC<Props> = ({data, onSelect}) => {
-  const [option, setOption] = useState<string | null>(null);
+const RadioButton: React.FC<Props> = ({data, firstSelectedValue, onSelect}) => {
+  const [option, setOption] = useState<string | null>(
+    firstSelectedValue?.value ?? null,
+  );
 
   const selectHandler = (value: string) => {
     onSelect(value);

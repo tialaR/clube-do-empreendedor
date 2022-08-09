@@ -20,6 +20,8 @@ import {
   RegisteredProduct,
   DiscountClient,
   DiscountClientResponse,
+  UserCompanyResponse,
+  UserCompany,
 } from './types';
 
 const usePostSignUpCompany = () => {
@@ -58,12 +60,58 @@ const usePostSignUpCompany = () => {
   };
 };
 
+const useGetCompany = ({
+  companyId,
+}: {
+  companyId: number;
+}): {
+  response: UserCompany | undefined;
+  isSuccess: boolean;
+  isLoading: boolean;
+  isFetching: boolean;
+  isRefetching: boolean;
+  isError: boolean;
+} => {
+  const query = useQuery([QueryConstants.USER_DETAIL, companyId], async () => {
+    if (companyId) {
+      const data = await api.get<UserCompanyResponse>(`lojas/${companyId}/`);
+
+      return {
+        fantasyName: data?.data?.nome_fantasia,
+        cnpj: data?.data?.cnpj,
+        address: data?.data?.endereco,
+        cep: data?.data?.cep,
+        openingTime: data?.data?.horario_abertura,
+        closingTime: data?.data?.horario_fechamento,
+        companyDescription: data?.data?.descricao_empresa,
+        email: null,
+        occupationArea: data?.data?.area_atuacao,
+        telephone: data?.data?.telefone_contato,
+        whatsApp: data?.data?.whatsapp,
+        instagram: data?.data?.instagram,
+        facebook: data?.data?.facebook,
+      };
+    }
+
+    return undefined;
+  });
+
+  return {
+    response: query?.data,
+    isSuccess: query.isSuccess,
+    isLoading: query.isLoading,
+    isFetching: query.isRefetching,
+    isRefetching: query.isRefetching,
+    isError: query.isError,
+  };
+};
+
 const usePatchCompany = (): {
   patchCompany: ({
     company,
     companyId,
   }: {
-    company: UserCompanyRequest;
+    company: UserCompany;
     companyId: number;
   }) => Promise<void>;
   isLoading: boolean;
@@ -71,14 +119,57 @@ const usePatchCompany = (): {
   isSuccess: boolean;
 } => {
   const mutation = useMutation(
-    async ({
-      company,
-      companyId,
-    }: {
-      company: UserCompanyRequest;
-      companyId: number;
-    }) => {
-      await api.patch<{message: string}>(`loja/update/${companyId}`, company);
+    async ({company, companyId}: {company: UserCompany; companyId: number}) => {
+      let companyAux: UserCompanyRequest = {
+        user: Number(companyId),
+      };
+
+      if (company?.cnpj) {
+        companyAux = {...companyAux, cnpj: company?.cnpj};
+      }
+      if (company?.fantasyName) {
+        companyAux = {...companyAux, nome_fantasia: company.fantasyName};
+      }
+      if (company?.facebook) {
+        companyAux = {...companyAux, facebook: company.facebook};
+      }
+      if (company?.instagram) {
+        companyAux = {...companyAux, instagram: company.instagram};
+      }
+      if (company?.whatsApp) {
+        companyAux = {...companyAux, whatsapp: company.whatsApp};
+      }
+      if (company?.address) {
+        companyAux = {...companyAux, endereco: company.address};
+      }
+      if (company?.cep) {
+        companyAux = {...companyAux, cep: company.cep};
+      }
+      if (company?.telephone) {
+        companyAux = {...companyAux, telefone_contato: company.telephone};
+      }
+      if (company?.openingTime) {
+        companyAux = {...companyAux, horario_abertura: company.openingTime};
+      }
+      if (company?.closingTime) {
+        companyAux = {...companyAux, horario_fechamento: company.closingTime};
+      }
+      if (company?.companyDescription) {
+        companyAux = {
+          ...companyAux,
+          descricao_empresa: company.companyDescription,
+        };
+      }
+      if (company?.occupationArea) {
+        companyAux = {...companyAux, area_atuacao: company.occupationArea};
+      }
+
+      console.log(JSON.stringify(companyAux));
+
+      await api.patch<{message: string}>(
+        `loja/update/${companyId}`,
+        companyAux,
+      );
     },
   );
 
@@ -87,7 +178,7 @@ const usePatchCompany = (): {
     companyId,
     callback,
   }: {
-    company: UserCompanyRequest;
+    company: UserCompany;
     companyId: number;
     callback?: () => void;
   }) {
@@ -407,6 +498,7 @@ const useGetCompanyLocation = (): {
 
 const ServiceCompany = {
   usePostSignUpCompany,
+  useGetCompany,
   usePatchCompany,
   useGetRegisteredProducts,
   useGetRegisteredProductDetail,

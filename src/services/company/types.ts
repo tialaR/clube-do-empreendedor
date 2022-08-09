@@ -16,10 +16,45 @@ export type SignUpResponse = {
   message: string;
 };
 
+export type UserCompany = {
+  fantasyName: string | null | undefined;
+  cnpj: string | null | undefined;
+  address: string | null | undefined;
+  cep: string | null | undefined;
+  openingTime: string | null | undefined;
+  closingTime: string | null | undefined;
+  companyDescription: string | null | undefined;
+  email: string | null | undefined;
+  occupationArea: string | null | undefined;
+  telephone: string | null | undefined;
+  whatsApp: string | null | undefined;
+  instagram: string | null | undefined;
+  facebook: string | null | undefined;
+};
+
+export type UserCompanyResponse = {
+  id: number | null | undefined;
+  nome_fantasia: string | null | undefined;
+  cnpj: string | null | undefined;
+  facebook: string | null | undefined;
+  instagram: string | null | undefined;
+  whatsapp: string | null | undefined;
+  endereco: string | null | undefined;
+  cep: string | null | undefined;
+  telefone_contato: string | null | undefined;
+  horario_abertura: string | null | undefined;
+  horario_fechamento: string | null | undefined;
+  descricao_empresa: string | null | undefined;
+  area_atuacao: string | null | undefined;
+  user: number | null | undefined;
+};
+
 export type UserCompanyRequest = {
   nome_fantasia?: string;
-  cnpj: string;
-  redes_sociais?: string;
+  cnpj?: string;
+  facebook?: string;
+  instagram?: string;
+  whatsapp?: string;
   endereco?: string;
   cep?: string;
   telefone_contato?: string;

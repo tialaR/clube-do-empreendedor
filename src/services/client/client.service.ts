@@ -127,8 +127,6 @@ const usePatchUser = (): {
         clientAux = {...clientAux, genero: client.genre};
       }
 
-      console.log(JSON.stringify(clientAux));
-
       await api.patch<{message: string}>(
         `cliente/update/${clientId}`,
         clientAux,

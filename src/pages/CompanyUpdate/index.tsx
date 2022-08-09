@@ -17,6 +17,7 @@ import IconButton from '../../components/IconButton';
 import InputLine from '../../components/InputLine';
 import ProgressBar from '../../components/ProgressBar';
 
+import ServiceCompany from '../../services/company/company.service';
 import {useAuth} from '../../hooks/useAuth';
 
 import {
@@ -26,6 +27,7 @@ import {
   maskCEP,
   isValidPhone,
   maskPhone,
+  removeMaskToNumbers,
 } from '../../utils/helpers';
 
 import {colors} from '../../styles/colors';
@@ -35,7 +37,6 @@ import {
   BodyContainer,
   ButtonsContainer,
 } from './styles';
-import ServiceCompany from '../../services/company/company.service';
 
 enum PageTitles {
   fantasyName = 'Nome Fantasia',
@@ -55,29 +56,83 @@ enum PageTitles {
 
 const FORM_ELEMENTS_SIZE = 12;
 
-const validationSchema = yup.object().shape({
-  fantasyName: yup.string().min(1, 'Insira um nome válido'),
-  cnpj: yup
-    .string()
-    .matches(isValidCNPJ, 'Formato incorreto')
-    .required('Campo obrigatório'),
-  address: yup.string().min(10, 'Insira um endereço válido'),
-  cep: yup.string().matches(isValidCEP, 'Formato incorreto'),
-  openingTime: yup.string(),
-  closingTime: yup.string(),
-  companyDescription: yup.string(),
-  email: yup.string().email('E-mail inválido'),
-  occupationArea: yup.string(),
-  telephone: yup.string().matches(isValidPhone, 'Formato incorreto'),
-  whatsApp: yup.string().matches(isValidPhone, 'Formato incorreto'),
-  instagram: yup.string(),
-  facebook: yup.string(),
-});
+const validationSchema = yup.object().shape(
+  {
+    fantasyName: yup
+      .string()
+      .nullable()
+      .notRequired()
+      .when('fantasyName', {
+        is: (value: string) => value?.length,
+        then: rule => rule.min(4, 'Insira um nome válido'),
+      }),
+    cnpj: yup
+      .string()
+      .required('Campo obrigatório')
+      .matches(isValidCNPJ, 'Formato incorreto'),
+    address: yup
+      .string()
+      .nullable()
+      .notRequired()
+      .when('address', {
+        is: (value: string) => value?.length,
+        then: rule => rule.min(10, 'Insira um endereço válido'),
+      }),
+    cep: yup
+      .string()
+      .nullable()
+      .notRequired()
+      .when('cep', {
+        is: (value: string) => value?.length,
+        then: rule => rule.matches(isValidCEP, 'Formato incorreto'),
+      }),
+    openingTime: yup.string(),
+    closingTime: yup.string(),
+    companyDescription: yup.string(),
+    email: yup
+      .string()
+      .nullable()
+      .notRequired()
+      .when('email', {
+        is: (value: string) => value?.length,
+        then: rule => rule.email('E-mail inválido'),
+      }),
+    occupationArea: yup.string(),
+    telephone: yup
+      .string()
+      .nullable()
+      .notRequired()
+      .when('telephone', {
+        is: (value: string) => value?.length,
+        then: rule => rule.matches(isValidPhone, 'Formato incorreto'),
+      }),
+    whatsApp: yup
+      .string()
+      .nullable()
+      .notRequired()
+      .when('whatsApp', {
+        is: (value: string) => value?.length,
+        then: rule => rule.matches(isValidPhone, 'Formato incorreto'),
+      }),
+    instagram: yup.string(),
+    facebook: yup.string(),
+  },
+  [
+    ['fantasyName', 'fantasyName'],
+    ['address', 'address'],
+    ['cep', 'cep'],
+    ['email', 'email'],
+    ['telephone', 'telephone'],
+    ['whatsApp', 'whatsApp'],
+  ],
+);
 
 const CompanyUpdate: React.FC = () => {
   const navigation = useNavigation<any>();
 
   const {userId} = useAuth();
+
+  const {response: company} = ServiceCompany.useGetCompany({companyId: userId});
 
   const {patchCompany, isLoading, isSuccess, isError} =
     ServiceCompany.usePatchCompany();
@@ -91,19 +146,27 @@ const CompanyUpdate: React.FC = () => {
 
   const [progress, setProgress] = useState(0);
 
-  const [fantasyName, setFantasyName] = useState('');
-  const [cnpj, setCnpj] = useState('');
-  const [address, setAddress] = useState('');
-  const [cep, setCep] = useState('');
-  const [openingTime, setOpeningTime] = useState('');
-  const [closingTime, setClosingTime] = useState('');
-  const [companyDescription, setCompanyDescription] = useState('');
-  const [email, setEmail] = useState('');
-  const [occupationArea, setOccupationArea] = useState('');
-  const [telephone, setTelephone] = useState('');
-  const [whatsApp, setWhatsApp] = useState('');
-  const [instagram, setInstagram] = useState('');
-  const [facebook, setFacebook] = useState('');
+  const [fantasyName, setFantasyName] = useState(company?.fantasyName ?? '');
+  const [cnpj, setCnpj] = useState(maskCNPJ(String(company?.cnpj)) ?? '');
+  const [address, setAddress] = useState(company?.address ?? '');
+  const [cep, setCep] = useState(maskCEP(String(company?.cep)) ?? '');
+  const [openingTime, setOpeningTime] = useState(company?.openingTime ?? '');
+  const [closingTime, setClosingTime] = useState(company?.closingTime ?? '');
+  const [companyDescription, setCompanyDescription] = useState(
+    company?.companyDescription ?? '',
+  );
+  const [email, setEmail] = useState(company?.email ?? '');
+  const [occupationArea, setOccupationArea] = useState(
+    company?.occupationArea ?? '',
+  );
+  const [telephone, setTelephone] = useState(
+    maskPhone(String(company?.telephone)) ?? '',
+  );
+  const [whatsApp, setWhatsApp] = useState(
+    maskPhone(String(company?.whatsApp)) ?? '',
+  );
+  const [instagram, setInstagram] = useState(company?.instagram ?? '');
+  const [facebook, setFacebook] = useState(company?.facebook ?? '');
 
   const isProgressEnd = useMemo(
     () => progress === FORM_ELEMENTS_SIZE,
@@ -176,19 +239,20 @@ const CompanyUpdate: React.FC = () => {
   };
 
   const onSubmit = (data: any) => {
-    const socialNetworks = `WhatsApp: ${data?.whatsApp}, Instagram: ${data?.instagram}, Facebook: ${data?.facebook}`;
-
     const companyUpdated = {
-      nome_fantasia: data?.fantasyName,
-      cnpj: data?.cnpj,
-      redes_sociais: socialNetworks,
-      endereco: data?.address,
-      cep: data?.cep,
-      telefone_contato: data?.telephone,
-      horario_abertura: data?.openingTime,
-      horario_fechamento: data?.closingTime,
-      descricao_empresa: data?.companyDescription,
-      area_atuacao: data?.occupationArea,
+      fantasyName: data?.fantasyName,
+      cnpj: removeMaskToNumbers(data?.cnpj),
+      facebook: data?.facebook,
+      instagram: data?.instagram,
+      whatsApp: removeMaskToNumbers(data?.whatsApp),
+      address: data?.address,
+      cep: removeMaskToNumbers(data?.cep),
+      email: data?.email,
+      telephone: removeMaskToNumbers(data?.telephone),
+      openingTime: data?.openingTime,
+      closingTime: data?.closingTime,
+      companyDescription: data?.companyDescription,
+      occupationArea: data?.occupationArea,
       user: userId,
     };
 

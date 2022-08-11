@@ -188,3 +188,15 @@ export type DiscountClient = {
   expiratedCupomCliente: string | null | undefined;
   isCupomValid: boolean | null | undefined;
 };
+
+export type CouponResponse = {
+  id: number | null | undefined;
+  desconto: string | null | undefined;
+  loja: string | null | undefined;
+};
+
+export type Coupon = {
+  id: number | null | undefined;
+  discount: string | null | undefined;
+  store: string | null | undefined;
+};

@@ -15,6 +15,7 @@ import {
   BodyContainer,
   ButtonsContainer,
 } from './styles';
+import {SpacingY} from '../../styles/globalStyles';
 
 type Props = {
   route: RouteProp<{params: {productId: number}}, 'params'>;
@@ -49,6 +50,8 @@ const CompanyEditProductDetail: React.FC<Props> = ({route}) => {
         </View>
       </HeaderContainer>
 
+      <SpacingY medium />
+
       <BodyContainer>
         {product && (
           <CompanyProductDetail
@@ -62,7 +65,11 @@ const CompanyEditProductDetail: React.FC<Props> = ({route}) => {
       <ButtonsContainer>
         <Button
           filledLight
-          onPress={() => navigation.navigate('CompanyRegisterProduct')}>
+          onPress={() =>
+            navigation.navigate('CompanyUpdateProduct', {
+              productId: productId,
+            })
+          }>
           Editar Produto
         </Button>
       </ButtonsContainer>

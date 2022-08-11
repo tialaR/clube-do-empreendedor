@@ -5,7 +5,6 @@ import {
   ClientItemName,
   SeeMoreInformationsContainer,
   SeeMoreInformations,
-  CupomSituationContainer,
   CupomSituation,
 } from './styles';
 
@@ -23,15 +22,39 @@ const ClientItem: React.FC<ClientItemProps> = ({
   onPress,
 }) => {
   const handleShowMoreInformations = useCallback(() => {
+    //TODO - rever regra
     if (isCupomValid) {
       onPress();
     }
   }, [isCupomValid]);
 
-  const cupomSituation = useMemo(
-    () => (isCupomBought ? 'Cupom adquirido' : 'Cupom expirado'),
-    [isCupomBought],
-  );
+  const cupomSituation = useMemo(() => {
+    if (isCupomValid && isCupomBought === false) {
+      return 'Compra pendente'; //Roxo
+    }
+
+    if (isCupomValid && isCupomBought) {
+      return 'Produto comprado'; //Verde
+    }
+
+    if (isCupomValid === false) {
+      return 'Produto expirado'; //Vermelho
+    }
+  }, [isCupomBought, isCupomValid]);
+
+  const isSeeMoreInformationsButtonDisabled = useMemo(() => {
+    if (isCupomValid && isCupomBought === false) {
+      return false;
+    }
+
+    if (isCupomValid && isCupomBought) {
+      return true;
+    }
+
+    if (isCupomValid === false) {
+      return true;
+    }
+  }, [isCupomValid, isCupomBought]);
 
   return (
     <ClientItemButton onPress={handleShowMoreInformations}>
@@ -42,7 +65,7 @@ const ClientItem: React.FC<ClientItemProps> = ({
       </ClientItemNameContainer>
 
       <SeeMoreInformationsContainer>
-        <SeeMoreInformations disabled={!isCupomValid}>
+        <SeeMoreInformations disabled={isSeeMoreInformationsButtonDisabled}>
           Ver mais informações
         </SeeMoreInformations>
       </SeeMoreInformationsContainer>

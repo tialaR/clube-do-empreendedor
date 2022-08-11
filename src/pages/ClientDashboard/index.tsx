@@ -21,7 +21,8 @@ import {
 } from './styles';
 
 const ClientDashboard: React.FC = () => {
-  const {showClientProductDetailModal} = useClientProductDetailModal();
+  const {showFeaturedProductDetailModal, showMyDiscountProductDetailModal} =
+    useClientProductDetailModal();
 
   const {
     response: myDiscountsList,
@@ -93,7 +94,9 @@ const ClientDashboard: React.FC = () => {
               promotion={product?.promotion}
               store={product?.store}
               onPress={() =>
-                showClientProductDetailModal({productId: Number(product?.id)})
+                showMyDiscountProductDetailModal({
+                  productId: Number(product?.id),
+                })
               }
             />
           )}
@@ -125,7 +128,7 @@ const ClientDashboard: React.FC = () => {
               promotion={product?.promotion}
               store={product?.store}
               onPress={() =>
-                showClientProductDetailModal({
+                showFeaturedProductDetailModal({
                   productId: Number(product?.id),
                   isEmphasisProduct: true,
                 })

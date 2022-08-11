@@ -121,19 +121,6 @@ export type MyDiscountProduct = {
   isCupomValid: boolean | null | undefined;
 };
 
-export type ProductDetailResponse = {
-  id: number | null | undefined;
-  nome: string | null | undefined;
-  image: string | null | undefined;
-  description: string | null | undefined;
-  price: string | number | null | undefined;
-  qr_code: string | null | undefined;
-  is_available: boolean | null | undefined;
-  loja: string | null | undefined;
-  categoria: string | null | undefined;
-  cupom: string | null | undefined;
-};
-
 export type ProductDetail = {
   id: number | null | undefined;
   name: string | null | undefined;

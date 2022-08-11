@@ -21,6 +21,7 @@ type Props = {
 };
 
 type Item = {
+  id: number;
   label: string;
   value: string;
 };
@@ -130,7 +131,7 @@ const ExpandableListPanel: React.FC<Props> = ({
           onLayout={_setMaxHeight}>
           {list.map((item: Item) => (
             <TouchableOpacity
-              key={String(item.label)}
+              key={String(item.id)}
               onPress={() => handleSelectItem(item)}
               activeOpacity={0.7}>
               <Text style={styles.title}>{item.label}</Text>

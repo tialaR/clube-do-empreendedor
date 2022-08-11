@@ -12,6 +12,7 @@ import CompanyEditProductDetail from '../pages/CompanyEditProductDetail';
 import CompanyRegisterProduct from '../pages/CompanyRegisterProduct';
 import SignUpCompany from '../pages/SignUpCompany';
 import CompanyUpdate from '../pages/CompanyUpdate';
+import CompanyUpdateProduct from '../pages/CompanyUpdateProduct';
 
 import {CompanyDiscountClientsModalProvider} from '../hooks/useCompanyDiscountClientsModal';
 
@@ -116,6 +117,11 @@ export const AppCompanyRoutes = () => {
       <Stack.Screen
         name="CompanyRegisterProduct"
         component={CompanyRegisterProduct}
+      />
+
+      <Stack.Screen
+        name="CompanyUpdateProduct"
+        component={CompanyUpdateProduct}
       />
     </Stack.Navigator>
   );

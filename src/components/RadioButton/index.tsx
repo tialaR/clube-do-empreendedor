@@ -26,12 +26,12 @@ const RadioButton: React.FC<Props> = ({data, firstSelectedValue, onSelect}) => {
 
   return (
     <Container>
-      {data.map(item => {
+      {data.map((item, index) => {
         return (
           <>
             <RedioContainerButton>
               <RedioButton
-                key={item?.value}
+                key={`${index}-${item?.value}`}
                 isSelect={item.value === option}
                 onPress={() => selectHandler(item.value)}
               />

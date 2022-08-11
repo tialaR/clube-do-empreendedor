@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
+import {RouteProp, useNavigation} from '@react-navigation/native';
 import {
   launchImageLibrary,
   ImagePickerResponse,
@@ -8,6 +8,7 @@ import * as yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {Controller, useForm} from 'react-hook-form';
 import {
+  ActivityIndicator,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -25,6 +26,7 @@ import {SvgIcon} from '../../components/SvgIcon';
 import RadioButton from '../../components/RadioButton';
 
 import ServiceCompany from '../../services/company/company.service';
+import {Coupon, RegisteredProduct} from '../../services/company/types';
 
 import {formatCurrencyBRL} from '../../utils/helpers';
 
@@ -42,11 +44,6 @@ import {
   ProductPhotoImage,
   ErrorMessage,
 } from './styles';
-import {
-  Coupon,
-  RegisteredProduct,
-  RegisterProduct,
-} from '../../services/company/types';
 
 enum PageTitles {
   productName = 'Nome do Produto',
@@ -96,13 +93,19 @@ const discountCodeValidationSchema = yup.object().shape({
 });
 
 type Photo = {
-  uri: string | undefined;
-  type: string | undefined;
-  name: string | undefined;
+  uri: string | null | undefined;
+  type: string | null | undefined;
+  name: string | null | undefined;
 };
 
-const CompanyRegisterProduct: React.FC = () => {
+type Props = {
+  route: RouteProp<{params: {productId: number}}, 'params'>;
+};
+
+const CompanyUpdateProduct: React.FC<Props> = ({route}) => {
   const navigation = useNavigation<any>();
+
+  const {productId} = useMemo(() => route.params, [route]);
 
   const {
     control,
@@ -110,6 +113,10 @@ const CompanyRegisterProduct: React.FC = () => {
     formState: {errors},
     reset: resetInputs,
   } = useForm({resolver: yupResolver(validationSchema)});
+
+  const {response: product} = ServiceCompany.useGetProduct({
+    productId: productId,
+  });
 
   const {
     postProduct,
@@ -143,6 +150,33 @@ const CompanyRegisterProduct: React.FC = () => {
       label: 'Selecione um códido',
       value: undefined,
     });
+
+  useEffect(() => {
+    if (product) {
+      setProductName(product?.name ?? '');
+      setProductDescription(product?.description ?? '');
+      setPrice(product?.price ?? '');
+      setAvailability(product?.isAvailable ?? false);
+      setStore(product?.store ?? '');
+      setCategory(product?.category ?? '');
+      setSelectedDiscountCode({
+        id: 0,
+        label: product?.promotion ?? 'Selecione um códido',
+        value: product?.promotion ?? undefined,
+      });
+      setPhotos(
+        product?.img
+          ? [
+              {
+                uri: product?.img,
+                type: product?.img,
+                name: product?.img,
+              },
+            ]
+          : [],
+      );
+    }
+  }, [product]);
 
   const [productResgistered, setProductResgistered] = useState<
     RegisteredProduct | undefined
@@ -213,13 +247,13 @@ const CompanyRegisterProduct: React.FC = () => {
   };
 
   const onSubmit = (data: any) => {
-    const productUpdated: RegisterProduct = {
+    const productUpdated = {
       name: data?.productName,
       description: data?.productDescription,
       price: data?.price,
       availability: availability,
       category: data?.category,
-      cupom: String(selectedDiscountCode?.id),
+      cupom: selectedDiscountCode.value,
       image: photos[0],
       store: data?.store,
     };
@@ -658,4 +692,4 @@ const CompanyRegisterProduct: React.FC = () => {
   );
 };
 
-export default CompanyRegisterProduct;
+export default CompanyUpdateProduct;

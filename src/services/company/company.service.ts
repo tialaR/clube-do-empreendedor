@@ -24,9 +24,10 @@ import {
   UserCompanyResponse,
   UserCompany,
   RegisterProduct,
+  CouponResponse,
+  Coupon,
 } from './types';
 
-import {useAuth} from '../../hooks/useAuth';
 import queryClient from '../query';
 
 const usePostSignUpCompany = () => {
@@ -169,8 +170,6 @@ const usePatchCompany = (): {
         companyAux = {...companyAux, area_atuacao: company.occupationArea};
       }
 
-      console.log(JSON.stringify(companyAux));
-
       await api.patch<{message: string}>(
         `loja/update/${companyId}`,
         companyAux,
@@ -263,8 +262,6 @@ const useGetRegisteredProductDetail = ({
           `produtos/${productId}/`,
         );
 
-        console.log(JSON.stringify(data.data));
-
         return {
           id: data?.data?.id,
           name: data?.data?.nome,
@@ -284,6 +281,53 @@ const useGetRegisteredProductDetail = ({
       refetchOnWindowFocus: false,
       enabled: !!productId,
       retry: false,
+    },
+  );
+
+  return {
+    response: query?.data,
+    isSuccess: query.isSuccess,
+    isLoading: query.isLoading,
+    isFetching: query.isRefetching,
+    isRefetching: query.isRefetching,
+    isError: query.isError,
+  };
+};
+
+const useGetProduct = ({
+  productId,
+}: {
+  productId: number;
+}): {
+  response: RegisteredProduct | undefined;
+  isSuccess: boolean;
+  isLoading: boolean;
+  isFetching: boolean;
+  isRefetching: boolean;
+  isError: boolean;
+} => {
+  const query = useQuery(
+    [QueryConstants.PRODUCT_DETAIL_INFORMATIONS, productId],
+    async () => {
+      if (productId) {
+        const data = await api.get<RegisteredProductResponse>(
+          `produtos/${productId}/`,
+        );
+
+        return {
+          id: data?.data?.id,
+          name: data?.data?.nome,
+          img: `${baseURL}/${data?.data?.image}`,
+          price: formatCurrencyBRL(data?.data?.price),
+          promotion: String(data?.data?.cupom),
+          cupom: data?.data?.cupom,
+          store: data?.data?.loja,
+          qrCodeImg: `${baseURL}/${data?.data?.qr_code}`,
+          description: data?.data?.description,
+        };
+      }
+
+      return undefined;
     },
   );
 
@@ -381,6 +425,36 @@ const usePostProduct = () => {
     response: data,
     isLoading,
     isError,
+  };
+};
+
+const useGetCoupons = (): {
+  response: Coupon[] | undefined;
+  isSuccess: boolean;
+  isLoading: boolean;
+  isFetching: boolean;
+  isRefetching: boolean;
+  isError: boolean;
+} => {
+  const query = useQuery([QueryConstants.COUPONS_LIST], async () => {
+    const data = await api.get<{data: CouponResponse[]}>('cupom/');
+
+    return data.data.data.map(item => {
+      return {
+        id: item.id,
+        discount: item.desconto,
+        store: item.loja,
+      };
+    });
+  });
+
+  return {
+    response: query?.data,
+    isSuccess: query.isSuccess,
+    isLoading: query.isLoading,
+    isFetching: query.isRefetching,
+    isRefetching: query.isRefetching,
+    isError: query.isError,
   };
 };
 
@@ -487,6 +561,11 @@ const usePatchDiscountClientConfirmBuy = (): {
           comprado: isBought,
         },
       );
+    },
+    {
+      onSuccess: () => {
+        queryClient.refetchQueries([QueryConstants.DISCOUNT_CLIENTS_LIST]);
+      },
     },
   );
 
@@ -595,7 +674,9 @@ const ServiceCompany = {
   useGetRegisteredProducts,
   useGetRegisteredProductDetail,
   usePostProduct,
+  useGetProduct,
   usePostCupom,
+  useGetCoupons,
   useGetDiscountClients,
   usePatchDiscountClientConfirmBuy,
   useGetCompanyLocation,

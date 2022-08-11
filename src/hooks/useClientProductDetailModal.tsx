@@ -15,14 +15,19 @@ import ClientProductDetailModal, {
 import {Alert} from 'react-native';
 
 type ClientProductDetailContextData = {
-  showClientProductDetailModal({
+  showFeaturedProductDetailModal({
     productId,
     isEmphasisProduct,
   }: {
     productId: number | null;
     isEmphasisProduct?: boolean;
   }): void;
-  closeClientProductDetailModal(): void;
+  showMyDiscountProductDetailModal({
+    productId,
+  }: {
+    productId: number | null;
+  }): void;
+  closeFeaturedProductDetailModal(): void;
 };
 
 const ClientProductDetailModalContext =
@@ -38,14 +43,24 @@ const ClientProductDetailModalProvider: React.FC<
   ClientProductDetailModalProviderProps
 > = ({children}) => {
   const {
-    getProductDetail,
-    response: product,
-    isLoading,
-    isSuccess,
+    getFeaturedProductDetail,
+    response: featuredProductDetail,
+    isLoading: isFeaturedProductLoading,
+    isSuccess: isFeaturedProductSuccess,
     isError,
-  } = ServiceClient.useGetProductDetail();
+  } = ServiceClient.useGetFeaturedProductDetail();
 
-  const productDetailModalRef =
+  const {
+    getMyDiscountProductDetail,
+    response: myDiscountProductDetail,
+    isLoading: isMyDiscountProductLoading,
+    isSuccess: isMyDiscountProductSuccess,
+  } = ServiceClient.useGetMyDiscountProductDetail();
+
+  const featuredProductDetailModalRef =
+    useRef<ClientProductDetailModalHandlersToFather>(null);
+
+  const myDiscountProductDetailModalRef =
     useRef<ClientProductDetailModalHandlersToFather>(null);
 
   const [isEmphasisProduct, setIsEmphasisProduct] = useState(false);
@@ -70,10 +85,16 @@ const ClientProductDetailModalProvider: React.FC<
   }, [isError]);
 
   useEffect(() => {
-    isSuccess && productDetailModalRef.current?.openModal();
-  }, [productDetailModalRef, isSuccess]);
+    isFeaturedProductSuccess &&
+      featuredProductDetailModalRef.current?.openModal();
+  }, [featuredProductDetailModalRef, isFeaturedProductSuccess]);
 
-  const showClientProductDetailModal = useCallback(
+  useEffect(() => {
+    isMyDiscountProductSuccess &&
+      myDiscountProductDetailModalRef.current?.openModal();
+  }, [myDiscountProductDetailModalRef, isMyDiscountProductSuccess]);
+
+  const showFeaturedProductDetailModal = useCallback(
     ({
       productId,
       isEmphasisProduct,
@@ -81,61 +102,96 @@ const ClientProductDetailModalProvider: React.FC<
       productId: number;
       isEmphasisProduct: boolean;
     }) => {
-      getProductDetail(productId);
+      getFeaturedProductDetail(productId);
       setIsEmphasisProduct(isEmphasisProduct);
     },
     [],
   );
 
-  const closeClientProductDetailModal = useCallback(() => {
-    productDetailModalRef.current?.closeModal();
-  }, [productDetailModalRef]);
+  const showMyDiscountProductDetailModal = useCallback(
+    ({productId}: {productId: number}) => {
+      getMyDiscountProductDetail(productId);
+    },
+    [],
+  );
 
-  const renderClientProductDetailModal = useCallback(() => {
+  const closeFeaturedProductDetailModal = useCallback(() => {
+    featuredProductDetailModalRef.current?.closeModal();
+  }, [featuredProductDetailModalRef]);
+
+  const closeMyDiscountProductDetailModal = useCallback(() => {
+    myDiscountProductDetailModalRef.current?.closeModal();
+  }, [myDiscountProductDetailModalRef]);
+
+  const renderFeaturedProductDetailModal = useCallback(() => {
     return (
       <ClientProductDetailModal
-        ref={productDetailModalRef}
-        product={product}
-        isLoading={isLoading}
+        ref={featuredProductDetailModalRef}
+        product={featuredProductDetail}
+        isLoading={isFeaturedProductLoading}
         emphasisProduct={isEmphasisProduct}
-        onClose={closeClientProductDetailModal}
+        onClose={closeFeaturedProductDetailModal}
       />
     );
   }, [
-    isLoading,
+    isFeaturedProductLoading,
     isEmphasisProduct,
-    productDetailModalRef,
-    product,
-    closeClientProductDetailModal,
+    featuredProductDetailModalRef,
+    featuredProductDetail,
+    closeFeaturedProductDetailModal,
+  ]);
+
+  const renderMyDiscountProductDetailModal = useCallback(() => {
+    return (
+      <ClientProductDetailModal
+        ref={myDiscountProductDetailModalRef}
+        product={myDiscountProductDetail}
+        isLoading={isMyDiscountProductLoading}
+        onClose={closeMyDiscountProductDetailModal}
+      />
+    );
+  }, [
+    isMyDiscountProductLoading,
+    myDiscountProductDetailModalRef,
+    myDiscountProductDetail,
+    closeMyDiscountProductDetailModal,
   ]);
 
   return (
     <ClientProductDetailModalContext.Provider
       value={{
-        showClientProductDetailModal,
-        closeClientProductDetailModal,
+        showFeaturedProductDetailModal,
+        showMyDiscountProductDetailModal,
+        closeFeaturedProductDetailModal,
       }}>
       {children}
-      {renderClientProductDetailModal()}
+      {renderFeaturedProductDetailModal()}
+      {renderMyDiscountProductDetailModal()}
     </ClientProductDetailModalContext.Provider>
   );
 };
 
 function useClientProductDetailModal(): ClientProductDetailContextData {
-  const showClientProductDetailModal = useContextSelector(
+  const showFeaturedProductDetailModal = useContextSelector(
     ClientProductDetailModalContext,
     (clientProductDetailContext: ClientProductDetailContextData) =>
-      clientProductDetailContext.showClientProductDetailModal,
+      clientProductDetailContext.showFeaturedProductDetailModal,
   );
-  const closeClientProductDetailModal = useContextSelector(
+  const showMyDiscountProductDetailModal = useContextSelector(
     ClientProductDetailModalContext,
     (clientProductDetailContext: ClientProductDetailContextData) =>
-      clientProductDetailContext.closeClientProductDetailModal,
+      clientProductDetailContext.showMyDiscountProductDetailModal,
+  );
+  const closeFeaturedProductDetailModal = useContextSelector(
+    ClientProductDetailModalContext,
+    (clientProductDetailContext: ClientProductDetailContextData) =>
+      clientProductDetailContext.closeFeaturedProductDetailModal,
   );
 
   return {
-    showClientProductDetailModal,
-    closeClientProductDetailModal,
+    showFeaturedProductDetailModal,
+    showMyDiscountProductDetailModal,
+    closeFeaturedProductDetailModal,
   };
 }
 

@@ -10,7 +10,6 @@ import {
   MyDiscountProduct,
   MyDiscountProductResponse,
   ProductDetail,
-  ProductDetailResponse,
   ScanQrCodeResponse,
   SiginUp,
   SignUpResponse,
@@ -237,8 +236,11 @@ const useGetMyDiscounts = (): {
   };
 };
 
-const useGetProductDetail = (): {
-  getProductDetail: (productId: number, callback?: () => void) => Promise<void>;
+const useGetFeaturedProductDetail = (): {
+  getFeaturedProductDetail: (
+    productId: number,
+    callback?: () => void,
+  ) => Promise<void>;
   response: ProductDetail | undefined;
   isSuccess: boolean;
   isLoading: boolean;
@@ -249,10 +251,10 @@ const useGetProductDetail = (): {
   const [productId, setProductId] = useState<number | undefined>(undefined);
 
   const query = useQuery(
-    [QueryConstants.PRODUCT_DETAIL, productId],
+    [QueryConstants.FEATURED_PRODUCT_DETAIL, productId],
     async () => {
       if (productId) {
-        const data = await api.get<ProductDetailResponse>(
+        const data = await api.get<FeaturedProductResponse>(
           `produtos/${productId}/`,
         );
 
@@ -299,7 +301,83 @@ const useGetProductDetail = (): {
 
   return {
     response: query?.data,
-    getProductDetail: simulateAsyncRequest,
+    getFeaturedProductDetail: simulateAsyncRequest,
+    isSuccess: query.isSuccess,
+    isLoading: query.isLoading,
+    isFetching: query.isRefetching,
+    isRefetching: query.isRefetching,
+    isError: query.isError,
+  };
+};
+
+const useGetMyDiscountProductDetail = (): {
+  getMyDiscountProductDetail: (
+    productId: number,
+    callback?: () => void,
+  ) => Promise<void>;
+  response: ProductDetail | undefined;
+  isSuccess: boolean;
+  isLoading: boolean;
+  isFetching: boolean;
+  isRefetching: boolean;
+  isError: boolean;
+} => {
+  const [productId, setProductId] = useState<number | undefined>(undefined);
+
+  const query = useQuery(
+    [QueryConstants.MY_DISCOUNT_PRODUCT_DETAIL, productId],
+    async () => {
+      if (productId) {
+        const data = await api.get<MyDiscountProductResponse>(
+          `produto-cupom-cliente/${productId}/`,
+        );
+
+        return {
+          id: data?.data?.id,
+          name: data?.data?.produto,
+          img: `${baseURL}/${data?.data?.image}`,
+          price: formatCurrencyBRL(data?.data?.price),
+          promotion: data?.data?.desconto,
+          store: data?.data?.loja,
+          qrCodeImg: `${baseURL}/${data?.data?.qr_code}`,
+          category: data?.data?.categoria,
+          expiratedCupomCliente: data?.data?.expirated_cupom_cliente,
+          isBought: data?.data?.comprado,
+          isCupomValid: data?.data?.cupom_valid,
+        };
+      }
+
+      return undefined;
+    },
+    {
+      refetchOnWindowFocus: false,
+      enabled: !!productId,
+      retry: false,
+    },
+  );
+
+  async function simulateAsyncRequest(
+    productId: number,
+    callback?: () => void,
+  ): Promise<void> {
+    return new Promise(resolve => {
+      if (productId) {
+        resolve(setProductId(productId));
+      }
+    })
+      .then(() => {
+        query.refetch().then(() => {
+          callback && callback();
+        });
+      })
+      .finally(() => {
+        query.remove();
+      });
+  }
+
+  return {
+    response: query?.data,
+    getMyDiscountProductDetail: simulateAsyncRequest,
     isSuccess: query.isSuccess,
     isLoading: query.isLoading,
     isFetching: query.isRefetching,
@@ -411,8 +489,9 @@ const ServiceClient = {
   useGetUser,
   usePatchUser,
   useGetFeaturedProducts,
+  useGetMyDiscountProductDetail,
   useGetMyDiscounts,
-  useGetProductDetail,
+  useGetFeaturedProductDetail,
   usePostGuaranteeDiscount,
   usePostScanQrCode,
 };

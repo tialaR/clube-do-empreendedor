@@ -25,6 +25,7 @@ import {
 } from './styles';
 import {SvgIcon} from '../../components/SvgIcon';
 import {colors} from '../../styles/colors';
+import {formatCurrencyBRL} from '../../utils/helpers';
 
 type SquareButtonProps = {
   onPress: () => void;
@@ -138,7 +139,7 @@ const CompanyDashboard: React.FC = () => {
               loading={isRegisteredProductsLoading}
               name={product?.name}
               img={product?.img}
-              price={product?.price}
+              price={formatCurrencyBRL(product?.price)}
               promotion={product?.promotion}
               store={product?.store}
               onPress={() =>

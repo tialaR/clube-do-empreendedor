@@ -2,7 +2,6 @@ import {useState} from 'react';
 import {useMutation, useQuery} from '@tanstack/react-query';
 
 import {baseURL} from '../../utils/constants';
-import {formatCurrencyBRL} from '../../utils/helpers';
 import api from '../api';
 import {
   FeaturedProduct,
@@ -177,7 +176,7 @@ const useGetFeaturedProducts = (): {
         id: item?.id,
         name: item?.nome,
         img: `${baseURL}/${item?.image}`,
-        price: formatCurrencyBRL(item?.price),
+        price: String(item?.price),
         promotion: item?.cupom,
         store: item?.loja,
         qrCodeImg: `${baseURL}/${item?.qr_code}`,
@@ -217,7 +216,7 @@ const useGetMyDiscounts = (): {
           id: item?.id,
           name: item?.produto,
           img: `${baseURL}/${item?.image}`,
-          price: formatCurrencyBRL(item?.price),
+          price: String(item?.price),
           promotion: item?.desconto,
           store: item?.loja,
           qrCodeImg: `${baseURL}/${item?.qr_code}`,
@@ -262,7 +261,7 @@ const useGetFeaturedProductDetail = (): {
           id: data?.data?.id,
           name: data?.data?.nome,
           img: `${baseURL}/${data?.data?.image}`,
-          price: formatCurrencyBRL(data?.data?.price),
+          price: String(data?.data?.price),
           promotion: String(data?.data?.cupom),
           cupom: data?.data?.cupom,
           store: data?.data?.loja,
@@ -336,7 +335,7 @@ const useGetMyDiscountProductDetail = (): {
           id: data?.data?.id,
           name: data?.data?.produto,
           img: `${baseURL}/${data?.data?.image}`,
-          price: formatCurrencyBRL(data?.data?.price),
+          price: String(data?.data?.price),
           promotion: data?.data?.desconto,
           store: data?.data?.loja,
           qrCodeImg: `${baseURL}/${data?.data?.qr_code}`,

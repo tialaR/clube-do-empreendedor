@@ -19,6 +19,7 @@ import {
   SectionListContainer,
   SectionTitleContainer,
 } from './styles';
+import {formatCurrencyBRL} from '../../utils/helpers';
 
 const ClientDashboard: React.FC = () => {
   const {showFeaturedProductDetailModal, showMyDiscountProductDetailModal} =
@@ -90,7 +91,7 @@ const ClientDashboard: React.FC = () => {
               loading={isMyDiscountsLoading}
               name={product?.name}
               img={product?.img}
-              price={product?.price}
+              price={formatCurrencyBRL(product?.price)}
               promotion={product?.promotion}
               store={product?.store}
               onPress={() =>
@@ -124,7 +125,7 @@ const ClientDashboard: React.FC = () => {
               loading={isFeaturedproductsLosding}
               name={product?.name}
               img={product?.img}
-              price={product?.price}
+              price={formatCurrencyBRL(product?.price)}
               promotion={product?.promotion}
               store={product?.store}
               onPress={() =>

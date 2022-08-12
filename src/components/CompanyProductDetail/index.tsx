@@ -3,6 +3,7 @@ import {Alert} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
 import {RegisteredProduct} from '../../services/company/types';
+import {formatCurrencyBRL} from '../../utils/helpers';
 
 import {colors} from '../../styles/colors';
 import {
@@ -126,7 +127,7 @@ const CompanyProductDetail: React.FC<Props> = ({
               <DescriptionsLoading />
             ) : (
               <>
-                <Price>{product?.price}</Price>
+                <Price>{formatCurrencyBRL(product?.price)}</Price>
                 <PromotionContainer>
                   <PromotionText>{product?.promotion}% OFF</PromotionText>
                 </PromotionContainer>

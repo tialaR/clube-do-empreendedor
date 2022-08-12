@@ -3,7 +3,6 @@ import {useMutation, useQuery} from '@tanstack/react-query';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {baseURL} from '../../utils/constants';
-import {formatCurrencyBRL} from '../../utils/helpers';
 
 import api from '../api';
 import QueryConstants from '../queryConstants';
@@ -224,7 +223,7 @@ const useGetRegisteredProducts = (): {
           id: item?.id,
           name: item?.nome,
           img: `${baseURL}/${item?.image}`,
-          price: formatCurrencyBRL(item?.price),
+          price: String(item?.price),
           promotion: item?.cupom,
           store: item?.loja,
           qrCodeImg: `${baseURL}/${item?.qr_code}`,
@@ -266,7 +265,7 @@ const useGetRegisteredProductDetail = ({
           id: data?.data?.id,
           name: data?.data?.nome,
           img: `${baseURL}/${data?.data?.image}`,
-          price: formatCurrencyBRL(data?.data?.price),
+          price: String(data?.data?.price),
           promotion: String(data?.data?.cupom),
           cupom: data?.data?.cupom,
           store: data?.data?.loja,
@@ -320,7 +319,7 @@ const useGetProduct = ({
           id: data?.data?.id,
           name: data?.data?.nome,
           img: `${baseURL}/${data?.data?.image}`,
-          price: formatCurrencyBRL(data?.data?.price),
+          price: String(data?.data?.price),
           promotion: String(data?.data?.cupom),
           cupom: data?.data?.cupom,
           store: data?.data?.loja,
@@ -399,12 +398,15 @@ const usePostProduct = () => {
       })
       .then(responseJson => {
         let data = responseJson;
+        console.log('-----------------------------------------');
+        console.log('PRODUTO REGISTER ->>', data);
+        console.log('-----------------------------------------');
 
         const dataAux: RegisteredProduct = {
           id: data?.id,
           name: data?.nome,
           img: `${baseURL}/${data?.image}`,
-          price: formatCurrencyBRL(data?.price),
+          price: data?.price,
           promotion: String(data?.cupom),
           store: data?.loja,
           qrCodeImg: `${baseURL}/${data?.qr_code}`,
@@ -426,6 +428,103 @@ const usePostProduct = () => {
 
   return {
     postProduct,
+    response: data,
+    isLoading,
+    isError,
+  };
+};
+
+const usePatchProduct = () => {
+  const [data, setData] = useState<RegisteredProduct | undefined>(undefined);
+  const [isLoading, setIsLosding] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [token, setToken] = useState('');
+
+  async function getToken(): Promise<void> {
+    const [token] = await AsyncStorage.multiGet(['@EntrepreneursClub:token']);
+
+    if (token[1]) {
+      setToken(token[1]);
+    }
+  }
+
+  getToken();
+
+  const patchProduct = ({
+    product,
+    productId,
+  }: {
+    product: RegisterProduct;
+    productId: string;
+  }) => {
+    setIsLosding(true);
+
+    const formData = new FormData();
+    formData.append('nome', product?.name);
+    formData.append('price', product?.price);
+    formData.append('loja', product?.store);
+    formData.append('categoria', product?.category);
+    formData.append('image', {
+      uri: product?.image?.uri,
+      type: product?.image?.type,
+      name: product?.image?.name,
+    });
+    formData.append('is_available', product?.availability);
+
+    if (product?.description) {
+      formData.append('description', product?.description);
+    }
+    if (product?.cupom) {
+      formData.append('cupom', product?.cupom);
+    }
+
+    fetch(`${baseURL}produtos/${productId}/`, {
+      method: 'patch',
+      body: formData,
+      headers: {
+        'Content-Type': 'multipart/form-data; ',
+        Authorization: `Token ${token}`,
+      },
+    })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error('Algo deu errado!');
+      })
+      .then(responseJson => {
+        let data = responseJson;
+
+        console.log('-----------------------------------------');
+        console.log('PRODUTO UPDATE ->>', data);
+        console.log('-----------------------------------------');
+
+        const dataAux: RegisteredProduct = {
+          id: data?.id,
+          name: data?.nome,
+          img: `${baseURL}/${data?.image}`,
+          price: data?.price,
+          promotion: String(data?.cupom),
+          store: data?.loja,
+          qrCodeImg: `${baseURL}/${data?.qr_code}`,
+          description: data?.description,
+          category: data?.categoria,
+          isAvailable: data?.is_available,
+        };
+
+        setData(dataAux);
+        queryClient.refetchQueries([QueryConstants.REGISTER_PRODUCTS_LIST]);
+      })
+      .catch(err => {
+        setIsError(!!err);
+      })
+      .finally(() => {
+        setIsLosding(false);
+      });
+  };
+
+  return {
+    patchProduct,
     response: data,
     isLoading,
     isError,
@@ -682,6 +781,7 @@ const ServiceCompany = {
   useGetRegisteredProducts,
   useGetRegisteredProductDetail,
   usePostProduct,
+  usePatchProduct,
   useGetProduct,
   usePostCupom,
   useGetCoupons,

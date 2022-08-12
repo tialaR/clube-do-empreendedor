@@ -20,6 +20,7 @@ import {BarCodeScanner, PermissionStatus} from 'expo-barcode-scanner';
 import IconButton from '../IconButton';
 
 import ServiceClient from '../../services/client/client.service';
+import {formatCurrencyBRL} from '../../utils/helpers';
 
 import {
   Overlay,
@@ -275,7 +276,7 @@ const ClientProductDetailModal: React.ForwardRefRenderFunction<
       <DescriptionContainer>
         {!isLoading ? (
           <>
-            <Price>{product?.price}</Price>
+            <Price>{formatCurrencyBRL(product?.price)}</Price>
             <PromotionContainer>
               <PromotionText>{product?.promotion}% OFF</PromotionText>
             </PromotionContainer>

@@ -117,11 +117,11 @@ const CompanyUpdateProduct: React.FC<Props> = ({route}) => {
   } = useForm({resolver: yupResolver(validationSchema)});
 
   const {
-    postProduct,
-    isLoading: isPostProductLoading,
-    isError: isPostProductError,
+    patchProduct,
+    isLoading: isPatchProductLoading,
+    isError: isPatchProductError,
     response: productRegistered,
-  } = ServiceCompany.usePostProduct();
+  } = ServiceCompany.usePatchProduct();
 
   const {response: couponsList} = ServiceCompany.useGetCoupons();
   const discountCodes = useMemo(() => {
@@ -151,7 +151,7 @@ const CompanyUpdateProduct: React.FC<Props> = ({route}) => {
     });
 
   useEffect(() => {
-    isPostProductError &&
+    isPatchProductError &&
       Alert.alert(
         'Ocorreu algum erro ao tentar editar o produto!',
         'Tente novamente mais tarde.',
@@ -167,7 +167,7 @@ const CompanyUpdateProduct: React.FC<Props> = ({route}) => {
           onDismiss: () => false,
         },
       );
-  }, [isPostProductError]);
+  }, [isPatchProductError]);
 
   useEffect(() => {
     if (product) {
@@ -267,11 +267,11 @@ const CompanyUpdateProduct: React.FC<Props> = ({route}) => {
       name: data?.productName,
       description: data?.productDescription,
       price: data?.price,
-      category: data?.category,
       availability: availability,
-      cupom: selectedDiscountCode.value,
+      category: data?.category, // É possível retornar o ID da categoria?
+      cupom: String(selectedDiscountCode?.id), // É possível retornar o ID do cupom?
       image: photo,
-      store: data?.store,
+      store: data?.store, // É possível retornar o ID da loja?
     };
     console.log('PRODUTO -->', JSON.stringify(productUpdated));
     console.log('---------------------------------------------');
@@ -279,8 +279,9 @@ const CompanyUpdateProduct: React.FC<Props> = ({route}) => {
     console.log('name of image -->', JSON.stringify(photo?.name));
     console.log('type of image ---> ', JSON.stringify(photo?.type));
 
-    postProduct({
+    patchProduct({
       product: productUpdated,
+      productId: String(product?.id),
     });
   };
 
@@ -609,7 +610,7 @@ const CompanyUpdateProduct: React.FC<Props> = ({route}) => {
             {isProgressEnd ? (
               <Button
                 outlinedLight
-                loading={isPostProductLoading}
+                loading={isPatchProductLoading}
                 onPress={handleSubmit(onSubmit)}>
                 Concluir
               </Button>

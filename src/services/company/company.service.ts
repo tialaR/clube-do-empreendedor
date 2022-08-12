@@ -443,6 +443,10 @@ const useGetCoupons = (): {
   const query = useQuery([QueryConstants.COUPONS_LIST], async () => {
     const data = await api.get<{data: CouponResponse[]}>('cupom/');
 
+    console.log('---------------------------------------------');
+    console.log('DESCONTOS -->', JSON.stringify(data?.data?.data));
+    console.log('---------------------------------------------');
+
     return data.data.data.map(item => {
       return {
         id: item.id,

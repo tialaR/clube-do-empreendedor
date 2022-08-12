@@ -116,6 +116,7 @@ const CompanyRegisterProduct: React.FC = () => {
   } = ServiceCompany.usePostProduct();
 
   const {response: couponsList} = ServiceCompany.useGetCoupons();
+
   const discountCodes = useMemo(() => {
     return couponsList?.map((item: Coupon) => {
       return {
@@ -425,7 +426,7 @@ const CompanyRegisterProduct: React.FC = () => {
                     </ProductPhotosContainer>
                     {photoError && (
                       <ErrorContainer>
-                        <ErrorMessage>{photosError}</ErrorMessage>
+                        <ErrorMessage>{photoError}</ErrorMessage>
                       </ErrorContainer>
                     )}
                   </>

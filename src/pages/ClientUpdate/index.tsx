@@ -151,20 +151,33 @@ const ClientUpdate: React.FC = () => {
 
   const [progress, setProgress] = useState(0);
 
-  const [name, setName] = useState(user?.name ?? '');
-  const [cpf, setCpf] = useState(user?.cpf ?? '');
-  const [birthDate, setBirthDate] = useState(user?.birthDate ?? '');
-  const [address, setAddress] = useState(user?.address ?? '');
-  const [cep, setCep] = useState(user?.cep ?? '');
-  const [genre, setGenre] = useState(user?.genre ?? '');
-  const [email, setEmail] = useState(user?.email ?? '');
-  const [telephone, setTelephone] = useState(user?.telephone ?? '');
+  const [name, setName] = useState('');
+  const [cpf, setCpf] = useState('');
+  const [birthDate, setBirthDate] = useState('');
+  const [address, setAddress] = useState('');
+  const [cep, setCep] = useState('');
+  const [genre, setGenre] = useState('');
+  const [email, setEmail] = useState('');
+  const [telephone, setTelephone] = useState('');
 
   const isProgressEnd = useMemo(
     () => progress === FORM_ELEMENTS_SIZE,
     [progress],
   );
   const isProgressStart = useMemo(() => progress === 0, [progress]);
+
+  useEffect(() => {
+    if (user) {
+      setName(user?.name ?? '');
+      setCpf(user?.cpf ?? '');
+      setBirthDate(user?.birthDate ?? '');
+      setAddress(user?.address ?? '');
+      setCep(user?.cep ?? '');
+      setGenre(user?.genre ?? '');
+      setEmail(user?.email ?? '');
+      setTelephone(user?.telephone ?? '');
+    }
+  }, [user]);
 
   useEffect(() => {
     isSuccess &&

@@ -1,9 +1,6 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
-import * as yup from 'yup';
-import {yupResolver} from '@hookform/resolvers/yup';
-import {Controller, useForm} from 'react-hook-form';
 import {
+  ActivityIndicator,
   Alert,
   Keyboard,
   KeyboardAvoidingView,
@@ -11,6 +8,10 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import * as yup from 'yup';
+import {yupResolver} from '@hookform/resolvers/yup';
+import {Controller, useForm} from 'react-hook-form';
 
 import Button from '../../components/Button';
 import IconButton from '../../components/IconButton';
@@ -146,33 +147,43 @@ const CompanyUpdate: React.FC = () => {
 
   const [progress, setProgress] = useState(0);
 
-  const [fantasyName, setFantasyName] = useState(company?.fantasyName ?? '');
-  const [cnpj, setCnpj] = useState(maskCNPJ(String(company?.cnpj)) ?? '');
-  const [address, setAddress] = useState(company?.address ?? '');
-  const [cep, setCep] = useState(maskCEP(String(company?.cep)) ?? '');
-  const [openingTime, setOpeningTime] = useState(company?.openingTime ?? '');
-  const [closingTime, setClosingTime] = useState(company?.closingTime ?? '');
-  const [companyDescription, setCompanyDescription] = useState(
-    company?.companyDescription ?? '',
-  );
-  const [email, setEmail] = useState(company?.email ?? '');
-  const [occupationArea, setOccupationArea] = useState(
-    company?.occupationArea ?? '',
-  );
-  const [telephone, setTelephone] = useState(
-    maskPhone(String(company?.telephone)) ?? '',
-  );
-  const [whatsApp, setWhatsApp] = useState(
-    maskPhone(String(company?.whatsApp)) ?? '',
-  );
-  const [instagram, setInstagram] = useState(company?.instagram ?? '');
-  const [facebook, setFacebook] = useState(company?.facebook ?? '');
+  const [fantasyName, setFantasyName] = useState('');
+  const [cnpj, setCnpj] = useState('');
+  const [address, setAddress] = useState('');
+  const [cep, setCep] = useState('');
+  const [openingTime, setOpeningTime] = useState('');
+  const [closingTime, setClosingTime] = useState('');
+  const [companyDescription, setCompanyDescription] = useState('');
+  const [email, setEmail] = useState('');
+  const [occupationArea, setOccupationArea] = useState('');
+  const [telephone, setTelephone] = useState('');
+  const [whatsApp, setWhatsApp] = useState('');
+  const [instagram, setInstagram] = useState('');
+  const [facebook, setFacebook] = useState('');
 
   const isProgressEnd = useMemo(
     () => progress === FORM_ELEMENTS_SIZE,
     [progress],
   );
   const isProgressStart = useMemo(() => progress === 0, [progress]);
+
+  useEffect(() => {
+    if (company) {
+      setFantasyName(company?.fantasyName ?? '');
+      setCnpj(maskCNPJ(String(company?.cnpj)) ?? '');
+      setAddress(company?.address ?? '');
+      setCep(maskCEP(String(company?.cep)) ?? '');
+      setOpeningTime(company?.openingTime ?? '');
+      setClosingTime(company?.closingTime ?? '');
+      setEmail(company?.email ?? '');
+      setCompanyDescription(company?.companyDescription ?? '');
+      setOccupationArea(company?.occupationArea ?? '');
+      setTelephone(maskPhone(String(company?.telephone)) ?? '');
+      setWhatsApp(maskPhone(String(company?.whatsApp)) ?? '');
+      setInstagram(company?.instagram ?? '');
+      setFacebook(company?.facebook ?? '');
+    }
+  }, [company]);
 
   useEffect(() => {
     isSuccess &&

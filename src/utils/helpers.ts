@@ -80,3 +80,20 @@ export function formatCurrencyBRL(value: number | string | null | undefined) {
 
   return '-';
 }
+
+export function getUrlExtension(url: string | undefined | null) {
+  if (url) {
+    return url?.split(/[#?]/)[0]?.split('.')?.pop()?.trim();
+  }
+
+  return undefined;
+}
+
+export function getUrlImageName(url: string | null | undefined) {
+  if (url) {
+    const imageName = url?.split('/')?.pop();
+    return imageName;
+  }
+
+  return undefined;
+}

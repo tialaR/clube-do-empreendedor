@@ -7,8 +7,8 @@ import {fonts} from '../../styles/fonts';
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
-const productPhotoWidth = (screenWidth - 80) / 3;
-const productPhotoHeight = (screenHeight / 100) * 15;
+const productPhotoWidth = screenWidth - 140;
+const productPhotoHeight = (screenHeight / 100) * 35;
 
 export const Container = styled.ScrollView.attrs({
   keyboardShouldPersistTaps: 'handled',
@@ -99,4 +99,10 @@ export const ErrorMessage = styled.Text`
   font-family: ${fonts.families.latoRegular};
 
   margin: 10px 0 0 8px;
+`;
+
+export const ErrorContainer = styled.View`
+  align-items: center;
+  padding-top: 4px;
+  padding-bottom: 10px;
 `;

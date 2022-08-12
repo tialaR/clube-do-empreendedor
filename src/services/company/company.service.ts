@@ -272,6 +272,8 @@ const useGetRegisteredProductDetail = ({
           store: data?.data?.loja,
           qrCodeImg: `${baseURL}/${data?.data?.qr_code}`,
           description: data?.data?.description,
+          isAvailable: data?.data?.is_available,
+          category: data?.data?.categoria,
         };
       }
 
@@ -299,7 +301,7 @@ const useGetProduct = ({
 }: {
   productId: number;
 }): {
-  response: RegisteredProduct | undefined;
+  response: ProductDetail | undefined;
   isSuccess: boolean;
   isLoading: boolean;
   isFetching: boolean;
@@ -324,6 +326,8 @@ const useGetProduct = ({
           store: data?.data?.loja,
           qrCodeImg: `${baseURL}/${data?.data?.qr_code}`,
           description: data?.data?.description,
+          isAvailable: data?.data?.is_available,
+          category: data?.data?.categoria,
         };
       }
 

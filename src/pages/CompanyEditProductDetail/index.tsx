@@ -67,7 +67,7 @@ const CompanyEditProductDetail: React.FC<Props> = ({route}) => {
           filledLight
           onPress={() =>
             navigation.navigate('CompanyUpdateProduct', {
-              productId: productId,
+              product: product,
             })
           }>
           Editar Produto

@@ -9,6 +9,7 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import {Controller, useForm} from 'react-hook-form';
 import {
   ActivityIndicator,
+  Alert,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -26,12 +27,20 @@ import {SvgIcon} from '../../components/SvgIcon';
 import RadioButton from '../../components/RadioButton';
 
 import ServiceCompany from '../../services/company/company.service';
-import {Coupon, RegisteredProduct} from '../../services/company/types';
+import {
+  Coupon,
+  ProductDetail,
+  RegisteredProduct,
+} from '../../services/company/types';
 
-import {formatCurrencyBRL} from '../../utils/helpers';
+import {
+  formatCurrencyBRL,
+  getUrlExtension,
+  getUrlImageName,
+} from '../../utils/helpers';
 
 import {colors} from '../../styles/colors';
-import {SpacingX, SpacingY} from '../../styles/globalStyles';
+import {SpacingY} from '../../styles/globalStyles';
 import {
   HeaderContainer,
   Container,
@@ -43,6 +52,7 @@ import {
   CompanyProductDetailBodyContainer,
   ProductPhotoImage,
   ErrorMessage,
+  ErrorContainer,
 } from './styles';
 
 enum PageTitles {
@@ -58,34 +68,26 @@ enum PageTitles {
 }
 
 type DiscountCode = {
-  id: number;
-  label: string | undefined;
-  value: string | undefined;
+  id: number | null | undefined;
+  label: string | null | undefined;
+  value: string | null | undefined;
 };
 
 const FORM_ELEMENTS_SIZE = 7;
 
 const validationSchema = yup.object().shape({
-  productName: yup.string().required('Campo obrigatório'),
+  productName: yup.string(),
   productDescription: yup.string(),
   price: yup.string().required('Campo obrigatório'),
   store: yup.string().required('Campo obrigatório'),
   category: yup.string().required('Campo obrigatório'),
 });
 
-const productPhotosValidationSchema = yup
-  .array()
-  .min(1, 'Pelo menos uma foto deve ser adicionada')
-  .of(
-    yup
-      .object()
-      .shape({
-        uri: yup.string(),
-        type: yup.string(),
-        name: yup.string(),
-      })
-      .required('Pelo menos uma foto deve ser adicionada'),
-  );
+const productPhotosValidationSchema = yup.object().shape({
+  uri: yup.string().required('Uma foto do produto deve ser adicionada.'),
+  type: yup.string(),
+  name: yup.string(),
+});
 
 const discountCodeValidationSchema = yup.object().shape({
   label: yup.string().required('Campo obrigatório'),
@@ -99,13 +101,13 @@ type Photo = {
 };
 
 type Props = {
-  route: RouteProp<{params: {productId: number}}, 'params'>;
+  route: RouteProp<{params: {product: ProductDetail}}, 'params'>;
 };
 
 const CompanyUpdateProduct: React.FC<Props> = ({route}) => {
   const navigation = useNavigation<any>();
 
-  const {productId} = useMemo(() => route.params, [route]);
+  const {product} = useMemo(() => route.params, [route]);
 
   const {
     control,
@@ -114,13 +116,10 @@ const CompanyUpdateProduct: React.FC<Props> = ({route}) => {
     reset: resetInputs,
   } = useForm({resolver: yupResolver(validationSchema)});
 
-  const {response: product} = ServiceCompany.useGetProduct({
-    productId: productId,
-  });
-
   const {
     postProduct,
-    isLoading: isLoadingPostProduct,
+    isLoading: isPostProductLoading,
+    isError: isPostProductError,
     response: productRegistered,
   } = ServiceCompany.usePostProduct();
 
@@ -138,7 +137,7 @@ const CompanyUpdateProduct: React.FC<Props> = ({route}) => {
   const [progress, setProgress] = useState(0);
 
   const [productName, setProductName] = useState('');
-  const [photos, setPhotos] = useState<Photo[]>([] as Photo[]);
+  const [photo, setPhoto] = useState<Photo | undefined>({} as Photo);
   const [productDescription, setProductDescription] = useState('');
   const [price, setPrice] = useState('');
   const [availability, setAvailability] = useState(false);
@@ -150,6 +149,25 @@ const CompanyUpdateProduct: React.FC<Props> = ({route}) => {
       label: 'Selecione um códido',
       value: undefined,
     });
+
+  useEffect(() => {
+    isPostProductError &&
+      Alert.alert(
+        'Ocorreu algum erro ao tentar editar o produto!',
+        'Tente novamente mais tarde.',
+        [
+          {
+            text: 'Ok',
+            onPress: () => false,
+            style: 'default',
+          },
+        ],
+        {
+          cancelable: true,
+          onDismiss: () => false,
+        },
+      );
+  }, [isPostProductError]);
 
   useEffect(() => {
     if (product) {
@@ -164,16 +182,14 @@ const CompanyUpdateProduct: React.FC<Props> = ({route}) => {
         label: product?.promotion ?? 'Selecione um códido',
         value: product?.promotion ?? undefined,
       });
-      setPhotos(
+      setPhoto(
         product?.img
-          ? [
-              {
-                uri: product?.img,
-                type: product?.img,
-                name: product?.img,
-              },
-            ]
-          : [],
+          ? {
+              uri: product?.img,
+              type: `image/${getUrlExtension(product?.img)}`,
+              name: getUrlImageName(product?.img),
+            }
+          : undefined,
       );
     }
   }, [product]);
@@ -185,7 +201,7 @@ const CompanyUpdateProduct: React.FC<Props> = ({route}) => {
   const [discountCodeError, setDiscountCodeError] = useState<
     string | undefined
   >(undefined);
-  const [photosError, setPhotosError] = useState<string | undefined>(undefined);
+  const [photoError, setPhotoError] = useState<string | undefined>(undefined);
 
   const isProductRegistered = useMemo(
     () => !!productResgistered,
@@ -202,12 +218,12 @@ const CompanyUpdateProduct: React.FC<Props> = ({route}) => {
     () => selectedDiscountCode.value !== undefined,
     [selectedDiscountCode],
   );
-  const isSelectedPhoto = useMemo(() => photos.length > 0, [photos]);
+  const isSelectedPhoto = useMemo(() => photo?.uri, [photo]);
 
   useEffect(() => {
     if (progress === 2) {
-      productPhotosValidationSchema.validate(photos).catch(err => {
-        setPhotosError(err.errors[0]);
+      productPhotosValidationSchema.validate(photo).catch(err => {
+        setPhotoError(err.errors[0]);
       });
     }
 
@@ -216,14 +232,14 @@ const CompanyUpdateProduct: React.FC<Props> = ({route}) => {
         setDiscountCodeError(err.errors[0]);
       });
     }
-  }, [progress, photos, selectedDiscountCode]);
+  }, [progress, photo, selectedDiscountCode]);
 
   useEffect(() => {
     setDiscountCodeError(undefined);
   }, [isSelectedDiscountCode]);
 
   useEffect(() => {
-    setPhotosError(undefined);
+    setPhotoError(undefined);
   }, [isSelectedPhoto]);
 
   const handleContinue = () => {
@@ -251,12 +267,17 @@ const CompanyUpdateProduct: React.FC<Props> = ({route}) => {
       name: data?.productName,
       description: data?.productDescription,
       price: data?.price,
-      availability: availability,
       category: data?.category,
+      availability: availability,
       cupom: selectedDiscountCode.value,
-      image: photos[0],
+      image: photo,
       store: data?.store,
     };
+    console.log('PRODUTO -->', JSON.stringify(productUpdated));
+    console.log('---------------------------------------------');
+    console.log('name of image -->', JSON.stringify(photo?.uri));
+    console.log('name of image -->', JSON.stringify(photo?.name));
+    console.log('type of image ---> ', JSON.stringify(photo?.type));
 
     postProduct({
       product: productUpdated,
@@ -293,14 +314,12 @@ const CompanyUpdateProduct: React.FC<Props> = ({route}) => {
     isSelectedPhoto,
   ]);
 
-  const handleSelectPhoto = (selectedPhotoIndex: number) => {
+  const handleSelectPhoto = () => {
     launchImageLibrary(
       {
         mediaType: 'photo',
       },
       (response: ImagePickerResponse) => {
-        let images = [...photos];
-
         if (response && response?.assets?.[0].uri) {
           const image = {
             uri: response?.assets?.[0].uri,
@@ -308,9 +327,7 @@ const CompanyUpdateProduct: React.FC<Props> = ({route}) => {
             name: response?.assets?.[0].fileName,
           };
 
-          images[selectedPhotoIndex] = image;
-
-          setPhotos(images);
+          setPhoto(image);
         }
       },
     );
@@ -427,45 +444,11 @@ const CompanyUpdateProduct: React.FC<Props> = ({route}) => {
                     <Title withPadding>{PageTitles.productPhotos}</Title>
                     <SpacingY medium />
                     <ProductPhotosContainer>
-                      <ProductPhoto onPress={() => handleSelectPhoto(0)}>
-                        {photos[0]?.uri ? (
+                      <ProductPhoto onPress={handleSelectPhoto}>
+                        {photo?.uri ? (
                           <ProductPhotoImage
                             source={{
-                              uri: photos[0]?.uri,
-                            }}
-                          />
-                        ) : (
-                          <SvgIcon
-                            name="image"
-                            width={20}
-                            height={20}
-                            color={colors.black}
-                          />
-                        )}
-                      </ProductPhoto>
-                      <SpacingX small />
-                      <ProductPhoto onPress={() => handleSelectPhoto(1)}>
-                        {photos[1]?.uri ? (
-                          <ProductPhotoImage
-                            source={{
-                              uri: photos[1]?.uri,
-                            }}
-                          />
-                        ) : (
-                          <SvgIcon
-                            name="image"
-                            width={20}
-                            height={20}
-                            color={colors.black}
-                          />
-                        )}
-                      </ProductPhoto>
-                      <SpacingX small />
-                      <ProductPhoto onPress={() => handleSelectPhoto(2)}>
-                        {photos[2]?.uri ? (
-                          <ProductPhotoImage
-                            source={{
-                              uri: photos[2]?.uri,
+                              uri: photo?.uri,
                             }}
                           />
                         ) : (
@@ -478,61 +461,11 @@ const CompanyUpdateProduct: React.FC<Props> = ({route}) => {
                         )}
                       </ProductPhoto>
                     </ProductPhotosContainer>
-                    <SpacingY small />
-                    <ProductPhotosContainer>
-                      <ProductPhoto onPress={() => handleSelectPhoto(3)}>
-                        {photos[3]?.uri ? (
-                          <ProductPhotoImage
-                            source={{
-                              uri: photos[3]?.uri,
-                            }}
-                          />
-                        ) : (
-                          <SvgIcon
-                            name="image"
-                            width={20}
-                            height={20}
-                            color={colors.black}
-                          />
-                        )}
-                      </ProductPhoto>
-                      <SpacingX small />
-                      <ProductPhoto onPress={() => handleSelectPhoto(4)}>
-                        {photos[4]?.uri ? (
-                          <ProductPhotoImage
-                            source={{
-                              uri: photos[4]?.uri,
-                            }}
-                          />
-                        ) : (
-                          <SvgIcon
-                            name="image"
-                            width={20}
-                            height={20}
-                            color={colors.black}
-                          />
-                        )}
-                      </ProductPhoto>
-                      <SpacingX small />
-                      <ProductPhoto onPress={() => handleSelectPhoto(5)}>
-                        {photos[5]?.uri ? (
-                          <ProductPhotoImage
-                            source={{
-                              uri: photos[5]?.uri,
-                            }}
-                          />
-                        ) : (
-                          <SvgIcon
-                            name="image"
-                            width={20}
-                            height={20}
-                            color={colors.black}
-                          />
-                        )}
-                      </ProductPhoto>
-                    </ProductPhotosContainer>
-
-                    {photosError && <ErrorMessage>{photosError}</ErrorMessage>}
+                    {photoError && (
+                      <ErrorContainer>
+                        <ErrorMessage>{photoError}</ErrorMessage>
+                      </ErrorContainer>
+                    )}
                   </>
                 )}
 
@@ -676,7 +609,7 @@ const CompanyUpdateProduct: React.FC<Props> = ({route}) => {
             {isProgressEnd ? (
               <Button
                 outlinedLight
-                loading={isLoadingPostProduct}
+                loading={isPostProductLoading}
                 onPress={handleSubmit(onSubmit)}>
                 Concluir
               </Button>

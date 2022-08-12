@@ -12,18 +12,18 @@ import {SvgIcon} from '../SvgIcon';
 
 import {colors} from '../../styles/colors';
 
+type Item = {
+  id: number | null | undefined;
+  label: string | null | undefined;
+  value: string | null | undefined;
+};
+
 type Props = {
-  title: string;
-  list: Item[];
+  title: string | null | undefined;
+  list: Item[] | undefined;
   error?: boolean;
   errorText?: string;
   onItemSelect: (item: Item) => void;
-};
-
-type Item = {
-  id: number;
-  label: string;
-  value: string;
 };
 
 const ExpandableListPanel: React.FC<Props> = ({

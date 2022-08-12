@@ -77,10 +77,10 @@ export type RegisterCupomResponse = {
   loja: number;
 };
 
-type Image = {
-  uri: string | undefined;
-  type: string | undefined;
-  name: string | undefined;
+type Photo = {
+  uri: string | null | undefined;
+  type: string | null | undefined;
+  name: string | null | undefined;
 };
 
 export type RegisterProduct = {
@@ -90,7 +90,7 @@ export type RegisterProduct = {
   category: string | null | undefined;
   availability: boolean | null | undefined;
   cupom: string | null | undefined;
-  image: Image;
+  image: Photo | undefined;
   store: string | null | undefined;
 };
 
@@ -143,6 +143,8 @@ export type ProductDetail = {
   cupom: string | null | undefined;
   qrCodeImg: string | null | undefined;
   description: string | null | undefined;
+  isAvailable: boolean | null | undefined;
+  category: string | null | undefined;
 };
 
 export type CompanyInformationsResponse = {

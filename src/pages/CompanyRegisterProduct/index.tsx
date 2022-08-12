@@ -8,6 +8,7 @@ import * as yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {Controller, useForm} from 'react-hook-form';
 import {
+  Alert,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -29,7 +30,7 @@ import ServiceCompany from '../../services/company/company.service';
 import {formatCurrencyBRL} from '../../utils/helpers';
 
 import {colors} from '../../styles/colors';
-import {SpacingX, SpacingY} from '../../styles/globalStyles';
+import {SpacingY} from '../../styles/globalStyles';
 import {
   HeaderContainer,
   Container,
@@ -41,6 +42,7 @@ import {
   CompanyProductDetailBodyContainer,
   ProductPhotoImage,
   ErrorMessage,
+  ErrorContainer,
 } from './styles';
 import {
   Coupon,
@@ -61,9 +63,9 @@ enum PageTitles {
 }
 
 type DiscountCode = {
-  id: number;
-  label: string | undefined;
-  value: string | undefined;
+  id: number | null | undefined;
+  label: string | null | undefined;
+  value: string | null | undefined;
 };
 
 const FORM_ELEMENTS_SIZE = 7;
@@ -77,18 +79,13 @@ const validationSchema = yup.object().shape({
 });
 
 const productPhotosValidationSchema = yup
-  .array()
-  .min(1, 'Pelo menos uma foto deve ser adicionada')
-  .of(
-    yup
-      .object()
-      .shape({
-        uri: yup.string(),
-        type: yup.string(),
-        name: yup.string(),
-      })
-      .required('Pelo menos uma foto deve ser adicionada'),
-  );
+  .object()
+
+  .shape({
+    uri: yup.string().required('Uma foto do produto deve ser adicionada.'),
+    type: yup.string(),
+    name: yup.string(),
+  });
 
 const discountCodeValidationSchema = yup.object().shape({
   label: yup.string().required('Campo obrigatório'),
@@ -113,7 +110,8 @@ const CompanyRegisterProduct: React.FC = () => {
 
   const {
     postProduct,
-    isLoading: isLoadingPostProduct,
+    isLoading: isPostProductLoading,
+    isError: isPostProductError,
     response: productRegistered,
   } = ServiceCompany.usePostProduct();
 
@@ -131,7 +129,7 @@ const CompanyRegisterProduct: React.FC = () => {
   const [progress, setProgress] = useState(0);
 
   const [productName, setProductName] = useState('');
-  const [photos, setPhotos] = useState<Photo[]>([] as Photo[]);
+  const [photo, setPhoto] = useState<Photo>({} as Photo);
   const [productDescription, setProductDescription] = useState('');
   const [price, setPrice] = useState('');
   const [availability, setAvailability] = useState(false);
@@ -151,7 +149,7 @@ const CompanyRegisterProduct: React.FC = () => {
   const [discountCodeError, setDiscountCodeError] = useState<
     string | undefined
   >(undefined);
-  const [photosError, setPhotosError] = useState<string | undefined>(undefined);
+  const [photoError, setPhotoError] = useState<string | undefined>(undefined);
 
   const isProductRegistered = useMemo(
     () => !!productResgistered,
@@ -168,12 +166,31 @@ const CompanyRegisterProduct: React.FC = () => {
     () => selectedDiscountCode.value !== undefined,
     [selectedDiscountCode],
   );
-  const isSelectedPhoto = useMemo(() => photos.length > 0, [photos]);
+  const isSelectedPhoto = useMemo(() => photo?.uri, [photo]);
+
+  useEffect(() => {
+    isPostProductError &&
+      Alert.alert(
+        'Ocorreu algum erro ao tentar cadastrar o produto!',
+        'Tente novamente mais tarde.',
+        [
+          {
+            text: 'Ok',
+            onPress: () => false,
+            style: 'default',
+          },
+        ],
+        {
+          cancelable: true,
+          onDismiss: () => false,
+        },
+      );
+  }, [isPostProductError]);
 
   useEffect(() => {
     if (progress === 2) {
-      productPhotosValidationSchema.validate(photos).catch(err => {
-        setPhotosError(err.errors[0]);
+      productPhotosValidationSchema.validate(photo).catch(err => {
+        setPhotoError(err.errors[0]);
       });
     }
 
@@ -182,14 +199,14 @@ const CompanyRegisterProduct: React.FC = () => {
         setDiscountCodeError(err.errors[0]);
       });
     }
-  }, [progress, photos, selectedDiscountCode]);
+  }, [progress, photo, selectedDiscountCode]);
 
   useEffect(() => {
     setDiscountCodeError(undefined);
   }, [isSelectedDiscountCode]);
 
   useEffect(() => {
-    setPhotosError(undefined);
+    setPhotoError(undefined);
   }, [isSelectedPhoto]);
 
   const handleContinue = () => {
@@ -220,7 +237,7 @@ const CompanyRegisterProduct: React.FC = () => {
       availability: availability,
       category: data?.category,
       cupom: String(selectedDiscountCode?.id),
-      image: photos[0],
+      image: photo,
       store: data?.store,
     };
 
@@ -259,14 +276,12 @@ const CompanyRegisterProduct: React.FC = () => {
     isSelectedPhoto,
   ]);
 
-  const handleSelectPhoto = (selectedPhotoIndex: number) => {
+  const handleSelectPhoto = () => {
     launchImageLibrary(
       {
         mediaType: 'photo',
       },
       (response: ImagePickerResponse) => {
-        let images = [...photos];
-
         if (response && response?.assets?.[0].uri) {
           const image = {
             uri: response?.assets?.[0].uri,
@@ -274,9 +289,7 @@ const CompanyRegisterProduct: React.FC = () => {
             name: response?.assets?.[0].fileName,
           };
 
-          images[selectedPhotoIndex] = image;
-
-          setPhotos(images);
+          setPhoto(image);
         }
       },
     );
@@ -393,45 +406,11 @@ const CompanyRegisterProduct: React.FC = () => {
                     <Title withPadding>{PageTitles.productPhotos}</Title>
                     <SpacingY medium />
                     <ProductPhotosContainer>
-                      <ProductPhoto onPress={() => handleSelectPhoto(0)}>
-                        {photos[0]?.uri ? (
+                      <ProductPhoto onPress={handleSelectPhoto}>
+                        {photo?.uri ? (
                           <ProductPhotoImage
                             source={{
-                              uri: photos[0]?.uri,
-                            }}
-                          />
-                        ) : (
-                          <SvgIcon
-                            name="image"
-                            width={20}
-                            height={20}
-                            color={colors.black}
-                          />
-                        )}
-                      </ProductPhoto>
-                      <SpacingX small />
-                      <ProductPhoto onPress={() => handleSelectPhoto(1)}>
-                        {photos[1]?.uri ? (
-                          <ProductPhotoImage
-                            source={{
-                              uri: photos[1]?.uri,
-                            }}
-                          />
-                        ) : (
-                          <SvgIcon
-                            name="image"
-                            width={20}
-                            height={20}
-                            color={colors.black}
-                          />
-                        )}
-                      </ProductPhoto>
-                      <SpacingX small />
-                      <ProductPhoto onPress={() => handleSelectPhoto(2)}>
-                        {photos[2]?.uri ? (
-                          <ProductPhotoImage
-                            source={{
-                              uri: photos[2]?.uri,
+                              uri: photo?.uri,
                             }}
                           />
                         ) : (
@@ -444,61 +423,11 @@ const CompanyRegisterProduct: React.FC = () => {
                         )}
                       </ProductPhoto>
                     </ProductPhotosContainer>
-                    <SpacingY small />
-                    <ProductPhotosContainer>
-                      <ProductPhoto onPress={() => handleSelectPhoto(3)}>
-                        {photos[3]?.uri ? (
-                          <ProductPhotoImage
-                            source={{
-                              uri: photos[3]?.uri,
-                            }}
-                          />
-                        ) : (
-                          <SvgIcon
-                            name="image"
-                            width={20}
-                            height={20}
-                            color={colors.black}
-                          />
-                        )}
-                      </ProductPhoto>
-                      <SpacingX small />
-                      <ProductPhoto onPress={() => handleSelectPhoto(4)}>
-                        {photos[4]?.uri ? (
-                          <ProductPhotoImage
-                            source={{
-                              uri: photos[4]?.uri,
-                            }}
-                          />
-                        ) : (
-                          <SvgIcon
-                            name="image"
-                            width={20}
-                            height={20}
-                            color={colors.black}
-                          />
-                        )}
-                      </ProductPhoto>
-                      <SpacingX small />
-                      <ProductPhoto onPress={() => handleSelectPhoto(5)}>
-                        {photos[5]?.uri ? (
-                          <ProductPhotoImage
-                            source={{
-                              uri: photos[5]?.uri,
-                            }}
-                          />
-                        ) : (
-                          <SvgIcon
-                            name="image"
-                            width={20}
-                            height={20}
-                            color={colors.black}
-                          />
-                        )}
-                      </ProductPhoto>
-                    </ProductPhotosContainer>
-
-                    {photosError && <ErrorMessage>{photosError}</ErrorMessage>}
+                    {photoError && (
+                      <ErrorContainer>
+                        <ErrorMessage>{photosError}</ErrorMessage>
+                      </ErrorContainer>
+                    )}
                   </>
                 )}
 
@@ -576,7 +505,9 @@ const CompanyRegisterProduct: React.FC = () => {
                     <ExpandableListPanel
                       title={selectedDiscountCode?.label}
                       list={discountCodes}
-                      onItemSelect={setSelectedDiscountCode}
+                      onItemSelect={(item: DiscountCode) =>
+                        setSelectedDiscountCode(item)
+                      }
                       error={true}
                       errorText={discountCodeError}
                     />
@@ -642,7 +573,7 @@ const CompanyRegisterProduct: React.FC = () => {
             {isProgressEnd ? (
               <Button
                 outlinedLight
-                loading={isLoadingPostProduct}
+                loading={isPostProductLoading}
                 onPress={handleSubmit(onSubmit)}>
                 Concluir
               </Button>

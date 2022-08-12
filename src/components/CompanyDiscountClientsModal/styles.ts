@@ -125,7 +125,10 @@ export const SeeMoreInformations = styled.Text<SeeMoreInformationsProps>`
     `};
 `;
 
-export const CupomSituation = styled.Text`
+type CupomSituationProps = {
+  situation: 'bought' | 'pending' | 'expired';
+};
+export const CupomSituation = styled.Text<CupomSituationProps>`
   flex-shrink: 1;
 
   margin-top: 4px;
@@ -134,6 +137,21 @@ export const CupomSituation = styled.Text`
   font-family: ${fonts.families.latoRegular};
 
   color: ${colors.indigoA200};
+  ${props =>
+    props.situation === 'bought' &&
+    css`
+      color: ${colors.green200};
+    `};
+  ${props =>
+    props.situation === 'pending' &&
+    css`
+      color: ${colors.purple700};
+    `};
+  ${props =>
+    props.situation === 'expired' &&
+    css`
+      color: ${colors.red};
+    `};
 `;
 
 export const ClientMoreInformationContainer = styled.ScrollView.attrs(() => ({

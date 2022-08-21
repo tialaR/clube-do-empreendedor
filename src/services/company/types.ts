@@ -131,6 +131,7 @@ export type ProductDetailResponse = {
   loja: string | null | undefined;
   categoria: string | null | undefined;
   cupom: string | null | undefined;
+  cupom_id: number | null | undefined;
 };
 
 export type ProductDetail = {
@@ -139,6 +140,7 @@ export type ProductDetail = {
   img: string | null | undefined;
   price: string | null | undefined;
   promotion: string | null | undefined;
+  promotionId?: number | null | undefined;
   store: string | null | undefined;
   cupom: string | null | undefined;
   qrCodeImg: string | null | undefined;
@@ -150,7 +152,11 @@ export type ProductDetail = {
 export type CompanyInformationsResponse = {
   latitude: number;
   longitude: number;
-  loja: string;
+  loja: string | null;
+  endereco: string | null;
+  descricao: string | null;
+  horario_abertura: string | null;
+  horario_fechamento: string | null;
   facebook: string | null;
   instagram: string | null;
   whatsapp: string | null;
@@ -159,7 +165,11 @@ export type CompanyInformationsResponse = {
 export type CompanyInformations = {
   latitude: number;
   longitude: number;
-  store: string;
+  store: string | null;
+  address: string | null;
+  description: string | null;
+  openingTime: string | null;
+  closingTime: string | null;
   facebook: string | null;
   instagram: string | null;
   whatsapp: string | null;

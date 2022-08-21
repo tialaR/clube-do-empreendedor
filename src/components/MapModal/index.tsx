@@ -41,7 +41,9 @@ type PinProps = {
   id: string;
   name: string;
   description: string;
-  openingHours: string;
+  address: string;
+  openingTime: string;
+  closingTime: string;
   coords: {
     latitude: number;
     longitude: number;
@@ -63,14 +65,20 @@ const MapModal: React.ForwardRefRenderFunction<
 
   const [region, setRegion] = useState<Region | undefined>(undefined);
   const [marker] = useState<PinProps>({
-    id: companyInformations?.store,
-    name: companyInformations?.store,
+    id: String(companyInformations?.store),
+    name: companyInformations?.store ?? '-',
     coords: {
       latitude: companyInformations?.latitude,
       longitude: companyInformations?.longitude,
     },
-    description: 'Descrição ???',
-    openingHours: 'Horário de funcionamento ???',
+    address: companyInformations?.address ?? '-',
+    description: companyInformations?.description ?? '-',
+    openingTime: companyInformations?.openingTime
+      ? `Abre ás ${companyInformations?.openingTime}`
+      : '',
+    closingTime: companyInformations?.closingTime
+      ? `Fecha ás ${companyInformations?.closingTime}`
+      : '',
   });
 
   useEffect(() => {
@@ -132,17 +140,36 @@ const MapModal: React.ForwardRefRenderFunction<
               id={marker?.id}
               name={marker?.name}
               coords={marker?.coords}
+              address={marker?.address}
               description={marker?.description}
-              openingHours={marker?.openingHours}
+              openingTime={marker?.openingTime}
+              closingTime={marker?.closingTime}
             />
           </MapView>
 
           <FooterButtonsContainer>
-            <RoundIconButton type="whatsapp" onPress={openWhatsapp} />
+            <RoundIconButton
+              type="whatsapp"
+              onPress={() =>
+                openWhatsapp({phone: companyInformations?.whatsapp ?? ''})
+              }
+            />
             <SpacingX tiny />
-            <RoundIconButton type="instagram" onPress={openInstagram} />
+            <RoundIconButton
+              type="instagram"
+              onPress={() =>
+                openInstagram({
+                  instagram: companyInformations?.instagram ?? '',
+                })
+              }
+            />
             <SpacingX tiny />
-            <RoundIconButton type="facebook" onPress={openFacebook} />
+            <RoundIconButton
+              type="facebook"
+              onPress={() =>
+                openFacebook({facebook: companyInformations?.facebook ?? ''})
+              }
+            />
           </FooterButtonsContainer>
         </MapContainer>
       </Container>

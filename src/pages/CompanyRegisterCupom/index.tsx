@@ -110,13 +110,14 @@ const CompanyRegisterCupom: React.FC = () => {
               render={({field: {onBlur, onChange, value}}) => (
                 <InputLine
                   title="Cadastro de Cupom"
+                  keyboardType="number-pad"
                   value={value}
                   onBlur={onBlur}
                   onChangeText={e => {
                     onChange(e);
                   }}
-                  error={errors.cupom}
-                  errorText={errors.cupom?.message}
+                  error={!!errors.cupom}
+                  errorText={String(errors.cupom?.message)}
                 />
               )}
             />

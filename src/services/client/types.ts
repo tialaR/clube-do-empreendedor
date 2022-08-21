@@ -105,6 +105,8 @@ export type MyDiscountProductResponse = {
   image: string | null | undefined;
   qr_code: string | null | undefined;
   cupom_valid: boolean | null | undefined;
+  description: string | null | undefined;
+  whatsapp: string | null | undefined;
 };
 
 export type MyDiscountProduct = {
@@ -116,6 +118,7 @@ export type MyDiscountProduct = {
   store: string | null | undefined;
   qrCodeImg: string | null | undefined;
   category: string | null | undefined;
+  description: string | null | undefined;
   expiratedCupomCliente: string | null | undefined;
   isBought: boolean | null | undefined;
   isCupomValid: boolean | null | undefined;
@@ -131,6 +134,7 @@ export type ProductDetail = {
   cupom: string | null | undefined;
   qrCodeImg: string | null | undefined;
   description: string | null | undefined;
+  whatsApp?: string | null | undefined;
 };
 
 export type ScanQrCodeResponse = {

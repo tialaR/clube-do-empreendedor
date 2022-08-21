@@ -8,6 +8,7 @@ import SignUpClient from '../pages/SignUpClient';
 import SignUpCompany from '../pages/SignUpCompany';
 import RecoverPassword from '../pages/RecoverPassword';
 import RecoverPasswordConfirmation from '../pages/RecoverPasswordConfirmation';
+import RecoverPasswordSuccess from '../pages/RecoverPasswordSuccess';
 
 import {AppClientRoutes} from './app.client.routes';
 import {AppCompanyRoutes} from './app.company.routes';
@@ -31,6 +32,10 @@ export function AuthRoutes() {
       <Stack.Screen
         name="RecoverPasswordConfirmation"
         component={RecoverPasswordConfirmation}
+      />
+      <Stack.Screen
+        name="RecoverPasswordSuccess"
+        component={RecoverPasswordSuccess}
       />
 
       <Stack.Screen name="AppClientRoutes" component={AppClientRoutes} />

@@ -56,6 +56,22 @@ export function maskCEP(cep: string) {
     );
 }
 
+export function formatDotToComma(value: string | null | undefined) {
+  if (value) {
+    return `${String(value)?.replace('.', ',')}`;
+  }
+
+  return '';
+}
+
+export function formatCommaToDot(value: string | null | undefined) {
+  if (value) {
+    return `${String(value)?.replace(',', '.')}`;
+  }
+
+  return '';
+}
+
 export function removeMaskToNumbers(value: string) {
   return value?.replace(/[^0-9]+/g, '');
 }

@@ -20,7 +20,11 @@ import {BarCodeScanner, PermissionStatus} from 'expo-barcode-scanner';
 import IconButton from '../IconButton';
 
 import ServiceClient from '../../services/client/client.service';
+import {ProductDetail} from '../../services/client/types';
 import {formatCurrencyBRL} from '../../utils/helpers';
+import {openWhatsapp} from '../../utils/deepLinks';
+
+import {SvgIcon} from '../SvgIcon';
 
 import {
   Overlay,
@@ -63,8 +67,6 @@ import {
   SpacingY,
   TextsSkeletonLoading,
 } from '../../styles/globalStyles';
-
-import {SvgIcon} from '../SvgIcon';
 
 const renderTitleLoading = () => (
   <>
@@ -135,7 +137,7 @@ export type ClientProductDetailModalHandlersToFather = {
 
 type Props = {
   onClose: () => void;
-  product: any | undefined;
+  product: ProductDetail | undefined;
   isLoading: boolean;
   emphasisProduct?: boolean;
 };
@@ -412,7 +414,7 @@ const ClientProductDetailModal: React.ForwardRefRenderFunction<
 
   const renderWhatsAppButton = () => (
     <View style={{paddingTop: 30}}>
-      <WhatsAppButton onPress={() => false}>
+      <WhatsAppButton onPress={() => openWhatsapp({phone: product?.whatsApp})}>
         <SvgIcon name="whatsapp" width={15} height={15} color={colors.white} />
         <WhatsAppButtonText>ACESSE O WHATSAPP</WhatsAppButtonText>
       </WhatsAppButton>

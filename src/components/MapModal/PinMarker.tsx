@@ -16,8 +16,10 @@ import {
 type Props = {
   id: string;
   name: string;
+  address: string;
   description: string;
-  openingHours: string;
+  openingTime: string;
+  closingTime: string;
   coords: {
     latitude: number;
     longitude: number;
@@ -27,8 +29,10 @@ type Props = {
 const Pin: React.FC<Props> = ({
   id,
   name,
+  address,
   description,
-  openingHours,
+  openingTime,
+  closingTime,
   coords,
 }) => {
   return (
@@ -53,8 +57,10 @@ const Pin: React.FC<Props> = ({
         <PinMoreInfoContainer>
           <PinTitle>{name}</PinTitle>
           <SpacingY small />
+          <PinDescription>{address}</PinDescription>
           <PinDescription>{description}</PinDescription>
-          <PinThinDescription>{openingHours}</PinThinDescription>
+          <PinThinDescription>{openingTime}</PinThinDescription>
+          <PinThinDescription>{closingTime}</PinThinDescription>
         </PinMoreInfoContainer>
       </Callout>
     </Marker>

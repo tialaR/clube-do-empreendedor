@@ -27,7 +27,11 @@ import RadioButton from '../../components/RadioButton';
 
 import ServiceCompany from '../../services/company/company.service';
 
-import {formatCurrencyBRL} from '../../utils/helpers';
+import {
+  formatCommaToDot,
+  formatCurrencyBRL,
+  formatDotToComma,
+} from '../../utils/helpers';
 
 import {colors} from '../../styles/colors';
 import {SpacingY} from '../../styles/globalStyles';
@@ -234,7 +238,7 @@ const CompanyRegisterProduct: React.FC = () => {
     const productUpdated: RegisterProduct = {
       name: data?.productName,
       description: data?.productDescription,
-      price: data?.price,
+      price: formatCommaToDot(data?.price),
       availability: availability,
       category: data?.category,
       cupom: String(selectedDiscountCode?.id),
@@ -259,7 +263,7 @@ const CompanyRegisterProduct: React.FC = () => {
         id: productRegistered?.id,
         name: productRegistered?.name,
         img: productRegistered?.img,
-        price: formatCurrencyBRL(productRegistered?.price),
+        price: productRegistered?.price,
         promotion: productRegistered?.promotion,
         store: productRegistered?.store,
         qrCodeImg: productRegistered?.qrCodeImg,
@@ -473,7 +477,7 @@ const CompanyRegisterProduct: React.FC = () => {
                         maxLength={200}
                         onBlur={onBlur}
                         onChangeText={e => {
-                          setPrice(e);
+                          setPrice(formatDotToComma(e));
                           onChange(e);
                         }}
                         error={!!errors.price}

@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {RouteProp, useNavigation} from '@react-navigation/native';
+import {RouteProp, StackActions, useNavigation} from '@react-navigation/native';
 import {
   launchImageLibrary,
   ImagePickerResponse,
@@ -8,7 +8,6 @@ import * as yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {Controller, useForm} from 'react-hook-form';
 import {
-  ActivityIndicator,
   Alert,
   Keyboard,
   KeyboardAvoidingView,
@@ -34,7 +33,8 @@ import {
 } from '../../services/company/types';
 
 import {
-  formatCurrencyBRL,
+  formatCommaToDot,
+  formatDotToComma,
   getUrlExtension,
   getUrlImageName,
 } from '../../utils/helpers';
@@ -64,7 +64,7 @@ enum PageTitles {
   availability = 'Disponibilidade',
   store = 'Loja',
   category = 'Categoria',
-  productRegister = 'Produto Cadastrado!',
+  productUpdated = 'Produto Editado!',
 }
 
 type DiscountCode = {
@@ -173,12 +173,12 @@ const CompanyUpdateProduct: React.FC<Props> = ({route}) => {
     if (product) {
       setProductName(product?.name ?? '');
       setProductDescription(product?.description ?? '');
-      setPrice(product?.price ?? '');
+      setPrice(formatDotToComma(product?.price) ?? '');
       setAvailability(product?.isAvailable ?? false);
       setStore(product?.store ?? '');
       setCategory(product?.category ?? '');
       setSelectedDiscountCode({
-        id: 0,
+        id: product?.promotionId ?? undefined,
         label: product?.promotion ?? 'Selecione um códido',
         value: product?.promotion ?? undefined,
       });
@@ -264,12 +264,12 @@ const CompanyUpdateProduct: React.FC<Props> = ({route}) => {
 
   const onSubmit = (data: any) => {
     const productUpdated = {
-      name: data?.productName,
+      name: productName,
       description: data?.productDescription,
-      price: data?.price,
+      price: formatCommaToDot(data?.price),
       availability: availability,
       category: data?.category, // É possível retornar o ID da categoria?
-      cupom: String(selectedDiscountCode?.id), // É possível retornar o ID do cupom?
+      cupom: String(selectedDiscountCode?.id),
       image: photo,
       store: data?.store, // É possível retornar o ID da loja?
     };
@@ -278,6 +278,9 @@ const CompanyUpdateProduct: React.FC<Props> = ({route}) => {
     console.log('name of image -->', JSON.stringify(photo?.uri));
     console.log('name of image -->', JSON.stringify(photo?.name));
     console.log('type of image ---> ', JSON.stringify(photo?.type));
+
+    console.log('---------------------------------------------');
+    console.log('type of image ---> ', JSON.stringify(productUpdated));
 
     patchProduct({
       product: productUpdated,
@@ -297,7 +300,7 @@ const CompanyUpdateProduct: React.FC<Props> = ({route}) => {
         id: productRegistered?.id,
         name: productRegistered?.name,
         img: productRegistered?.img,
-        price: formatCurrencyBRL(productRegistered?.price),
+        price: productRegistered?.price,
         promotion: productRegistered?.promotion,
         store: productRegistered?.store,
         qrCodeImg: productRegistered?.qrCodeImg,
@@ -342,6 +345,11 @@ const CompanyUpdateProduct: React.FC<Props> = ({route}) => {
     }
   };
 
+  const handleBackToDashboard = () => {
+    const popAction = StackActions.pop(2);
+    navigation.dispatch(popAction);
+  };
+
   if (isProductRegistered) {
     return (
       <Container>
@@ -352,7 +360,7 @@ const CompanyUpdateProduct: React.FC<Props> = ({route}) => {
               color={colors.white}
               width={30}
               height={30}
-              onPress={() => navigation.goBack()}
+              onPress={handleBackToDashboard}
             />
           </View>
           <View style={{paddingTop: 14}}>
@@ -365,7 +373,7 @@ const CompanyUpdateProduct: React.FC<Props> = ({route}) => {
 
         <CompanyProductDetailBodyContainer>
           <SpacingY large />
-          <Title>{PageTitles.productRegister}</Title>
+          <Title>{PageTitles.productUpdated}</Title>
           <SpacingY small />
 
           {productResgistered && (
@@ -405,7 +413,7 @@ const CompanyUpdateProduct: React.FC<Props> = ({route}) => {
           <BodyContainer>
             {isProductRegistered ? (
               <>
-                <Title>{PageTitles.productRegister}</Title>
+                <Title>{PageTitles.productUpdated}</Title>
                 <SpacingY small />
                 {productResgistered && (
                   <CompanyProductDetail product={productResgistered} />
@@ -511,7 +519,7 @@ const CompanyUpdateProduct: React.FC<Props> = ({route}) => {
                         maxLength={200}
                         onBlur={onBlur}
                         onChangeText={e => {
-                          setPrice(e);
+                          setPrice(formatDotToComma(e));
                           onChange(e);
                         }}
                         error={!!errors.price}

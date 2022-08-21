@@ -149,8 +149,8 @@ const SignIn: React.FC<SiginProps> = ({route}) => {
                       value={value}
                       onBlur={onBlur}
                       onChangeText={onChange}
-                      error={errors.username}
-                      errorText={errors.username?.message}
+                      error={!!errors.username}
+                      errorText={String(errors.username?.message)}
                     />
                   )}
                 />
@@ -168,8 +168,8 @@ const SignIn: React.FC<SiginProps> = ({route}) => {
                       secureTextEntry
                       onBlur={onBlur}
                       onChangeText={onChange}
-                      error={errors.password}
-                      errorText={errors.password?.message}
+                      error={!!errors.password}
+                      errorText={String(errors.password?.message)}
                     />
                   )}
                 />

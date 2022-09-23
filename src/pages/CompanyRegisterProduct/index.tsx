@@ -121,14 +121,18 @@ const CompanyRegisterProduct: React.FC = () => {
 
   const {response: couponsList} = ServiceCompany.useGetCoupons();
 
-  const discountCodes = useMemo(() => {
-    return couponsList?.map((item: Coupon) => {
-      return {
-        id: item.id,
-        label: item.discount,
-        value: item.discount,
-      };
-    });
+  const discountCodesList = useMemo(() => {
+    if (couponsList && couponsList?.length > 0) {
+      return couponsList?.map((item: Coupon) => {
+        return {
+          id: item.id,
+          label: item.discount,
+          value: item.discount,
+        };
+      });
+    } else {
+      return [];
+    }
   }, [couponsList]);
 
   const [progress, setProgress] = useState(0);
@@ -172,6 +176,26 @@ const CompanyRegisterProduct: React.FC = () => {
     [selectedDiscountCode],
   );
   const isSelectedPhoto = useMemo(() => photo?.uri, [photo]);
+
+  useEffect(() => {
+    if (!couponsList || couponsList?.length <= 0) {
+      Alert.alert(
+        'Não existem cupons cadastrados!',
+        'Para realizar o cadastro de produtos pelo menos um cupom deve ser cadastrado.',
+        [
+          {
+            text: 'Ok',
+            onPress: () => navigation?.goBack(),
+            style: 'default',
+          },
+        ],
+        {
+          cancelable: true,
+          onDismiss: () => navigation?.goBack(),
+        },
+      );
+    }
+  }, [couponsList]);
 
   useEffect(() => {
     isPostProductError &&
@@ -509,7 +533,7 @@ const CompanyRegisterProduct: React.FC = () => {
                     <SpacingY medium />
                     <ExpandableListPanel
                       title={selectedDiscountCode?.label}
-                      list={discountCodes}
+                      list={discountCodesList}
                       onItemSelect={(item: DiscountCode) =>
                         setSelectedDiscountCode(item)
                       }

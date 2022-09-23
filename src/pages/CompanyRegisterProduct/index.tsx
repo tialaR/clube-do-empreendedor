@@ -178,7 +178,7 @@ const CompanyRegisterProduct: React.FC = () => {
   const isSelectedPhoto = useMemo(() => photo?.uri, [photo]);
 
   useEffect(() => {
-    if (!couponsList || couponsList?.length <= 0) {
+    if (couponsList && couponsList?.length <= 0) {
       Alert.alert(
         'Não existem cupons cadastrados!',
         'Para realizar o cadastro de produtos pelo menos um cupom deve ser cadastrado.',

@@ -136,6 +136,7 @@ const CompanyDashboard: React.FC = () => {
           showsHorizontalScrollIndicator={false}
           renderItem={({item: product}: {item: RegisteredProduct}) => (
             <ProductCard
+              key={product?.id}
               loading={isRegisteredProductsLoading}
               name={product?.name}
               img={product?.img}

@@ -169,6 +169,8 @@ const usePatchCompany = (): {
         companyAux = {...companyAux, area_atuacao: company.occupationArea};
       }
 
+      console.log('loja =>', JSON.stringify(company, undefined, ''));
+
       await api.patch<{message: string}>(
         `loja/update/${companyId}`,
         companyAux,
@@ -362,12 +364,12 @@ const usePostProduct = () => {
   getToken();
 
   const postProduct = ({product}: {product: RegisterProduct}) => {
+    setIsError(false);
     setIsLosding(true);
 
     const formData = new FormData();
     formData.append('nome', product?.name);
     formData.append('price', product?.price);
-    formData.append('loja', product?.store);
     formData.append('categoria', product?.category);
     formData.append('image', {
       uri: product?.image?.uri,
@@ -381,6 +383,9 @@ const usePostProduct = () => {
     }
     if (product?.cupom) {
       formData.append('cupom', product?.cupom);
+    }
+    if (product?.userId) {
+      formData.append('loja', product?.userId);
     }
 
     fetch(`${baseURL}produtos/`, {
@@ -399,9 +404,6 @@ const usePostProduct = () => {
       })
       .then(responseJson => {
         let data = responseJson;
-        console.log('-----------------------------------------');
-        console.log('PRODUTO REGISTER ->>', data);
-        console.log('-----------------------------------------');
 
         const dataAux: RegisteredProduct = {
           id: data?.id,
@@ -409,7 +411,6 @@ const usePostProduct = () => {
           img: `${baseURL}/${data?.image}`,
           price: data?.price,
           promotion: String(data?.cupom),
-          store: data?.loja,
           qrCodeImg: `${baseURL}/${data?.qr_code}`,
           description: data?.description,
           category: data?.categoria,
@@ -459,22 +460,20 @@ const usePatchProduct = () => {
     productId: string;
   }) => {
     setIsLosding(true);
+    setIsError(false);
 
     const formData = new FormData();
     formData.append('nome', product?.name);
     formData.append('price', product?.price);
-    formData.append('loja', product?.store);
     formData.append('categoria', product?.category);
+    formData.append('loja', product?.userId);
     formData.append('image', {
       uri: product?.image?.uri,
       type: product?.image?.type,
       name: product?.image?.name,
     });
+    formData.append('description', product?.description ?? '');
     formData.append('is_available', product?.availability);
-
-    if (product?.description) {
-      formData.append('description', product?.description);
-    }
     if (product?.cupom) {
       formData.append('cupom', product?.cupom);
     }
@@ -496,17 +495,12 @@ const usePatchProduct = () => {
       .then(responseJson => {
         let data = responseJson;
 
-        console.log('-----------------------------------------');
-        console.log('PRODUTO UPDATE ->>', data);
-        console.log('-----------------------------------------');
-
         const dataAux: RegisteredProduct = {
           id: data?.id,
           name: data?.nome,
           img: `${baseURL}/${data?.image}`,
           price: data?.price,
           promotion: String(data?.cupom),
-          store: data?.loja,
           qrCodeImg: `${baseURL}/${data?.qr_code}`,
           description: data?.description,
           category: data?.categoria,

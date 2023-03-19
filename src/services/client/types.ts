@@ -135,6 +135,7 @@ export type ProductDetail = {
   qrCodeImg: string | null | undefined;
   description: string | null | undefined;
   whatsApp?: string | null | undefined;
+  loja_whatsapp?: string | null | undefined;
 };
 
 export type ScanQrCodeResponse = {

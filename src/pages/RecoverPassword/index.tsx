@@ -93,7 +93,7 @@ const RecoverPassword: React.FC = () => {
           <HeaderContainer>
             <IconButton
               name="back"
-              color={colors.white}
+              color={colors.indigoA200}
               width={30}
               height={30}
               onPress={() => navigation.goBack()}

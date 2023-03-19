@@ -27,10 +27,11 @@ import RadioButton from '../../components/RadioButton';
 
 import ServiceCompany from '../../services/company/company.service';
 
+import {useAuth} from '../../hooks/useAuth';
+
 import {
-  formatCommaToDot,
-  formatCurrencyBRL,
-  formatDotToComma,
+  formatNumberInCurrencyBRL,
+  revertCurrencyBRLInNumber,
 } from '../../utils/helpers';
 
 import {colors} from '../../styles/colors';
@@ -61,7 +62,6 @@ enum PageTitles {
   discount = 'Desconto',
   price = 'Preço',
   availability = 'Disponibilidade',
-  store = 'Loja',
   category = 'Categoria',
   productRegister = 'Produto Cadastrado!',
 }
@@ -72,13 +72,12 @@ type DiscountCode = {
   value: string | null | undefined;
 };
 
-const FORM_ELEMENTS_SIZE = 7;
+const FORM_ELEMENTS_SIZE = 6;
 
 const validationSchema = yup.object().shape({
   productName: yup.string().required('Campo obrigatório'),
   productDescription: yup.string(),
   price: yup.string().required('Campo obrigatório'),
-  store: yup.string().required('Campo obrigatório'),
   category: yup.string().required('Campo obrigatório'),
 });
 
@@ -104,6 +103,7 @@ type Photo = {
 
 const CompanyRegisterProduct: React.FC = () => {
   const navigation = useNavigation<any>();
+  const {userId} = useAuth();
 
   const {
     control,
@@ -142,7 +142,6 @@ const CompanyRegisterProduct: React.FC = () => {
   const [productDescription, setProductDescription] = useState('');
   const [price, setPrice] = useState('');
   const [availability, setAvailability] = useState(false);
-  const [store, setStore] = useState('');
   const [category, setCategory] = useState('');
   const [selectedDiscountCode, setSelectedDiscountCode] =
     useState<DiscountCode>({
@@ -262,12 +261,12 @@ const CompanyRegisterProduct: React.FC = () => {
     const productUpdated: RegisterProduct = {
       name: data?.productName,
       description: data?.productDescription,
-      price: formatCommaToDot(data?.price),
+      price: revertCurrencyBRLInNumber(data?.price),
       availability: availability,
       category: data?.category,
       cupom: String(selectedDiscountCode?.id),
       image: photo,
-      store: data?.store,
+      userId,
     };
 
     postProduct({
@@ -289,7 +288,6 @@ const CompanyRegisterProduct: React.FC = () => {
         img: productRegistered?.img,
         price: productRegistered?.price,
         promotion: productRegistered?.promotion,
-        store: productRegistered?.store,
         qrCodeImg: productRegistered?.qrCodeImg,
         isAvailable: productRegistered?.isAvailable,
         description: productRegistered?.description,
@@ -501,7 +499,7 @@ const CompanyRegisterProduct: React.FC = () => {
                         maxLength={200}
                         onBlur={onBlur}
                         onChangeText={e => {
-                          setPrice(formatDotToComma(e));
+                          setPrice(formatNumberInCurrencyBRL(e));
                           onChange(e);
                         }}
                         error={!!errors.price}
@@ -564,32 +562,6 @@ const CompanyRegisterProduct: React.FC = () => {
                         }}
                         error={!!errors.category}
                         errorText={String(errors.category?.message)}
-                      />
-                    )}
-                  />
-                )}
-
-                {progress === 7 && (
-                  <Controller
-                    name="store"
-                    defaultValue={store}
-                    control={control}
-                    rules={{
-                      required: true,
-                    }}
-                    render={({field: {onChange, onBlur}}) => (
-                      <InputLine
-                        title={PageTitles.store}
-                        value={store}
-                        keyboardType="number-pad"
-                        maxLength={200}
-                        onBlur={onBlur}
-                        onChangeText={e => {
-                          setStore(e);
-                          onChange(e);
-                        }}
-                        error={!!errors.store}
-                        errorText={String(errors.store?.message)}
                       />
                     )}
                   />

@@ -56,6 +56,23 @@ export function maskCEP(cep: string) {
     );
 }
 
+export function formatNumberInCurrencyBRL(value: string) {
+  if (!value) {
+    return '';
+  }
+
+  let valueAux = value.replace(/\D/g, '');
+  valueAux = `${(Number(valueAux) / 100).toFixed(2)}`;
+  valueAux = valueAux.replace('.', ',');
+  valueAux = valueAux.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+
+  return `R$ ${valueAux}`;
+}
+
+export const revertCurrencyBRLInNumber = (value: string) => {
+  return Number(value.slice(3).replace(/\./g, '').replace(',', '.'));
+};
+
 export function formatDotToComma(value: string | null | undefined) {
   if (value) {
     return `${String(value)?.replace('.', ',')}`;

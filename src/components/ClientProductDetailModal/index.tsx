@@ -350,7 +350,8 @@ const ClientProductDetailModal: React.ForwardRefRenderFunction<
       <SpacingY medium />
 
       <View style={{paddingHorizontal: 30}}>
-        <WhatsAppButton onPress={() => false}>
+        <WhatsAppButton
+          onPress={() => openWhatsapp({phone: product?.loja_whatsapp})}>
           <SvgIcon
             name="whatsapp"
             width={15}
@@ -368,7 +369,8 @@ const ClientProductDetailModal: React.ForwardRefRenderFunction<
       <WhatsAppContainer>
         {!isLoading ? (
           <>
-            <WhatsAppButton onPress={() => false}>
+            <WhatsAppButton
+              onPress={() => openWhatsapp({phone: product?.loja_whatsapp})}>
               <SvgIcon
                 name="whatsapp"
                 width={15}

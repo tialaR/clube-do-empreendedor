@@ -32,11 +32,13 @@ import {
   RegisteredProduct,
 } from '../../services/company/types';
 
+import {useAuth} from '../../hooks/useAuth';
+
 import {
-  formatCommaToDot,
-  formatDotToComma,
+  formatNumberInCurrencyBRL,
   getUrlExtension,
   getUrlImageName,
+  revertCurrencyBRLInNumber,
 } from '../../utils/helpers';
 
 import {colors} from '../../styles/colors';
@@ -62,7 +64,6 @@ enum PageTitles {
   discount = 'Desconto',
   price = 'Preço',
   availability = 'Disponibilidade',
-  store = 'Loja',
   category = 'Categoria',
   productUpdated = 'Produto Editado!',
 }
@@ -73,13 +74,12 @@ type DiscountCode = {
   value: string | null | undefined;
 };
 
-const FORM_ELEMENTS_SIZE = 7;
+const FORM_ELEMENTS_SIZE = 6;
 
 const validationSchema = yup.object().shape({
   productName: yup.string(),
   productDescription: yup.string(),
   price: yup.string().required('Campo obrigatório'),
-  store: yup.string().required('Campo obrigatório'),
   category: yup.string().required('Campo obrigatório'),
 });
 
@@ -106,6 +106,7 @@ type Props = {
 
 const CompanyUpdateProduct: React.FC<Props> = ({route}) => {
   const navigation = useNavigation<any>();
+  const {userId} = useAuth();
 
   const {product} = useMemo(() => route.params, [route]);
 
@@ -141,7 +142,6 @@ const CompanyUpdateProduct: React.FC<Props> = ({route}) => {
   const [productDescription, setProductDescription] = useState('');
   const [price, setPrice] = useState('');
   const [availability, setAvailability] = useState(false);
-  const [store, setStore] = useState('');
   const [category, setCategory] = useState('');
   const [selectedDiscountCode, setSelectedDiscountCode] =
     useState<DiscountCode>({
@@ -173,9 +173,10 @@ const CompanyUpdateProduct: React.FC<Props> = ({route}) => {
     if (product) {
       setProductName(product?.name ?? '');
       setProductDescription(product?.description ?? '');
-      setPrice(formatDotToComma(product?.price) ?? '');
+      setPrice(
+        (product?.price && formatNumberInCurrencyBRL(product?.price)) ?? '',
+      );
       setAvailability(product?.isAvailable ?? false);
-      setStore(product?.store ?? '');
       setCategory(product?.category ?? '');
       setSelectedDiscountCode({
         id: product?.promotionId ?? undefined,
@@ -265,22 +266,15 @@ const CompanyUpdateProduct: React.FC<Props> = ({route}) => {
   const onSubmit = (data: any) => {
     const productUpdated = {
       name: productName,
-      description: data?.productDescription,
-      price: formatCommaToDot(data?.price),
+      description:
+        data?.productDescription === '' ? '' : data?.productDescription,
+      price: revertCurrencyBRLInNumber(data?.price),
       availability: availability,
       category: data?.category, // É possível retornar o ID da categoria?
       cupom: String(selectedDiscountCode?.id),
       image: photo,
-      store: data?.store, // É possível retornar o ID da loja?
+      userId,
     };
-    console.log('PRODUTO -->', JSON.stringify(productUpdated));
-    console.log('---------------------------------------------');
-    console.log('name of image -->', JSON.stringify(photo?.uri));
-    console.log('name of image -->', JSON.stringify(photo?.name));
-    console.log('type of image ---> ', JSON.stringify(photo?.type));
-
-    console.log('---------------------------------------------');
-    console.log('type of image ---> ', JSON.stringify(productUpdated));
 
     patchProduct({
       product: productUpdated,
@@ -302,7 +296,6 @@ const CompanyUpdateProduct: React.FC<Props> = ({route}) => {
         img: productRegistered?.img,
         price: productRegistered?.price,
         promotion: productRegistered?.promotion,
-        store: productRegistered?.store,
         qrCodeImg: productRegistered?.qrCodeImg,
         isAvailable: productRegistered?.isAvailable,
         description: productRegistered?.description,
@@ -519,7 +512,7 @@ const CompanyUpdateProduct: React.FC<Props> = ({route}) => {
                         maxLength={200}
                         onBlur={onBlur}
                         onChangeText={e => {
-                          setPrice(formatDotToComma(e));
+                          setPrice(formatNumberInCurrencyBRL(e));
                           onChange(e);
                         }}
                         error={!!errors.price}
@@ -580,32 +573,6 @@ const CompanyUpdateProduct: React.FC<Props> = ({route}) => {
                         }}
                         error={!!errors.category}
                         errorText={String(errors.category?.message)}
-                      />
-                    )}
-                  />
-                )}
-
-                {progress === 7 && (
-                  <Controller
-                    name="store"
-                    defaultValue={store}
-                    control={control}
-                    rules={{
-                      required: true,
-                    }}
-                    render={({field: {onChange, onBlur}}) => (
-                      <InputLine
-                        title={PageTitles.store}
-                        value={store}
-                        keyboardType="number-pad"
-                        maxLength={200}
-                        onBlur={onBlur}
-                        onChangeText={e => {
-                          setStore(e);
-                          onChange(e);
-                        }}
-                        error={!!errors.store}
-                        errorText={String(errors.store?.message)}
                       />
                     )}
                   />

@@ -86,12 +86,12 @@ type Photo = {
 export type RegisterProduct = {
   name: string | null | undefined;
   description: string | null | undefined;
-  price: string | null | undefined;
+  price: string | number | null | undefined;
   category: string | null | undefined;
   availability: boolean | null | undefined;
   cupom: string | null | undefined;
   image: Photo | undefined;
-  store: string | null | undefined;
+  userId: number | undefined;
 };
 
 export type RegisteredProductResponse = {
@@ -113,7 +113,6 @@ export type RegisteredProduct = {
   img: string | null | undefined;
   price: string | null | undefined;
   promotion: string | null | undefined;
-  store: string | null | undefined;
   qrCodeImg: string | null | undefined;
   category: string | null | undefined;
   description: string | null | undefined;

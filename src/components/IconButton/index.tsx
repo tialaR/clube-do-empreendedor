@@ -13,16 +13,16 @@ interface Props extends SvgProps {
   onPress: () => void;
 }
 
-const IconButton: React.FC<Props> = ({name, onPress, ...rest}) => {
+const IconButton: React.FC<Props> = ({name, color, onPress, ...rest}) => {
   const iconSvg = useMemo(() => {
     if (name === 'close') {
       return <CloseSvg {...rest} />;
     }
 
     if (name === 'back') {
-      return <ChevronLeftSvg {...rest} />;
+      return <ChevronLeftSvg fill={color} {...rest} />;
     }
-  }, [name, rest]);
+  }, [name, rest, color]);
 
   return <Container onPress={onPress}>{iconSvg}</Container>;
 };
